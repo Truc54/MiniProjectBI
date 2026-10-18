@@ -1,0 +1,9 @@
+version: 0.1.1
+
+default:
+  MSSQL_HOST: "{{ env_var('MSSQL_HOST') }}"
+  MSSQL_PORT: "{{ env_var('MSSQL_PORT') }}"
+  MSSQL_DATABASE: "{{ env_var('MSSQL_DATABASE') }}"
+  MSSQL_USERNAME: "{{ env_var('MSSQL_USERNAME') }}"
+  MSSQL_PASSWORD: "{{ env_var('MSSQL_PASSWORD') }}"
+  MSSQL_ODBC_DRIVER: "{{ env_var('MSSQL_ODBC_DRIVER') }}"

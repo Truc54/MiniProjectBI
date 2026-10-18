@@ -1,0 +1,18 @@
+.env
+**/.env
+**/profiles.yml
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mage_data/
+mage_data/
+dbt/target/
+dbt/logs/
+dbt/dbt_packages/
+*.db
+
+# Specific folders & files
+knowledge/
+example/
+2627.Yêu cầu.pdf
+*2627*Yeucau*

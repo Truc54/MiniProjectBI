@@ -1,0 +1,14 @@
+f1_bi:
+  target: dev
+  outputs:
+    dev:
+      type: sqlserver
+      driver: "{{ env_var('MSSQL_ODBC_DRIVER') }}"
+      server: "{{ env_var('MSSQL_HOST') }}"
+      port: "{{ env_var('MSSQL_PORT') | int }}"
+      database: "{{ env_var('MSSQL_DATABASE') }}"
+      schema: dw
+      user: "{{ env_var('MSSQL_USERNAME') }}"
+      password: "{{ env_var('MSSQL_PASSWORD') }}"
+      encrypt: true
+      trust_cert: false

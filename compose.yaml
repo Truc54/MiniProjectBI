@@ -1,0 +1,19 @@
+services:
+  mage:
+    build:
+      context: ./mage
+    env_file:
+      - .env
+    environment:
+      USER_CODE_PATH: /home/src/project
+      F1_DATA_DIR: /home/src/dataset
+      # Docker Desktop host name for a SQL Server instance running on Windows.
+      MSSQL_HOST: host.docker.internal
+    ports:
+      - "6789:6789"
+    volumes:
+      - ./mage/project:/home/src/project
+      - ./dataset:/home/src/dataset:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: /app/run_app.sh mage start project
