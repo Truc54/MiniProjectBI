@@ -14,39 +14,39 @@
 
 ### D1. SQL Server connection/setup contract - 5 điểm
 
-- [ ] Chọn database project và cấu hình SQL Server instance local/remote; thống nhất host/port/database với Compose/dbt profile.
-- [ ] Xác nhận ODBC Driver 18 sẵn có cho Mage runtime và quyền cho tài khoản project: tạo/nạp vào `stg`, ghi `ctl`; secrets chỉ nằm trong `.env`.
-- [ ] Viết hướng dẫn setup không gắn mật khẩu/certificate thật vào repo; ghi rõ `host.docker.internal` khi Mage chạy trong Docker Desktop.
-- [ ] Chốt cùng Lộc tên schema, tên bảng, column casing, metadata columns, `load_mode`, `batch_key`, trạng thái log.
+- [x] Chọn database project và cấu hình SQL Server instance local/remote; thống nhất host/port/database với Compose/dbt profile.
+- [x] Xác nhận ODBC Driver 18 sẵn có cho Mage runtime và quyền cho tài khoản project: tạo/nạp vào `stg`, ghi `ctl`; secrets chỉ nằm trong `.env`.
+- [x] Viết hướng dẫn setup không gắn mật khẩu/certificate thật vào repo; ghi rõ `host.docker.internal` khi Mage chạy trong Docker Desktop.
+- [x] Chốt cùng Lộc tên schema, tên bảng, column casing, metadata columns, `load_mode`, `batch_key`, trạng thái log.
 
 **Hoàn tất khi:** người khác biết cấu hình SQL Server và quyền cần thiết mà không cần credential ghi sẵn.
 
 ### D2. Staging schemas và bảy bảng lõi - 11 điểm
 
-- [ ] Viết DDL idempotent cho `stg`, `ctl`, `dw`; chỉ cần tạo cấu trúc `dw` ở Phase 1, triển khai dimensional tables là Phase 2.
-- [ ] Viết DDL cho `stg.circuits`, `stg.constructors`, `stg.drivers`, `stg.status`, `stg.seasons`, `stg.races`, `stg.results` theo source mapping đã chốt.
-- [ ] Dùng SQL Server Unicode text types cho tên/ref/url; chọn numeric/date/time types chỉ sau khi Phúc profile format và Lộc xác nhận converter.
-- [ ] Cho phép NULL ở trường optional; giữ source key; không đặt `NOT NULL`/default 0 trên cột nguồn mà source cho NULL.
-- [ ] Thiết kế source lineage/batch metadata tách khỏi cột nguồn, thống nhất cách nạp với Lộc.
-- [ ] Thêm primary/unique constraints và index có ích ở natural keys sau khi profile xác nhận; không áp FK nạp trước khi dimension/lookup đã sẵn sàng.
+- [x] Viết DDL idempotent cho `stg`, `ctl`, `dw`; chỉ cần tạo cấu trúc `dw` ở Phase 1, triển khai dimensional tables là Phase 2.
+- [x] Viết DDL cho `stg.circuits`, `stg.constructors`, `stg.drivers`, `stg.status`, `stg.seasons`, `stg.races`, `stg.results` theo source mapping đã chốt.
+- [x] Dùng SQL Server Unicode text types cho tên/ref/url; chọn numeric/date/time types chỉ sau khi Phúc profile format và Lộc xác nhận converter.
+- [x] Cho phép NULL ở trường optional; giữ source key; không đặt `NOT NULL`/default 0 trên cột nguồn mà source cho NULL.
+- [x] Thiết kế source lineage/batch metadata tách khỏi cột nguồn, thống nhất cách nạp với Lộc.
+- [x] Thêm primary/unique constraints và index có ích ở natural keys sau khi profile xác nhận; không áp FK nạp trước khi dimension/lookup đã sẵn sàng.
 
 **Hoàn tất khi:** script chạy lặp không lỗi, schema khớp source contract, và Mage có thể nạp tất cả 7 target.
 
 ### D3. ETL control tables - 5 điểm
 
-- [ ] Tạo `ctl.etl_run_log`: run ID, pipeline, source, target, mode/batch, start/end, status, rows read/written/rejected, error.
-- [ ] Tạo `ctl.etl_batch_state`: source/table/batch key, trạng thái, counts, run ID và load timestamp; khóa chính ngăn batch state trùng.
-- [ ] Chốt với Lộc quy tắc chỉ commit trạng thái `success` sau khi data transaction thành công; error phải lưu trạng thái và lỗi.
-- [ ] Dùng UTC timestamps và kiểu SQL Server phù hợp; ghi thời gian bằng server hoặc UTC thống nhất.
+- [x] Tạo `ctl.etl_run_log`: run ID, pipeline, source, target, mode/batch, start/end, status, rows read/written/rejected, error.
+- [x] Tạo `ctl.etl_batch_state`: source/table/batch key, trạng thái, counts, run ID và load timestamp; khóa chính ngăn batch state trùng.
+- [x] Chốt với Lộc quy tắc chỉ commit trạng thái `success` sau khi data transaction thành công; error phải lưu trạng thái và lỗi.
+- [x] Dùng UTC timestamps và kiểu SQL Server phù hợp; ghi thời gian bằng server hoặc UTC thống nhất.
 
 **Hoàn tất khi:** Lộc có schema interface để implement log mà không phải sửa tên/kiểu sau khi tích hợp.
 
 ### D4. Reconciliation queries, deploy notes - 4 điểm
 
-- [ ] Viết truy vấn đếm dòng theo từng bảng và kiểm tra key NULL/trùng.
-- [ ] Viết orphan checks cho các FK core, chạy sau khi nạp đủ bảng.
-- [ ] Viết truy vấn đọc run log/batch state, kiểm tra rerun.
-- [ ] Ghi hướng dẫn chạy DDL theo thứ tự và cách thu bằng chứng cho Seminar 1.
+- [x] Viết truy vấn đếm dòng theo từng bảng và kiểm tra key NULL/trùng.
+- [x] Viết orphan checks cho các FK core, chạy sau khi nạp đủ bảng.
+- [x] Viết truy vấn đọc run log/batch state, kiểm tra rerun.
+- [x] Ghi hướng dẫn chạy DDL theo thứ tự và cách thu bằng chứng cho Seminar 1.
 
 **Hoàn tất khi:** mọi tiêu chí Phase 1 có query SQL Server có thể chụp kết quả làm evidence.
 
