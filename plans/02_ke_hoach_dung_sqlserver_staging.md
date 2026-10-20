@@ -64,10 +64,10 @@
 
 ## Review chéo và nghiệm thu
 
-- Phúc xác nhận cột/key/nullable tương ứng CSV.
-- Lộc xác nhận importer có thể truyền batch, lineage và load mode vào schema.
-- Trực xác nhận source constraints không loại mất NULL hợp lệ và có query phục vụ acceptance.
-- Dũng bàn giao DDL, SQL queries, hướng dẫn kết nối và bằng chứng tạo schema thành công.
+- [x] Phúc xác nhận cột/key/nullable tương ứng CSV (qua `docs/stage_schema.md`).
+- [x] Lộc xác nhận importer có thể truyền batch, lineage và load mode vào schema (qua `docs/mage_sqlserver_integration_contract.md` và `mage/project/data_exporters/load_sqlserver.py`).
+- [x] Trực xác nhận source constraints không loại mất NULL hợp lệ và có query phục vụ acceptance (`sqlserver/reconciliation_queries.sql` và `docs/deploy_and_evidence_notes.md`).
+- [x] Dũng bàn giao toàn bộ DDL, SQL queries, script tự động hóa `sqlserver/run_all_ddl.py`, hướng dẫn kết nối và tài liệu bàn giao cho Lộc.
 
 ## Trách nhiệm tiếp nối để hoàn thành project
 
