@@ -230,6 +230,18 @@ class TransactionTests(unittest.TestCase):
         self.assertEqual(len(rows), 141)
         self.assertEqual(sum(row['status'] == 'Updated label' for row in rows), 1)
 
+    def test_dung_races_demo_split_1101_plus_63_and_rerun(self):
+        """Dung's contract demo (year<=2023 / >=2024) as inclusive raceId ranges."""
+        export_payload(payload('races', load_mode='incremental', batch_key='races_hist_to_2023', key_max=1120), self.engine)
+        export_payload(payload('races', load_mode='incremental', batch_key='races_2024_2026', key_min=1121), self.engine)
+        self.assertEqual(self.query('SELECT COUNT(*) n FROM stg.races')[0]['n'], 1164)
+        self.assertEqual(self.query('SELECT COUNT(*) n FROM stg.races WHERE year<=2023')[0]['n'], 1101)
+        self.assertEqual(self.query('SELECT COUNT(*) n FROM stg.races WHERE year>=2024')[0]['n'], 63)
+        export_payload(payload('races', load_mode='incremental', batch_key='races_2024_2026', key_min=1121), self.engine)
+        self.assertEqual(self.query('SELECT COUNT(*) n FROM stg.races')[0]['n'], 1164)
+        runs = self.query("SELECT COUNT(*) n FROM ctl.etl_run_log WHERE batch_key='races_2024_2026' AND run_status='success'")
+        self.assertEqual(runs[0]['n'], 2)
+
     def test_reused_batch_label_does_not_erase_unrelated_keys(self):
         export_payload(payload(load_mode='incremental', batch_key='same', key_max=70), self.engine)
         export_payload(payload(load_mode='incremental', batch_key='same', key_min=71), self.engine)

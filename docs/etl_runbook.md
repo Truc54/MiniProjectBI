@@ -152,6 +152,12 @@ keys ngoài batch được giữ. Không skip chỉ vì batch_key từng thành 
 ghi được các giá trị cập nhật. `rows_written` là số dòng insert của lần nạp, gồm cả
 keys được thay thế, không phải số dòng tăng thêm.
 
+**Khác biệt có chủ ý so với contract của Dũng (cần Dũng xác nhận):**
+
+- Rerun batch đã `success` vẫn nạp lại (idempotent) thay vì bỏ qua, để ghi nhận giá trị cập nhật; log ghi đủ 2 lần success.
+- Batch chia theo khoảng natural key (`key_min`/`key_max`, biến thêm ngoài contract), không theo `year`/`raceId` của `results`. Demo `races` của Dũng tương đương `key_max=1120` (1.101 dòng, năm ≤ 2023) và `key_min=1121` (63 dòng); `results` chia theo `resultId`, không theo `raceId`.
+- Full load xóa `ctl.etl_batch_state` của bảng đó (giữ nguyên `etl_run_log`).
+
 Ví dụ hai batch results, sau khi có các parent tables:
 
 ```bash
