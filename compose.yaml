@@ -6,14 +6,21 @@ services:
       - .env
     environment:
       USER_CODE_PATH: /home/src/project
+      PYTHONPATH: /home/src/project
       F1_DATA_DIR: /home/src/dataset
-      # Docker Desktop host name for a SQL Server instance running on Windows.
-      MSSQL_HOST: host.docker.internal
+      # Set MSSQL_HOST to Dung's reachable host/IP for a remote instance.
+      MSSQL_HOST: ${MSSQL_HOST:-host.docker.internal}
     ports:
-      - "6789:6789"
+      - "127.0.0.1:6789:6789"
     volumes:
       - ./mage/project:/home/src/project
+      - ./mage/run_etl.py:/home/src/run_etl.py:ro
+      - ./docs/evidence:/home/src/evidence
+      - mage_data:/home/src/mage_data
       - ./dataset:/home/src/dataset:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: /app/run_app.sh mage start project
+
+volumes:
+  mage_data:

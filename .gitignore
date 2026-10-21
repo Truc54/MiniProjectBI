@@ -4,7 +4,9 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.venv/
 .mage_data/
+.ssh_tunnel/
 mage_data/
 dbt/target/
 dbt/logs/

@@ -1,0 +1,26 @@
+Backend: Python + SQLite, NOT a SQL Server integration run.
+test_all_core_files_counts_and_relationships (test_etl.SourceTests) ... ok
+test_bad_header_row_shape_and_encoding (test_etl.SourceTests) ... ok
+test_bom_null_blank_and_zero (test_etl.SourceTests) ... ok
+test_contract_matches_dung_column_types_nullability_and_keys (test_etl.SourceTests) ... ok
+test_deterministic_batches_cover_exact_key_set (test_etl.SourceTests) ... ok
+test_duplicate_null_blank_and_numeric_key_aliases (test_etl.SourceTests) ... ok
+test_mage_block_chain_and_json_transport (test_etl.SourceTests) ... ok
+test_optional_nulls_and_f1_semantics (test_etl.SourceTests) ... ok
+test_orphan_reports_count_and_sample (test_etl.SourceTests) ... ok
+test_reject_paths_unknown_files_and_identifier_mismatch (test_etl.SourceTests) ... ok
+test_symlink_escape_rejected (test_etl.SourceTests) ... ok
+test_typed_values_dates_decimal_precision_and_times (test_etl.SourceTests) ... ok
+test_all_core_typed_inserts_counts_nulls_and_fk_reconciliation (test_etl.TransactionTests) ... ok
+test_failure_after_delete_rolls_back_and_retry_succeeds (test_etl.TransactionTests) ... ok
+test_full_twice_has_same_keys_data_and_audit (test_etl.TransactionTests) ... ok
+test_incremental_from_empty_rerun_and_update (test_etl.TransactionTests) ... ok
+test_missing_incremental_source_preserves_failed_batch_identity (test_etl.TransactionTests) ... ok
+test_reused_batch_label_does_not_erase_unrelated_keys (test_etl.TransactionTests) ... ok
+test_source_and_validation_failures_have_ctl_records (test_etl.TransactionTests) ... ok
+test_success_audit_error_rolls_back_stage (test_etl.TransactionTests) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 5.721s
+
+OK

@@ -20,13 +20,19 @@ Dataset source: https://www.kaggle.com/datasets/atharvranjan/formula-1-world-cha
 
 1. Copy `.env.example` to `.env` and enter credentials for a SQL Server account created for this project. Do not commit `.env`.
 2. Create or select the project database in SQL Server.
-3. Run `sqlserver/ddl/01_create_schemas.sql` and `sqlserver/ddl/02_create_control_tables.sql` against that database.
-4. Make the Microsoft ODBC Driver 18 for SQL Server available to the Mage runtime. The Dockerfile installs unixODBC build dependencies but does not install Microsoft's driver.
+3. Apply Dung's complete DDL (`01`, `02`, `03`) against that database. Until his branch is merged, read the pinned handoff and setup steps in [the ETL runbook](docs/etl_runbook.md).
+4. The Mage Dockerfile checks/installs Microsoft ODBC Driver 18 inside the container. Host CLI use needs the driver on the host as well.
 5. Configure SQL Server network access, then start Mage with Docker Compose.
 
-The Compose service assumes the SQL Server instance is outside Compose and reachable as `host.docker.internal:1433` from Docker Desktop. Adjust the Mage environment if your instance uses another host or port. If dbt runs directly on Windows, `MSSQL_HOST` in `.env` should resolve to SQL Server from Windows (often `localhost`).
+The SQL Server instance is outside Compose. Set `MSSQL_HOST` in `.env` to `host.docker.internal` for a server on the Docker host, or Dung's reachable DNS/IP for his remote server. Host CLI/dbt may need a different hostname (often `localhost` for a local instance).
 
-The Mage blocks are starter templates. Complete and review the exporter load strategy before loading data: a repeatable full load and an idempotent incremental load must not create duplicate source rows. The table-level runtime variables are `file_name`, `table_name`, `target_table`, and `load_mode`.
+Mage implements strict source validation, transactional full/key-based incremental loads, natural-key reruns and `ctl` auditing against Dung's handoff at commit `5b7113f`. Runtime variables: `file_name`, `table_name`, `target_table`, `load_mode`, `batch_key`, `key_min`, `key_max`. See [docs/etl_runbook.md](docs/etl_runbook.md) for UI steps, errors, retry and SQL Server demo commands. Integration passed on local SQL Server 2022 + Mage 0.9.79 on 2026-10-21; [live evidence](docs/evidence/loc_live_sqlserver_mage.json) records typed source/stage comparisons, reruns, rollback and audit checks. Runs used the Mage execution engine; UI login testing was deferred by the user.
+
+Validate all seven source files without installing dependencies or connecting to SQL Server:
+
+```bash
+python3 mage/run_etl.py --all --dry-run
+```
 
 ## Phase 1
 

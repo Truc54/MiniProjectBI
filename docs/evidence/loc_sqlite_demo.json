@@ -1,0 +1,527 @@
+{
+  "backend": "sqlite_transaction_simulation",
+  "timestamp_utc": "2026-10-21T04:06:35.125196+00:00",
+  "sqlserver_verified": false,
+  "demo": {
+    "full_runs": [
+      [
+        {
+          "status": "success",
+          "run_id": "8f6c1867-69b3-4aac-a42a-bb646a54e895",
+          "table": "stg.circuits",
+          "batch_key": "full",
+          "rows_read": 78,
+          "rows_written": 78,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "f616c170-22fc-4740-a550-31a9d058733e",
+          "table": "stg.constructors",
+          "batch_key": "full",
+          "rows_read": 214,
+          "rows_written": 214,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "58d1aa61-7e6e-4b53-a03d-e9b375340d36",
+          "table": "stg.drivers",
+          "batch_key": "full",
+          "rows_read": 879,
+          "rows_written": 879,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "bef2e236-4abf-4ff2-8d71-6238539bcbe6",
+          "table": "stg.status",
+          "batch_key": "full",
+          "rows_read": 141,
+          "rows_written": 141,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "8c065c51-cc27-4b7c-b66f-6d72e63df068",
+          "table": "stg.seasons",
+          "batch_key": "full",
+          "rows_read": 77,
+          "rows_written": 77,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "6dc02835-b4dc-42dc-8bc2-539d369a03cd",
+          "table": "stg.races",
+          "batch_key": "full",
+          "rows_read": 1164,
+          "rows_written": 1164,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "24c009c0-850f-40e7-ac03-1054a1ff0d85",
+          "table": "stg.results",
+          "batch_key": "full",
+          "rows_read": 27568,
+          "rows_written": 27568,
+          "rows_rejected": 0
+        }
+      ],
+      [
+        {
+          "status": "success",
+          "run_id": "2400e094-c5b6-4c67-8d0c-e50d88fb10c2",
+          "table": "stg.circuits",
+          "batch_key": "full",
+          "rows_read": 78,
+          "rows_written": 78,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "aa24e905-e935-4294-90c3-edf881fd8693",
+          "table": "stg.constructors",
+          "batch_key": "full",
+          "rows_read": 214,
+          "rows_written": 214,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "8e45b43e-eec9-490e-ba17-4a69cffa7ad7",
+          "table": "stg.drivers",
+          "batch_key": "full",
+          "rows_read": 879,
+          "rows_written": 879,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "07a052c3-112d-4b86-9227-f29b66644209",
+          "table": "stg.status",
+          "batch_key": "full",
+          "rows_read": 141,
+          "rows_written": 141,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "4ed79ae7-c932-4946-9f44-c56d96f7e9ba",
+          "table": "stg.seasons",
+          "batch_key": "full",
+          "rows_read": 77,
+          "rows_written": 77,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "269ab00a-4ac3-482b-8f36-8ee5c44aa522",
+          "table": "stg.races",
+          "batch_key": "full",
+          "rows_read": 1164,
+          "rows_written": 1164,
+          "rows_rejected": 0
+        },
+        {
+          "status": "success",
+          "run_id": "192fa820-c0a8-4a17-b2ea-c3ee9544aa8e",
+          "table": "stg.results",
+          "batch_key": "full",
+          "rows_read": 27568,
+          "rows_written": 27568,
+          "rows_rejected": 0
+        }
+      ]
+    ],
+    "full_checks": [
+      {
+        "counts": {
+          "circuits": 78,
+          "constructors": 214,
+          "drivers": 879,
+          "status": 141,
+          "seasons": 77,
+          "races": 1164,
+          "results": 27568
+        },
+        "relationships": [
+          {
+            "relationship": "races.circuitId->circuits.circuitId",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "races.year->seasons.year",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "results.raceId->races.raceId",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "results.driverId->drivers.driverId",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "results.constructorId->constructors.constructorId",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "results.statusId->status.statusId",
+            "orphan_count": 0,
+            "sample": []
+          }
+        ]
+      },
+      {
+        "counts": {
+          "circuits": 78,
+          "constructors": 214,
+          "drivers": 879,
+          "status": 141,
+          "seasons": 77,
+          "races": 1164,
+          "results": 27568
+        },
+        "relationships": [
+          {
+            "relationship": "races.circuitId->circuits.circuitId",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "races.year->seasons.year",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "results.raceId->races.raceId",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "results.driverId->drivers.driverId",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "results.constructorId->constructors.constructorId",
+            "orphan_count": 0,
+            "sample": []
+          },
+          {
+            "relationship": "results.statusId->status.statusId",
+            "orphan_count": 0,
+            "sample": []
+          }
+        ]
+      }
+    ],
+    "incremental_runs": [
+      {
+        "status": "success",
+        "run_id": "f3bf8a30-e448-4e22-8ba0-64c641079c08",
+        "table": "stg.circuits",
+        "batch_key": "part1",
+        "rows_read": 39,
+        "rows_written": 39,
+        "rows_rejected": 0,
+        "target_row_count": 39,
+        "target_key_sha256": "7a146d45045c32ded126c3da0de63c780d3a3711c121cc8ec1b941ff3e701a7a"
+      },
+      {
+        "status": "success",
+        "run_id": "27b18eba-7d46-4aa9-add0-f79eb713b3f2",
+        "table": "stg.circuits",
+        "batch_key": "part2",
+        "rows_read": 39,
+        "rows_written": 39,
+        "rows_rejected": 0,
+        "target_row_count": 78,
+        "target_key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16"
+      },
+      {
+        "status": "success",
+        "run_id": "c83b2508-8450-4d62-8e81-01f3a576e691",
+        "table": "stg.circuits",
+        "batch_key": "part2",
+        "rows_read": 39,
+        "rows_written": 39,
+        "rows_rejected": 0,
+        "target_row_count": 78,
+        "target_key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16"
+      },
+      {
+        "status": "success",
+        "run_id": "ae8661e5-608e-41e3-b1b3-ae405f126b68",
+        "table": "stg.constructors",
+        "batch_key": "part1",
+        "rows_read": 107,
+        "rows_written": 107,
+        "rows_rejected": 0,
+        "target_row_count": 107,
+        "target_key_sha256": "b0b3da6d20690d258d0d40096adebac943db4443c6b9f7d2d4a76459261f09ac"
+      },
+      {
+        "status": "success",
+        "run_id": "96cb9060-8219-4ac4-b371-2fd6fce85039",
+        "table": "stg.constructors",
+        "batch_key": "part2",
+        "rows_read": 107,
+        "rows_written": 107,
+        "rows_rejected": 0,
+        "target_row_count": 214,
+        "target_key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227"
+      },
+      {
+        "status": "success",
+        "run_id": "cb3f2723-e15a-4847-a3dd-c24638ef55d2",
+        "table": "stg.constructors",
+        "batch_key": "part2",
+        "rows_read": 107,
+        "rows_written": 107,
+        "rows_rejected": 0,
+        "target_row_count": 214,
+        "target_key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227"
+      },
+      {
+        "status": "success",
+        "run_id": "e0d3ebda-6559-4a80-9387-958691b62968",
+        "table": "stg.drivers",
+        "batch_key": "part1",
+        "rows_read": 439,
+        "rows_written": 439,
+        "rows_rejected": 0,
+        "target_row_count": 439,
+        "target_key_sha256": "86923dc10796c363dd421a653aaf1f8b0e0b713deb9f75673ff28ed840d5f7a4"
+      },
+      {
+        "status": "success",
+        "run_id": "f8f09382-b80b-4900-8698-a1fcc1b3de8a",
+        "table": "stg.drivers",
+        "batch_key": "part2",
+        "rows_read": 440,
+        "rows_written": 440,
+        "rows_rejected": 0,
+        "target_row_count": 879,
+        "target_key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499"
+      },
+      {
+        "status": "success",
+        "run_id": "b9b234f7-100e-469c-bab8-850763ecbb27",
+        "table": "stg.drivers",
+        "batch_key": "part2",
+        "rows_read": 440,
+        "rows_written": 440,
+        "rows_rejected": 0,
+        "target_row_count": 879,
+        "target_key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499"
+      },
+      {
+        "status": "success",
+        "run_id": "a2079ba8-8071-4eb5-b807-adb1947dce29",
+        "table": "stg.status",
+        "batch_key": "part1",
+        "rows_read": 70,
+        "rows_written": 70,
+        "rows_rejected": 0,
+        "target_row_count": 70,
+        "target_key_sha256": "f753b05acc4e2f117b1c16d38aff07ff35a29e1cce1a6c111d886bbed2d6009d"
+      },
+      {
+        "status": "success",
+        "run_id": "d0fbcfc6-b5ae-4ef0-8d9e-4d58d008a9b6",
+        "table": "stg.status",
+        "batch_key": "part2",
+        "rows_read": 71,
+        "rows_written": 71,
+        "rows_rejected": 0,
+        "target_row_count": 141,
+        "target_key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130"
+      },
+      {
+        "status": "success",
+        "run_id": "4fe2fb15-df2f-4e42-a4ec-825227bb6b03",
+        "table": "stg.status",
+        "batch_key": "part2",
+        "rows_read": 71,
+        "rows_written": 71,
+        "rows_rejected": 0,
+        "target_row_count": 141,
+        "target_key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130"
+      },
+      {
+        "status": "success",
+        "run_id": "2cc5cbb3-391a-42e0-923d-ba88b36fbfe0",
+        "table": "stg.seasons",
+        "batch_key": "part1",
+        "rows_read": 38,
+        "rows_written": 38,
+        "rows_rejected": 0,
+        "target_row_count": 38,
+        "target_key_sha256": "8d18c7118a75f82c5466fdea7f7700d97b76905d71a9ef3a3c10febf4379b16c"
+      },
+      {
+        "status": "success",
+        "run_id": "f65d691d-0ce6-4f5d-840b-52d34b8a5610",
+        "table": "stg.seasons",
+        "batch_key": "part2",
+        "rows_read": 39,
+        "rows_written": 39,
+        "rows_rejected": 0,
+        "target_row_count": 77,
+        "target_key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212"
+      },
+      {
+        "status": "success",
+        "run_id": "d2cd8748-896a-48de-8ff9-d27ca23eb2be",
+        "table": "stg.seasons",
+        "batch_key": "part2",
+        "rows_read": 39,
+        "rows_written": 39,
+        "rows_rejected": 0,
+        "target_row_count": 77,
+        "target_key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212"
+      },
+      {
+        "status": "success",
+        "run_id": "d51820c0-ef46-472b-b894-41c77c382efd",
+        "table": "stg.races",
+        "batch_key": "part1",
+        "rows_read": 582,
+        "rows_written": 582,
+        "rows_rejected": 0,
+        "target_row_count": 582,
+        "target_key_sha256": "7845534b13e07d6970c26847dc3c4b9ecd3b1a8609253fa342c839eba552dbea"
+      },
+      {
+        "status": "success",
+        "run_id": "811667a0-bf2e-4fad-87bd-9a387d359970",
+        "table": "stg.races",
+        "batch_key": "part2",
+        "rows_read": 582,
+        "rows_written": 582,
+        "rows_rejected": 0,
+        "target_row_count": 1164,
+        "target_key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556"
+      },
+      {
+        "status": "success",
+        "run_id": "69e8d3fc-f192-4673-a82a-bd83d092bc83",
+        "table": "stg.races",
+        "batch_key": "part2",
+        "rows_read": 582,
+        "rows_written": 582,
+        "rows_rejected": 0,
+        "target_row_count": 1164,
+        "target_key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556"
+      },
+      {
+        "status": "success",
+        "run_id": "d4b35e22-fe4d-4635-9291-00c7f8d1d194",
+        "table": "stg.results",
+        "batch_key": "part1",
+        "rows_read": 13784,
+        "rows_written": 13784,
+        "rows_rejected": 0,
+        "target_row_count": 13784,
+        "target_key_sha256": "6818cf35416bbea6db265d19325e3446ba3310a588d65da3a5f61a54ce257325"
+      },
+      {
+        "status": "success",
+        "run_id": "d22f42bd-0926-439d-9417-1d201e1c20ca",
+        "table": "stg.results",
+        "batch_key": "part2",
+        "rows_read": 13784,
+        "rows_written": 13784,
+        "rows_rejected": 0,
+        "target_row_count": 27568,
+        "target_key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296"
+      },
+      {
+        "status": "success",
+        "run_id": "9c750774-a599-432f-a6ee-87a398e09855",
+        "table": "stg.results",
+        "batch_key": "part2",
+        "rows_read": 13784,
+        "rows_written": 13784,
+        "rows_rejected": 0,
+        "target_row_count": 27568,
+        "target_key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296"
+      }
+    ],
+    "expected_failure": "run_id=c61b08d8-c74d-4e74-871b-da094215f80b: status.csv: duplicate natural key 1; invalid rows=1",
+    "stage": {
+      "counts": {
+        "circuits": 78,
+        "constructors": 214,
+        "drivers": 879,
+        "status": 141,
+        "seasons": 77,
+        "races": 1164,
+        "results": 27568
+      },
+      "relationships": [
+        {
+          "relationship": "races.circuitId->circuits.circuitId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "races.year->seasons.year",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.raceId->races.raceId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.driverId->drivers.driverId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.constructorId->constructors.constructorId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.statusId->status.statusId",
+          "orphan_count": 0,
+          "sample": []
+        }
+      ]
+    }
+  },
+  "audit_statuses": [
+    {
+      "run_status": "failed",
+      "run_count": 1
+    },
+    {
+      "run_status": "success",
+      "run_count": 35
+    }
+  ],
+  "failed_run": [
+    {
+      "run_id": "c61b08d8-c74d-4e74-871b-da094215f80b",
+      "source_file": "status.csv",
+      "target_table": "status",
+      "batch_key": "intentional_duplicate_failure",
+      "rows_read": 142,
+      "rows_written": 0,
+      "rows_rejected": 1,
+      "error_message": "status.csv: duplicate natural key 1; invalid rows=1"
+    }
+  ],
+  "status": "success"
+}

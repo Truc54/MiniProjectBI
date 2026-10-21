@@ -1,0 +1,1622 @@
+{
+  "status": "success",
+  "backend": "sqlserver_and_mage",
+  "timestamp_utc": "2026-10-21T04:26:44.402584+00:00",
+  "dung_commit": "5b7113f64f81b670830f3975bf038dedf58f7b9e",
+  "runs": [
+    {
+      "variables": {
+        "file_name": "circuits.csv",
+        "table_name": "circuits",
+        "target_table": "circuits",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full1_circuits",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "9A7031F9-BCAB-4AB9-A927-E7F305F88CC1",
+      "status": "success",
+      "rows_read": 78,
+      "rows_written": 78,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "constructors.csv",
+        "table_name": "constructors",
+        "target_table": "constructors",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full1_constructors",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "08CC6FBD-780A-4BE2-9D0E-FB4B0F0747B6",
+      "status": "success",
+      "rows_read": 214,
+      "rows_written": 214,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "drivers.csv",
+        "table_name": "drivers",
+        "target_table": "drivers",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full1_drivers",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "5F994A07-E66C-4C01-A1EE-6A7446206D43",
+      "status": "success",
+      "rows_read": 879,
+      "rows_written": 879,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "status.csv",
+        "table_name": "status",
+        "target_table": "status",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full1_status",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "A067ADB1-FAA2-4A8A-8951-3B59E88E18EC",
+      "status": "success",
+      "rows_read": 141,
+      "rows_written": 141,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "seasons.csv",
+        "table_name": "seasons",
+        "target_table": "seasons",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full1_seasons",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "1A39C06D-B0D9-4D48-A2EC-FB2A89689DB1",
+      "status": "success",
+      "rows_read": 77,
+      "rows_written": 77,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "races.csv",
+        "table_name": "races",
+        "target_table": "races",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full1_races",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "B86ABFC7-8871-4A02-B1CF-DE26A7C131BC",
+      "status": "success",
+      "rows_read": 1164,
+      "rows_written": 1164,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "results.csv",
+        "table_name": "results",
+        "target_table": "results",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full1_results",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "E8424277-8BDB-4DC5-AE7A-9AC8C7316AB9",
+      "status": "success",
+      "rows_read": 27568,
+      "rows_written": 27568,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "circuits.csv",
+        "table_name": "circuits",
+        "target_table": "circuits",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full2_circuits",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "5859FC1B-CD5C-4BC2-B68D-D5797DF07A89",
+      "status": "success",
+      "rows_read": 78,
+      "rows_written": 78,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "constructors.csv",
+        "table_name": "constructors",
+        "target_table": "constructors",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full2_constructors",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "93A708D6-63BC-47EA-AF60-6923BC6FCBDE",
+      "status": "success",
+      "rows_read": 214,
+      "rows_written": 214,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "drivers.csv",
+        "table_name": "drivers",
+        "target_table": "drivers",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full2_drivers",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "CB6B9FB6-0FC3-4E8F-B21E-D8C1DC2CD678",
+      "status": "success",
+      "rows_read": 879,
+      "rows_written": 879,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "status.csv",
+        "table_name": "status",
+        "target_table": "status",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full2_status",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "2241A8CD-47CF-4B0C-9367-F619E4705481",
+      "status": "success",
+      "rows_read": 141,
+      "rows_written": 141,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "seasons.csv",
+        "table_name": "seasons",
+        "target_table": "seasons",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full2_seasons",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "374EAB82-EFA2-4438-BCCC-4EEB5B236811",
+      "status": "success",
+      "rows_read": 77,
+      "rows_written": 77,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "races.csv",
+        "table_name": "races",
+        "target_table": "races",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full2_races",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "7AB350BA-ACA2-4EFD-A1EF-982F1CA91E3D",
+      "status": "success",
+      "rows_read": 1164,
+      "rows_written": 1164,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "results.csv",
+        "table_name": "results",
+        "target_table": "results",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_full2_results",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "E7865D80-6EA0-4B28-A75C-C7AA1BCDA4C4",
+      "status": "success",
+      "rows_read": 27568,
+      "rows_written": 27568,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "circuits.csv",
+        "table_name": "circuits",
+        "target_table": "circuits",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_circuits_part1",
+        "key_max": 40,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "BCE09363-B6B8-4F9E-888F-890BFEA109CD",
+      "status": "success",
+      "rows_read": 39,
+      "rows_written": 39,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "circuits",
+        "rows": 39,
+        "key_sha256": "7a146d45045c32ded126c3da0de63c780d3a3711c121cc8ec1b941ff3e701a7a"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "circuits.csv",
+        "table_name": "circuits",
+        "target_table": "circuits",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_circuits_part2",
+        "key_min": 41,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "4876D29D-FA93-4451-88FE-46F46B58CDB1",
+      "status": "success",
+      "rows_read": 39,
+      "rows_written": 39,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "circuits",
+        "rows": 78,
+        "key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "circuits.csv",
+        "table_name": "circuits",
+        "target_table": "circuits",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_circuits_part2",
+        "key_min": 41,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "0515DBF8-222E-40DB-A021-3D959EDF4B9C",
+      "status": "success",
+      "rows_read": 39,
+      "rows_written": 39,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "circuits",
+        "rows": 78,
+        "key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "constructors.csv",
+        "table_name": "constructors",
+        "target_table": "constructors",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_constructors_part1",
+        "key_max": 108,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "E28F4EC9-69DD-4024-B7BE-5BC34900F8B8",
+      "status": "success",
+      "rows_read": 107,
+      "rows_written": 107,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "constructors",
+        "rows": 107,
+        "key_sha256": "b0b3da6d20690d258d0d40096adebac943db4443c6b9f7d2d4a76459261f09ac"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "constructors.csv",
+        "table_name": "constructors",
+        "target_table": "constructors",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_constructors_part2",
+        "key_min": 109,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "861E31D4-F57D-46F7-B4C9-24BAC00EE837",
+      "status": "success",
+      "rows_read": 107,
+      "rows_written": 107,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "constructors",
+        "rows": 214,
+        "key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "constructors.csv",
+        "table_name": "constructors",
+        "target_table": "constructors",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_constructors_part2",
+        "key_min": 109,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "7E93A12A-01F4-4303-8E6F-6A4A417EA6F2",
+      "status": "success",
+      "rows_read": 107,
+      "rows_written": 107,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "constructors",
+        "rows": 214,
+        "key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "drivers.csv",
+        "table_name": "drivers",
+        "target_table": "drivers",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_drivers_part1",
+        "key_max": 439,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "90C984FF-AC70-4C94-9AE0-4B8747187916",
+      "status": "success",
+      "rows_read": 439,
+      "rows_written": 439,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "drivers",
+        "rows": 439,
+        "key_sha256": "86923dc10796c363dd421a653aaf1f8b0e0b713deb9f75673ff28ed840d5f7a4"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "drivers.csv",
+        "table_name": "drivers",
+        "target_table": "drivers",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_drivers_part2",
+        "key_min": 440,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "568383B2-788D-4266-A8A8-99639F605582",
+      "status": "success",
+      "rows_read": 440,
+      "rows_written": 440,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "drivers",
+        "rows": 879,
+        "key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "drivers.csv",
+        "table_name": "drivers",
+        "target_table": "drivers",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_drivers_part2",
+        "key_min": 440,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "26E896B5-280F-4FF7-B18C-0219DF79E6B3",
+      "status": "success",
+      "rows_read": 440,
+      "rows_written": 440,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "drivers",
+        "rows": 879,
+        "key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "status.csv",
+        "table_name": "status",
+        "target_table": "status",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_status_part1",
+        "key_max": 72,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "935C9234-1361-413A-A58A-BCFFB5130FBF",
+      "status": "success",
+      "rows_read": 70,
+      "rows_written": 70,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "status",
+        "rows": 70,
+        "key_sha256": "f753b05acc4e2f117b1c16d38aff07ff35a29e1cce1a6c111d886bbed2d6009d"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "status.csv",
+        "table_name": "status",
+        "target_table": "status",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_status_part2",
+        "key_min": 73,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "8C60C05A-8E1F-4AEE-8C0C-AAA0EF9F7410",
+      "status": "success",
+      "rows_read": 71,
+      "rows_written": 71,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "status",
+        "rows": 141,
+        "key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "status.csv",
+        "table_name": "status",
+        "target_table": "status",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_status_part2",
+        "key_min": 73,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "48D9767E-8E6C-40D6-9509-83E3163CD11A",
+      "status": "success",
+      "rows_read": 71,
+      "rows_written": 71,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "status",
+        "rows": 141,
+        "key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "seasons.csv",
+        "table_name": "seasons",
+        "target_table": "seasons",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_seasons_part1",
+        "key_max": 1987,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "3B7D83AD-7B0A-4A4E-B93A-7742C851EB02",
+      "status": "success",
+      "rows_read": 38,
+      "rows_written": 38,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "seasons",
+        "rows": 38,
+        "key_sha256": "8d18c7118a75f82c5466fdea7f7700d97b76905d71a9ef3a3c10febf4379b16c"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "seasons.csv",
+        "table_name": "seasons",
+        "target_table": "seasons",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_seasons_part2",
+        "key_min": 1988,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "65CE3448-5468-4AF4-B4CB-AA74FF9325AC",
+      "status": "success",
+      "rows_read": 39,
+      "rows_written": 39,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "seasons",
+        "rows": 77,
+        "key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "seasons.csv",
+        "table_name": "seasons",
+        "target_table": "seasons",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_seasons_part2",
+        "key_min": 1988,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "63436949-B21D-4770-85FA-A3C0E00FEA0B",
+      "status": "success",
+      "rows_read": 39,
+      "rows_written": 39,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "seasons",
+        "rows": 77,
+        "key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "races.csv",
+        "table_name": "races",
+        "target_table": "races",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_races_part1",
+        "key_max": 582,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "CDAA8027-120C-4F21-B917-9DF641D406CD",
+      "status": "success",
+      "rows_read": 582,
+      "rows_written": 582,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "races",
+        "rows": 582,
+        "key_sha256": "7845534b13e07d6970c26847dc3c4b9ecd3b1a8609253fa342c839eba552dbea"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "races.csv",
+        "table_name": "races",
+        "target_table": "races",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_races_part2",
+        "key_min": 583,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "3E0C9B3B-ADA7-4155-9C2F-FE6A0488D9D4",
+      "status": "success",
+      "rows_read": 582,
+      "rows_written": 582,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "races",
+        "rows": 1164,
+        "key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "races.csv",
+        "table_name": "races",
+        "target_table": "races",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_races_part2",
+        "key_min": 583,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "BF9EFBB0-11A8-4684-935C-1EAD73E5EA26",
+      "status": "success",
+      "rows_read": 582,
+      "rows_written": 582,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "races",
+        "rows": 1164,
+        "key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "results.csv",
+        "table_name": "results",
+        "target_table": "results",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_results_part1",
+        "key_max": 13784,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "33632ECB-43FA-4804-A56A-C06E147A6CD5",
+      "status": "success",
+      "rows_read": 13784,
+      "rows_written": 13784,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "results",
+        "rows": 13784,
+        "key_sha256": "6818cf35416bbea6db265d19325e3446ba3310a588d65da3a5f61a54ce257325"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "results.csv",
+        "table_name": "results",
+        "target_table": "results",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_results_part2",
+        "key_min": 13785,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "3A45B444-A9F3-4A35-87CD-262A44BB261E",
+      "status": "success",
+      "rows_read": 13784,
+      "rows_written": 13784,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "results",
+        "rows": 27568,
+        "key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "results.csv",
+        "table_name": "results",
+        "target_table": "results",
+        "schema_name": "stg",
+        "load_mode": "incremental",
+        "batch_key": "live_9691c5d2_results_part2",
+        "key_min": 13785,
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "1F978AFC-9B62-4CBB-8DCC-0FECCAF96017",
+      "status": "success",
+      "rows_read": 13784,
+      "rows_written": 13784,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ],
+      "stage_after_run": {
+        "table": "results",
+        "rows": 27568,
+        "key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296"
+      }
+    },
+    {
+      "variables": {
+        "file_name": "status.csv",
+        "table_name": "status",
+        "target_table": "status",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_duplicate_failure",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "4A6A95D5-1CDA-4AEE-B95B-BB037CE530B3",
+      "status": "failed",
+      "rows_read": 2,
+      "rows_written": 0,
+      "rows_rejected": 1,
+      "error_message": "status.csv: duplicate natural key 1; invalid rows=1",
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    },
+    {
+      "variables": {
+        "file_name": "status.csv",
+        "table_name": "status",
+        "target_table": "status",
+        "schema_name": "stg",
+        "load_mode": "full",
+        "batch_key": "live_9691c5d2_final_retry",
+        "env": "dev",
+        "configuration": {},
+        "context": {},
+        "pipeline_uuid": "f1_source_to_stage",
+        "block_uuid": "load_sqlserver",
+        "repo_path": "/home/src/project"
+      },
+      "run_id": "BDBD2C93-872F-4D22-BEFA-5C887E7711E2",
+      "status": "success",
+      "rows_read": 141,
+      "rows_written": 141,
+      "rows_rejected": 0,
+      "error_message": null,
+      "mage_blocks": [
+        "load_f1_csv",
+        "validate_f1_table",
+        "load_sqlserver"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "counts": {
+        "circuits": 78,
+        "constructors": 214,
+        "drivers": 879,
+        "status": 141,
+        "seasons": 77,
+        "races": 1164,
+        "results": 27568
+      },
+      "relationships": [
+        {
+          "relationship": "races.circuitId->circuits.circuitId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "races.year->seasons.year",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.raceId->races.raceId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.driverId->drivers.driverId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.constructorId->constructors.constructorId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.statusId->status.statusId",
+          "orphan_count": 0,
+          "sample": []
+        }
+      ],
+      "label": "full_1",
+      "source_stage_comparison": [
+        {
+          "table": "circuits",
+          "rows": 78,
+          "key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16"
+        },
+        {
+          "table": "constructors",
+          "rows": 214,
+          "key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227"
+        },
+        {
+          "table": "drivers",
+          "rows": 879,
+          "key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499"
+        },
+        {
+          "table": "status",
+          "rows": 141,
+          "key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130"
+        },
+        {
+          "table": "seasons",
+          "rows": 77,
+          "key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212"
+        },
+        {
+          "table": "races",
+          "rows": 1164,
+          "key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556"
+        },
+        {
+          "table": "results",
+          "rows": 27568,
+          "key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296"
+        }
+      ]
+    },
+    {
+      "counts": {
+        "circuits": 78,
+        "constructors": 214,
+        "drivers": 879,
+        "status": 141,
+        "seasons": 77,
+        "races": 1164,
+        "results": 27568
+      },
+      "relationships": [
+        {
+          "relationship": "races.circuitId->circuits.circuitId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "races.year->seasons.year",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.raceId->races.raceId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.driverId->drivers.driverId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.constructorId->constructors.constructorId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.statusId->status.statusId",
+          "orphan_count": 0,
+          "sample": []
+        }
+      ],
+      "label": "full_2",
+      "source_stage_comparison": [
+        {
+          "table": "circuits",
+          "rows": 78,
+          "key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16"
+        },
+        {
+          "table": "constructors",
+          "rows": 214,
+          "key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227"
+        },
+        {
+          "table": "drivers",
+          "rows": 879,
+          "key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499"
+        },
+        {
+          "table": "status",
+          "rows": 141,
+          "key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130"
+        },
+        {
+          "table": "seasons",
+          "rows": 77,
+          "key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212"
+        },
+        {
+          "table": "races",
+          "rows": 1164,
+          "key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556"
+        },
+        {
+          "table": "results",
+          "rows": 27568,
+          "key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296"
+        }
+      ]
+    },
+    {
+      "counts": {
+        "circuits": 78,
+        "constructors": 214,
+        "drivers": 879,
+        "status": 141,
+        "seasons": 77,
+        "races": 1164,
+        "results": 27568
+      },
+      "relationships": [
+        {
+          "relationship": "races.circuitId->circuits.circuitId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "races.year->seasons.year",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.raceId->races.raceId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.driverId->drivers.driverId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.constructorId->constructors.constructorId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.statusId->status.statusId",
+          "orphan_count": 0,
+          "sample": []
+        }
+      ],
+      "label": "incremental_and_rerun",
+      "source_stage_comparison": [
+        {
+          "table": "circuits",
+          "rows": 78,
+          "key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16"
+        },
+        {
+          "table": "constructors",
+          "rows": 214,
+          "key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227"
+        },
+        {
+          "table": "drivers",
+          "rows": 879,
+          "key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499"
+        },
+        {
+          "table": "status",
+          "rows": 141,
+          "key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130"
+        },
+        {
+          "table": "seasons",
+          "rows": 77,
+          "key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212"
+        },
+        {
+          "table": "races",
+          "rows": 1164,
+          "key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556"
+        },
+        {
+          "table": "results",
+          "rows": 27568,
+          "key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296"
+        }
+      ]
+    },
+    {
+      "counts": {
+        "circuits": 78,
+        "constructors": 214,
+        "drivers": 879,
+        "status": 141,
+        "seasons": 77,
+        "races": 1164,
+        "results": 27568
+      },
+      "relationships": [
+        {
+          "relationship": "races.circuitId->circuits.circuitId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "races.year->seasons.year",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.raceId->races.raceId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.driverId->drivers.driverId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.constructorId->constructors.constructorId",
+          "orphan_count": 0,
+          "sample": []
+        },
+        {
+          "relationship": "results.statusId->status.statusId",
+          "orphan_count": 0,
+          "sample": []
+        }
+      ],
+      "label": "final",
+      "source_stage_comparison": [
+        {
+          "table": "circuits",
+          "rows": 78,
+          "key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16"
+        },
+        {
+          "table": "constructors",
+          "rows": 214,
+          "key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227"
+        },
+        {
+          "table": "drivers",
+          "rows": 879,
+          "key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499"
+        },
+        {
+          "table": "status",
+          "rows": 141,
+          "key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130"
+        },
+        {
+          "table": "seasons",
+          "rows": 77,
+          "key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212"
+        },
+        {
+          "table": "races",
+          "rows": 1164,
+          "key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556"
+        },
+        {
+          "table": "results",
+          "rows": 27568,
+          "key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296"
+        }
+      ]
+    }
+  ],
+  "failure_checks": [
+    {
+      "kind": "mage_duplicate_key",
+      "run_id": "4A6A95D5-1CDA-4AEE-B95B-BB037CE530B3",
+      "stage_unchanged": true
+    },
+    {
+      "kind": "sql_write_rollback",
+      "audit": {
+        "run_id": "80203659-CD1F-4980-9735-E4C7A91957C4",
+        "run_status": "failed",
+        "rows_written": 0,
+        "error_message": "RuntimeError: ETL operation failed; check connection, DDL and runtime configuration"
+      },
+      "stage_unchanged": true
+    }
+  ],
+  "runtime": {
+    "python": "3.10.19",
+    "machine": "aarch64",
+    "mage": "0.9.79",
+    "sqlalchemy": "1.4.54",
+    "pyodbc": "5.1.0",
+    "odbc_drivers": [
+      "ODBC Driver 18 for SQL Server"
+    ]
+  },
+  "sqlserver": {
+    "version": "Microsoft SQL Server 2022 (RTM-CU27-GDR) (KB5126934) - 16.0.4305.5 (X64) \n\tOct  2 2026 17:28:11 \n\tCopyright (C) 2022 Microsoft Corporation\n\tDeveloper Edition (64-bit) on Linux (Ubuntu 22.04.5 LTS) <X64>",
+    "database_name": "F1_BI",
+    "login_name": "f1_loader"
+  },
+  "application_lock": {
+    "competing_session_blocked": true,
+    "released_after_run": true
+  },
+  "audit_statuses": [
+    {
+      "run_status": "failed",
+      "run_count": 2
+    },
+    {
+      "run_status": "success",
+      "run_count": 36
+    }
+  ],
+  "batch_states": [
+    {
+      "source_name": "circuits.csv",
+      "source_table": "circuits",
+      "batch_key": "live_9691c5d2_circuits_part1",
+      "batch_status": "success",
+      "source_row_count": 39,
+      "last_run_id": "BCE09363-B6B8-4F9E-888F-890BFEA109CD"
+    },
+    {
+      "source_name": "circuits.csv",
+      "source_table": "circuits",
+      "batch_key": "live_9691c5d2_circuits_part2",
+      "batch_status": "success",
+      "source_row_count": 39,
+      "last_run_id": "0515DBF8-222E-40DB-A021-3D959EDF4B9C"
+    },
+    {
+      "source_name": "constructors.csv",
+      "source_table": "constructors",
+      "batch_key": "live_9691c5d2_constructors_part1",
+      "batch_status": "success",
+      "source_row_count": 107,
+      "last_run_id": "E28F4EC9-69DD-4024-B7BE-5BC34900F8B8"
+    },
+    {
+      "source_name": "constructors.csv",
+      "source_table": "constructors",
+      "batch_key": "live_9691c5d2_constructors_part2",
+      "batch_status": "success",
+      "source_row_count": 107,
+      "last_run_id": "7E93A12A-01F4-4303-8E6F-6A4A417EA6F2"
+    },
+    {
+      "source_name": "drivers.csv",
+      "source_table": "drivers",
+      "batch_key": "live_9691c5d2_drivers_part1",
+      "batch_status": "success",
+      "source_row_count": 439,
+      "last_run_id": "90C984FF-AC70-4C94-9AE0-4B8747187916"
+    },
+    {
+      "source_name": "drivers.csv",
+      "source_table": "drivers",
+      "batch_key": "live_9691c5d2_drivers_part2",
+      "batch_status": "success",
+      "source_row_count": 440,
+      "last_run_id": "26E896B5-280F-4FF7-B18C-0219DF79E6B3"
+    },
+    {
+      "source_name": "races.csv",
+      "source_table": "races",
+      "batch_key": "live_9691c5d2_races_part1",
+      "batch_status": "success",
+      "source_row_count": 582,
+      "last_run_id": "CDAA8027-120C-4F21-B917-9DF641D406CD"
+    },
+    {
+      "source_name": "races.csv",
+      "source_table": "races",
+      "batch_key": "live_9691c5d2_races_part2",
+      "batch_status": "success",
+      "source_row_count": 582,
+      "last_run_id": "BF9EFBB0-11A8-4684-935C-1EAD73E5EA26"
+    },
+    {
+      "source_name": "results.csv",
+      "source_table": "results",
+      "batch_key": "live_9691c5d2_results_part1",
+      "batch_status": "success",
+      "source_row_count": 13784,
+      "last_run_id": "33632ECB-43FA-4804-A56A-C06E147A6CD5"
+    },
+    {
+      "source_name": "results.csv",
+      "source_table": "results",
+      "batch_key": "live_9691c5d2_results_part2",
+      "batch_status": "success",
+      "source_row_count": 13784,
+      "last_run_id": "1F978AFC-9B62-4CBB-8DCC-0FECCAF96017"
+    },
+    {
+      "source_name": "seasons.csv",
+      "source_table": "seasons",
+      "batch_key": "live_9691c5d2_seasons_part1",
+      "batch_status": "success",
+      "source_row_count": 38,
+      "last_run_id": "3B7D83AD-7B0A-4A4E-B93A-7742C851EB02"
+    },
+    {
+      "source_name": "seasons.csv",
+      "source_table": "seasons",
+      "batch_key": "live_9691c5d2_seasons_part2",
+      "batch_status": "success",
+      "source_row_count": 39,
+      "last_run_id": "63436949-B21D-4770-85FA-A3C0E00FEA0B"
+    },
+    {
+      "source_name": "status.csv",
+      "source_table": "status",
+      "batch_key": "live_9691c5d2_final_retry",
+      "batch_status": "success",
+      "source_row_count": 141,
+      "last_run_id": "BDBD2C93-872F-4D22-BEFA-5C887E7711E2"
+    }
+  ],
+  "null_blank_checks": {
+    "null_positions": 11074,
+    "blank_driver_rows": 14
+  },
+  "completed_at_utc": "2026-10-21T04:27:06.362434+00:00",
+  "mage_execution": {
+    "method": "Pipeline.execute_sync",
+    "run_tests": false,
+    "update_status": false,
+    "block_statuses_persisted": false
+  }
+}

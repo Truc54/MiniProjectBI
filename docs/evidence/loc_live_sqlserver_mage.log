@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/tmp/live_integration.py", line 90, in mage_run
+    pipeline.execute_sync(global_vars=variables, run_tests=False, update_status=False)
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/pipeline.py", line 826, in execute_sync
+    run_blocks_sync(
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/block/__init__.py", line 325, in run_blocks_sync
+    block.execute_sync(
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/block/__init__.py", line 1691, in execute_sync
+    return __execute()
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/block/__init__.py", line 1668, in __execute
+    raise err
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/block/__init__.py", line 1570, in __execute
+    output = self.execute_block(
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/block/__init__.py", line 1910, in execute_block
+    outputs = self._execute_block(
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/block/__init__.py", line 2073, in _execute_block
+    outputs = self.execute_block_function(
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/block/__init__.py", line 2169, in execute_block_function
+    output = block_function_updated(*input_vars, **global_vars)
+  File "<string>", line 10, in export_data_to_sqlserver
+  File "/home/src/project/f1_etl/sqlserver.py", line 194, in export_payload
+    raise EtlRunError(f'run_id={run_id}: {message}') from None
+f1_etl.sqlserver.EtlRunError: run_id=4a6a95d5-1cda-4aee-b95b-bb037ce530b3: status.csv: duplicate natural key 1; invalid rows=1

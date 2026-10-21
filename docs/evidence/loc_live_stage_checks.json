@@ -1,0 +1,49 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-10-21T04:27:19.166797+00:00",
+  "backend": "sqlserver",
+  "runs": [],
+  "stage": {
+    "counts": {
+      "circuits": 78,
+      "constructors": 214,
+      "drivers": 879,
+      "status": 141,
+      "seasons": 77,
+      "races": 1164,
+      "results": 27568
+    },
+    "relationships": [
+      {
+        "relationship": "races.circuitId->circuits.circuitId",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "races.year->seasons.year",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "results.raceId->races.raceId",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "results.driverId->drivers.driverId",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "results.constructorId->constructors.constructorId",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "results.statusId->status.statusId",
+        "orphan_count": 0,
+        "sample": []
+      }
+    ]
+  }
+}
