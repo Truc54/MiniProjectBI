@@ -1,4 +1,4 @@
-# Kế hoạch cá nhân - Phúc: Data source và profiling
+﻿# Kế hoạch cá nhân - Phúc: Data source và profiling
 
 **Tổng tải Phase 1: 25/100 điểm (25%).** Vai trò của Phúc là xác nhận chính xác nguồn dữ liệu và tạo contract dùng chung; Dũng, Lộc và Trực có thể bắt đầu từ schema Kaggle hiện có trong lúc profile hoàn thiện.
 
@@ -13,31 +13,31 @@
 
 ### P1. Provenance và phạm vi nguồn - 4 điểm
 
-- [ ] Ghi URL Kaggle, tên/maintainer, mô tả, license theo `dataset/README.md`, ngày profile local và phạm vi dữ liệu.
-- [ ] Ghi dataset có 17 CSV và ghi nhận README nguồn mô tả phần bổ sung 2025/2026 qua Hungarian Grand Prix ngày 26/07/2026.
-- [ ] Chốt bảy file lõi `results`, `races`, `drivers`, `constructors`, `circuits`, `status`, `seasons` cho Phase 1; ghi rõ mười bảng phụ và lý do chưa thêm vào core.
+- [x] Ghi URL Kaggle, tên/maintainer, mô tả, license theo `dataset/README.md`, ngày profile local và phạm vi dữ liệu.
+- [x] Ghi dataset có 17 CSV và ghi nhận README nguồn mô tả phần bổ sung 2025/2026 qua Hungarian Grand Prix ngày 26/07/2026.
+- [x] Chốt bảy file lõi `results`, `races`, `drivers`, `constructors`, `circuits`, `status`, `seasons` cho Phase 1; ghi rõ mười bảng phụ và lý do chưa thêm vào core.
 - [ ] Trao đổi với nhóm về câu hỏi F1 cần trả lời để phạm vi Stage không phình to.
 
 **Hoàn tất khi:** URL/license/snapshot/selected sources có trong profile; người khác biết vì sao chọn core subset.
 
 ### P2. Profiling toàn bộ 17 CSV - 9 điểm
 
-- [ ] Đọc `dataset/SCHEMA.md`; ghi cho từng file header, column count, row count, kiểu dữ liệu dự kiến, khóa nguồn/khóa ghép ứng viên, khoảng năm và quan hệ.
-- [ ] Đếm literal `\N` theo cột và empty string riêng; xác định cột NULL là expected/optional.
-- [ ] Kiểm tra sơ bộ uniqueness/non-null của key; kiểm tra quan hệ core `results -> races/drivers/constructors/status`, `races -> circuits/seasons`.
-- [ ] Ghi rõ `results.position` thiếu ở nhiều kết quả không phân loại; `fastestLapSpeed` thiếu trong phần mở rộng 2025/2026; Q2/Q3 và lịch session có NULL theo quy tắc nguồn.
+- [x] Đọc `dataset/SCHEMA.md`; ghi cho từng file header, column count, row count, kiểu dữ liệu dự kiến, khóa nguồn/khóa ghép ứng viên, khoảng năm và quan hệ.
+- [x] Đếm literal `\N` theo cột và empty string riêng; xác định cột NULL là expected/optional.
+- [x] Kiểm tra sơ bộ uniqueness/non-null của key; kiểm tra quan hệ core `results -> races/drivers/constructors/status`, `races -> circuits/seasons`.
+- [x] Ghi rõ `results.position` thiếu ở nhiều kết quả không phân loại; `fastestLapSpeed` thiếu trong phần mở rộng 2025/2026; Q2/Q3 và lịch session có NULL theo quy tắc nguồn.
 - [ ] Đánh dấu các giới hạn coverage của `practice_results`, `weather`, `tire_stints` (2025/2026-only), và quy mô `lap_times`.
-- [ ] Lưu lệnh/script profiling nếu nhóm tạo; báo cáo số dòng theo snapshot, không sửa CSV gốc.
+- [x] Lưu lệnh/script profiling nếu nhóm tạo; báo cáo số dòng theo snapshot, không sửa CSV gốc.
 
 **Hoàn tất khi:** profile đủ 17 file; null-marker và key caveats được diễn giải; row count có thể tái tạo.
 
 ### P3. Mapping và source contract - 7 điểm
 
-- [ ] Cập nhật mapping bảy bảng lõi, target names trong `stg`, grain, natural key và FK.
+- [x] Cập nhật mapping bảy bảng lõi, target names trong `stg`, grain, natural key và FK.
 - [ ] Đưa các bảng phụ vào bảng tham khảo với candidate key cần xác nhận; đánh dấu grain riêng để không join làm nhân bản fact.
 - [ ] Đánh dấu trường nguồn được giữ nguyên; ghi rule `\N` -> SQL NULL, không đổi NULL/blank/0.
-- [ ] Gửi bảng header/key cho Dũng làm DDL và Lộc làm Mage validation; sửa khác biệt dựa trên file thực tế.
-- [ ] Khóa version source contract ngày 21/10; thay đổi sau mốc này phải báo cả nhóm và ghi change note.
+- [x] Gửi bảng header/key cho Dũng làm DDL và Lộc làm Mage validation; sửa khác biệt dựa trên file thực tế.
+- [x] Khóa version source contract ngày 21/10; thay đổi sau mốc này phải báo cả nhóm và ghi change note.
 
 **Hoàn tất khi:** các thành viên map được file vào target, key, NULL handling và quan hệ mà không phải đoán.
 
@@ -76,3 +76,4 @@ Các việc sau thuộc Phase 2/3, không tính vào 25 điểm tải Phase 1:
 - **Phase 2:** cung cấp phần dataset/provenance, business context, câu hỏi và KPI narrative cho report PDF; cùng Trực chọn KPI và filter cho trang Overview; xác minh các câu kết luận trong report đúng với số đo trên dashboard.
 - **Phase 3:** chuẩn bị các ví dụ tóm tắt KPI có baseline/thời kỳ và evidence; review câu trả lời AI với tư cách analyst, đánh dấu câu không được dữ liệu hỗ trợ.
 - **Final handoff:** xác nhận Kaggle URL, license, snapshot/version, limitations và source tables nằm trong deployment guide/video; cập nhật profile nếu nhóm đổi snapshot.
+
