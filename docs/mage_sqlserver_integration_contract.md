@@ -41,15 +41,15 @@ Mỗi bảng trong `stg` đều có Primary Key Clustered trên natural key gố
 | `stg.races` | `races.csv` | `raceId` | `INT` |
 | `stg.results` | `results.csv` | `resultId` | `INT` |
 
-### 3.2. Cột Metadata Lineage (Bắt buộc)
-Trước khi ghi vào SQL Server, DataFrame cần được chuẩn hóa có 4 cột kỹ thuật sau:
+### 3.2. Cột Metadata Lineage (Bắt buộc theo Contract Section 5)
+Trước khi ghi vào SQL Server, DataFrame được exporter chuẩn hóa có 4 cột kỹ thuật sau:
 ```python
-df['_source_file'] = file_name          # string (VD: 'results.csv')
-df['_batch_key'] = batch_key            # string (VD: 'full_20261020')
-df['_load_mode'] = load_mode            # string: 'full' hoặc 'incremental'
-df['_ingested_at_utc'] = pd.Timestamp.utcnow()  # UTC datetime
+df['_src_file'] = file_name              # string (VD: 'results.csv')
+df['_batch_key'] = batch_key            # string (VD: 'results_full_20261022')
+df['_loaded_at_utc'] = pd.Timestamp.utcnow()  # UTC datetime
+df['_load_mode'] = load_mode.upper()    # string: 'FULL' hoặc 'INCREMENTAL'
 ```
-*(Nếu trong `load_f1_csv.py` đã tạo cột `source_file`, exporter sẽ tự động map thành `_source_file`)*.
+*(Nếu trong `load_f1_csv.py` đã tạo cột `source_file`, exporter sẽ tự động map thành `_src_file`)*.
 
 ---
 

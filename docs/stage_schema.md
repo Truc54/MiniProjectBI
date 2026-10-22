@@ -26,10 +26,10 @@ Cơ sở dữ liệu dự án trên SQL Server (`F1_BI`) được phân tách th
 
 | Cột kỹ thuật | Kiểu dữ liệu | Nullable | Mô tả & Quy ước |
 |---|---|:---:|---|
-| `_source_file` | `NVARCHAR(260)` | YES | Tên file nguồn (ví dụ: `'results.csv'`) |
-| `_batch_key` | `NVARCHAR(100)` | YES | Mã định danh batch (ví dụ: `'full_20261021'`, `'year_2024'`) |
-| `_load_mode` | `VARCHAR(20)` | YES | Chế độ nạp: `'full'` hoặc `'incremental'` |
-| `_ingested_at_utc` | `DATETIME2(3)` | NO | Mốc thời gian nạp vào SQL Server (mặc định `SYSUTCDATETIME()`) |
+| `_src_file` | `NVARCHAR(260)` | NO | Tên file nguồn (ví dụ: `'results.csv'`) |
+| `_batch_key` | `NVARCHAR(100)` | NO | Mã định danh batch (ví dụ: `'results_full_20261022'`) |
+| `_loaded_at_utc` | `DATETIME2(3)` | NO | Mốc thời gian nạp vào SQL Server (mặc định `SYSUTCDATETIME()`) |
+| `_load_mode` | `VARCHAR(20)` | NO | Chế độ nạp: `'FULL'` hoặc `'INCREMENTAL'` |
 
 ### 2.2. Xử lý giá trị thiếu (Missing Values)
 * Ký hiệu `\N` từ file CSV được Mage chuyển thành `NULL` của SQL Server.
@@ -47,75 +47,75 @@ Grain: Một dòng cho mỗi trường đua.
 * `name` (`NVARCHAR(200)`, NOT NULL)
 * `location` (`NVARCHAR(100)`, NULL)
 * `country` (`NVARCHAR(100)`, NULL)
-* `lat` (`DECIMAL(9, 6)`, NULL) - Vĩ độ địa lý
-* `lng` (`DECIMAL(9, 6)`, NULL) - Kinh độ địa lý
-* `alt` (`INT`, NULL) - Độ cao so với mực nước biển (mét)
-* `url` (`NVARCHAR(500)`, NULL)
-* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
+* `lat` (`FLOAT`, NOT NULL) - Vĩ độ địa lý
+* `lng` (`FLOAT`, NOT NULL) - Kinh độ địa lý
+* `alt` (`INT`, NOT NULL) - Độ cao so với mực nước biển (mét, 0 là placeholder hợp lệ)
+* `url` (`NVARCHAR(500)`, NOT NULL)
+* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
 
 ### 3.2. `stg.constructors` (constructors.csv - 214 dòng)
 Grain: Một dòng cho mỗi đội đua (nhà sản xuất xe).
 * `constructorId` (`INT`, NOT NULL) - **Primary Key**
 * `constructorRef` (`NVARCHAR(100)`, NOT NULL)
-* `name` (`NVARCHAR(200)`, NOT NULL)
-* `nationality` (`NVARCHAR(100)`, NULL)
-* `url` (`NVARCHAR(500)`, NULL)
-* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
+* `name` (`NVARCHAR(255)`, NOT NULL)
+* `nationality` (`NVARCHAR(100)`, NOT NULL)
+* `url` (`NVARCHAR(500)`, NOT NULL)
+* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
 
 ### 3.3. `stg.drivers` (drivers.csv - 879 dòng)
 Grain: Một dòng cho mỗi tay đua F1.
 * `driverId` (`INT`, NOT NULL) - **Primary Key**
 * `driverRef` (`NVARCHAR(100)`, NOT NULL)
 * `number` (`INT`, NULL) - Số xe cố định (816 dòng `NULL` ở các thời kỳ cũ)
-* `code` (`NVARCHAR(10)`, NULL) - Mã 3 chữ cái viết tắt (ví dụ `'HAM'`, `'VER'`; 771 dòng `NULL`)
+* `code` (`NCHAR(3)`, NULL) - Mã 3 chữ cái viết tắt (ví dụ `'HAM'`, `'VER'`; 771 dòng `NULL`)
 * `forename` (`NVARCHAR(100)`, NOT NULL)
 * `surname` (`NVARCHAR(100)`, NOT NULL)
 * `dob` (`DATE`, NULL) - Ngày sinh (14 dòng cổ điển `NULL`)
-* `nationality` (`NVARCHAR(100)`, NULL)
-* `url` (`NVARCHAR(500)`, NULL)
-* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
+* `nationality` (`NVARCHAR(100)`, NULL) - Chuỗi rỗng `""` -> NULL (14 dòng)
+* `url` (`NVARCHAR(500)`, NULL) - Chuỗi rỗng `""` -> NULL (14 dòng)
+* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
 
 ### 3.4. `stg.status` (status.csv - 141 dòng)
 Grain: Một dòng cho mỗi mã trạng thái kết thúc chặng đua.
 * `statusId` (`INT`, NOT NULL) - **Primary Key**
-* `status` (`NVARCHAR(100)`, NOT NULL) - Mô tả (ví dụ: Finished, Disqualified, Collision, Engine)
-* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
+* `status` (`NVARCHAR(255)`, NOT NULL) - Mô tả (ví dụ: Finished, Disqualified, Collision, Engine)
+* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
 
 ### 3.5. `stg.seasons` (seasons.csv - 77 dòng)
 Grain: Một dòng cho mỗi mùa giải từ 1950 đến 2026.
-* `year` (`INT`, NOT NULL) - **Primary Key**
-* `url` (`NVARCHAR(500)`, NULL)
-* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
+* `year` (`SMALLINT`, NOT NULL) - **Primary Key**
+* `url` (`NVARCHAR(500)`, NOT NULL)
+* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
 
 ### 3.6. `stg.races` (races.csv - 1,164 dòng)
 Grain: Một dòng cho mỗi sự kiện Grand Prix.
 * `raceId` (`INT`, NOT NULL) - **Primary Key**
-* `year` (`INT`, NOT NULL) - Khóa tham chiếu `seasons.year`
-* `round` (`INT`, NOT NULL) - Chặng đua thứ mấy trong mùa giải
+* `year` (`SMALLINT`, NOT NULL) - Khóa tham chiếu `seasons.year`
+* `round` (`TINYINT`, NOT NULL) - Chặng đua thứ mấy trong mùa giải
 * `circuitId` (`INT`, NOT NULL) - Khóa tham chiếu `circuits.circuitId`
-* `name` (`NVARCHAR(200)`, NOT NULL)
+* `name` (`NVARCHAR(255)`, NOT NULL)
 * `date` (`DATE`, NOT NULL) - Ngày diễn ra chặng đua chính thức
-* `time` (`TIME(0)`, NULL) - Giờ xuất phát (UTC)
-* `url` (`NVARCHAR(500)`, NULL)
+* `time` (`TIME(0)`, NULL) - Giờ xuất phát (UTC, 731 dòng race cổ là NULL)
+* `url` (`NVARCHAR(500)`, NOT NULL)
 * `fp1_date` (`DATE`, NULL), `fp1_time` (`TIME(0)`, NULL)
 * `fp2_date` (`DATE`, NULL), `fp2_time` (`TIME(0)`, NULL)
 * `fp3_date` (`DATE`, NULL), `fp3_time` (`TIME(0)`, NULL)
 * `quali_date` (`DATE`, NULL), `quali_time` (`TIME(0)`, NULL)
 * `sprint_date` (`DATE`, NULL), `sprint_time` (`TIME(0)`, NULL)
-* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
+* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
 * **Indexes:** `IX_stg_races_year`, `IX_stg_races_circuitId`
 
 ### 3.7. `stg.results` (results.csv - 27,568 dòng)
-Grain: Kết quả phân hạng của 1 tay đua trong 1 chặng đua (bảng sự kiện trung tâm).
+Grain: Kết quả phân hạng của 1 tay đua trong 1 chặng đua (bảng fact trung tâm).
 * `resultId` (`INT`, NOT NULL) - **Primary Key**
 * `raceId` (`INT`, NOT NULL) - Tham chiếu `races.raceId`
 * `driverId` (`INT`, NOT NULL) - Tham chiếu `drivers.driverId`
 * `constructorId` (`INT`, NOT NULL) - Tham chiếu `constructors.constructorId`
-* `number` (`INT`, NULL) - Số xe trong chặng
+* `number` (`INT`, NULL) - Số xe trong chặng (6 dòng NULL)
 * `grid` (`INT`, NOT NULL) - Vị trí xuất phát
-* `position` (`INT`, NULL) - Vị trí về đích chính thức (NULL nếu bỏ cuộc DNF/DSQ/DNS)
+* `position` (`INT`, NULL) - Vị trí về đích chính thức (11,074 dòng ~ 40.2% NULL hợp lệ do DNF/DSQ/DNS)
 * `positionText` (`NVARCHAR(10)`, NOT NULL) - Ký tự hiển thị ('1', '2', 'R', 'D', 'W')
-* `positionOrder` (`INT`, NOT NULL) - Thứ tự sắp xếp vị trí
+* `positionOrder` (`INT`, NOT NULL) - Thứ tự sắp xếp vị trí (luôn có giá trị)
 * `points` (`DECIMAL(6, 2)`, NOT NULL) - Điểm số đạt được
 * `laps` (`INT`, NOT NULL) - Số vòng đua hoàn thành
 * `time` (`NVARCHAR(50)`, NULL) - Thời gian về đích hoặc khoảng cách (+5.478s)
@@ -123,9 +123,9 @@ Grain: Kết quả phân hạng của 1 tay đua trong 1 chặng đua (bảng s�
 * `fastestLap` (`INT`, NULL) - Vòng đua đạt tốc độ nhanh nhất
 * `rank` (`INT`, NULL) - Xếp hạng vòng chạy nhanh nhất trong chặng
 * `fastestLapTime` (`NVARCHAR(50)`, NULL) - Thời gian vòng nhanh nhất (ví dụ: '1:27.452')
-* `fastestLapSpeed` (`DECIMAL(7, 3)`, NULL) - Vận tốc vòng nhanh nhất (km/h)
+* `fastestLapSpeed` (`DECIMAL(8, 3)`, NULL) - Vận tốc vòng nhanh nhất (km/h, 19,316 dòng ~ 70.1% NULL)
 * `statusId` (`INT`, NOT NULL) - Tham chiếu `status.statusId`
-* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
+* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
 * **Indexes:** `IX_stg_results_raceId`, `IX_stg_results_driverId`, `IX_stg_results_constructorId`, `IX_stg_results_statusId`
 
 ---

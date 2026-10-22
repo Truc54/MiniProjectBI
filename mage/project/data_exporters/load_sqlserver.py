@@ -75,17 +75,21 @@ def export_data_to_sqlserver(df: pd.DataFrame, **kwargs):
     run_id = str(uuid.uuid4())
     pipeline_name = kwargs.get('pipeline_uuid', 'f1_source_to_stage')
 
-    # Prepare DataFrame and normalize metadata columns
+    # Prepare DataFrame and normalize metadata columns per Contract Section 5
     export_df = df.copy()
-    if 'source_file' in export_df.columns:
-        export_df['_source_file'] = export_df['source_file']
-        export_df = export_df.drop(columns=['source_file'])
-    elif '_source_file' not in export_df.columns:
-        export_df['_source_file'] = file_name
 
+    # Convert empty strings and literal \N to None (SQL NULL) per Contract Section 1
+    export_df = export_df.replace({'': None, r'\N': None})
+
+    # Drop legacy columns if present
+    for legacy_col in ['source_file', '_source_file', '_ingested_at_utc']:
+        if legacy_col in export_df.columns:
+            export_df = export_df.drop(columns=[legacy_col])
+
+    export_df['_src_file'] = file_name
     export_df['_batch_key'] = batch_key
-    export_df['_load_mode'] = load_mode
-    export_df['_ingested_at_utc'] = now_utc
+    export_df['_loaded_at_utc'] = now_utc
+    export_df['_load_mode'] = load_mode.upper()
 
     engine = create_sqlserver_engine()
 

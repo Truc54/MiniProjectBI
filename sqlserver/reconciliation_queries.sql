@@ -2,164 +2,110 @@
 -- Script: reconciliation_queries.sql
 -- Description: Bo truy van SQL doi soat chat luong du lieu Staging (Phase 1)
 -- Phuc vu nghiem thu, bao cao Seminar 1 va Evidence cho Truc
+-- Phien ban: 2.0 (Dong bo hoan toan voi Section 7 cua Source-to-Stage Mapping Contract)
 -- ============================================================================
 
 USE F1_BI;
 GO
 
 PRINT N'====================================================================';
-PRINT N'1. DOI SOAT SO DONG (ROW COUNTS) TUNG BANG STAGING VS CSV GOC';
+PRINT N'7.1 DOI SOAT SO DONG (ROW COUNTS) TUNG BANG STAGING VS BASELINE';
+PRINT N'Expected: 78, 214, 879, 141, 77, 1164, 27568';
 PRINT N'====================================================================';
 
-SELECT 'stg.circuits' AS TableName, COUNT(*) AS StgRowCount, 78 AS ExpectedBaseline,
-       CASE WHEN COUNT(*) = 78 THEN N'MATCH' ELSE N'DIFF' END AS [Status] FROM stg.circuits
-UNION ALL
-SELECT 'stg.constructors', COUNT(*), 214,
-       CASE WHEN COUNT(*) = 214 THEN N'MATCH' ELSE N'DIFF' END FROM stg.constructors
-UNION ALL
-SELECT 'stg.drivers', COUNT(*), 879,
-       CASE WHEN COUNT(*) = 879 THEN N'MATCH' ELSE N'DIFF' END FROM stg.drivers
-UNION ALL
-SELECT 'stg.status', COUNT(*), 141,
-       CASE WHEN COUNT(*) = 141 THEN N'MATCH' ELSE N'DIFF' END FROM stg.status
-UNION ALL
-SELECT 'stg.seasons', COUNT(*), 77,
-       CASE WHEN COUNT(*) = 77 THEN N'MATCH' ELSE N'DIFF' END FROM stg.seasons
-UNION ALL
-SELECT 'stg.races', COUNT(*), 1164,
-       CASE WHEN COUNT(*) = 1164 THEN N'MATCH' ELSE N'DIFF' END FROM stg.races
-UNION ALL
-SELECT 'stg.results', COUNT(*), 27568,
+SELECT 'stg.circuits'      AS tbl, COUNT(*) AS rows_count, 78 AS expected,
+       CASE WHEN COUNT(*) = 78 THEN N'MATCH' ELSE N'DIFF' END AS [status] FROM stg.circuits      UNION ALL
+SELECT 'stg.constructors'  AS tbl, COUNT(*) AS rows_count, 214,
+       CASE WHEN COUNT(*) = 214 THEN N'MATCH' ELSE N'DIFF' END FROM stg.constructors  UNION ALL
+SELECT 'stg.drivers'       AS tbl, COUNT(*) AS rows_count, 879,
+       CASE WHEN COUNT(*) = 879 THEN N'MATCH' ELSE N'DIFF' END FROM stg.drivers       UNION ALL
+SELECT 'stg.status'        AS tbl, COUNT(*) AS rows_count, 141,
+       CASE WHEN COUNT(*) = 141 THEN N'MATCH' ELSE N'DIFF' END FROM stg.status        UNION ALL
+SELECT 'stg.seasons'       AS tbl, COUNT(*) AS rows_count, 77,
+       CASE WHEN COUNT(*) = 77 THEN N'MATCH' ELSE N'DIFF' END FROM stg.seasons       UNION ALL
+SELECT 'stg.races'         AS tbl, COUNT(*) AS rows_count, 1164,
+       CASE WHEN COUNT(*) = 1164 THEN N'MATCH' ELSE N'DIFF' END FROM stg.races         UNION ALL
+SELECT 'stg.results'       AS tbl, COUNT(*) AS rows_count, 27568,
        CASE WHEN COUNT(*) = 27568 THEN N'MATCH' ELSE N'DIFF' END FROM stg.results;
 GO
 
 PRINT N'====================================================================';
-PRINT N'2. KIEM TRA KHOA CHINH: NULL HOAC TRUNG LAP (DUPLICATES)';
-PRINT N'Ket qua mong muon: Moi bang co NullCount = 0 va DuplicateKeyCount = 0';
+PRINT N'7.2 KIEM TRA KHOA CHINH: NULL HOAC TRUNG LAP (PK NULL & DUP CHECK)';
+PRINT N'Expected: Tat ca null_pk = 0, dup_pk = 0';
 PRINT N'====================================================================';
 
--- circuits
-SELECT 'stg.circuits' AS TableName,
-       SUM(CASE WHEN circuitId IS NULL THEN 1 ELSE 0 END) AS NullCount,
-       COUNT(*) - COUNT(DISTINCT circuitId) AS DuplicateKeyCount
-FROM stg.circuits
-UNION ALL
--- constructors
-SELECT 'stg.constructors',
-       SUM(CASE WHEN constructorId IS NULL THEN 1 ELSE 0 END),
-       COUNT(*) - COUNT(DISTINCT constructorId)
-FROM stg.constructors
-UNION ALL
--- drivers
-SELECT 'stg.drivers',
-       SUM(CASE WHEN driverId IS NULL THEN 1 ELSE 0 END),
-       COUNT(*) - COUNT(DISTINCT driverId)
-FROM stg.drivers
-UNION ALL
--- status
-SELECT 'stg.status',
-       SUM(CASE WHEN statusId IS NULL THEN 1 ELSE 0 END),
-       COUNT(*) - COUNT(DISTINCT statusId)
-FROM stg.status
-UNION ALL
--- seasons
-SELECT 'stg.seasons',
-       SUM(CASE WHEN [year] IS NULL THEN 1 ELSE 0 END),
-       COUNT(*) - COUNT(DISTINCT [year])
-FROM stg.seasons
-UNION ALL
--- races
-SELECT 'stg.races',
-       SUM(CASE WHEN raceId IS NULL THEN 1 ELSE 0 END),
-       COUNT(*) - COUNT(DISTINCT raceId)
-FROM stg.races
-UNION ALL
--- results
-SELECT 'stg.results',
-       SUM(CASE WHEN resultId IS NULL THEN 1 ELSE 0 END),
-       COUNT(*) - COUNT(DISTINCT resultId)
+SELECT 'circuits'     AS tbl, SUM(CASE WHEN circuitId     IS NULL THEN 1 ELSE 0 END) AS null_pk, COUNT(*) - COUNT(DISTINCT circuitId)     AS dup_pk FROM stg.circuits     UNION ALL
+SELECT 'constructors' AS tbl, SUM(CASE WHEN constructorId IS NULL THEN 1 ELSE 0 END), COUNT(*) - COUNT(DISTINCT constructorId) FROM stg.constructors UNION ALL
+SELECT 'drivers'      AS tbl, SUM(CASE WHEN driverId      IS NULL THEN 1 ELSE 0 END), COUNT(*) - COUNT(DISTINCT driverId)      FROM stg.drivers      UNION ALL
+SELECT 'status'       AS tbl, SUM(CASE WHEN statusId      IS NULL THEN 1 ELSE 0 END), COUNT(*) - COUNT(DISTINCT statusId)      FROM stg.status       UNION ALL
+SELECT 'seasons'      AS tbl, SUM(CASE WHEN [year]        IS NULL THEN 1 ELSE 0 END), COUNT(*) - COUNT(DISTINCT [year])        FROM stg.seasons      UNION ALL
+SELECT 'races'        AS tbl, SUM(CASE WHEN raceId        IS NULL THEN 1 ELSE 0 END), COUNT(*) - COUNT(DISTINCT raceId)        FROM stg.races        UNION ALL
+SELECT 'results'      AS tbl, SUM(CASE WHEN resultId      IS NULL THEN 1 ELSE 0 END), COUNT(*) - COUNT(DISTINCT resultId)      FROM stg.results;
+GO
+
+PRINT N'====================================================================';
+PRINT N'7.3 KIEM TRA KHOA NGOAI MOI COI (FK ORPHAN CHECKS)';
+PRINT N'Expected: Tat ca orphans = 0';
+PRINT N'====================================================================';
+
+SELECT 'results->races'        AS fk, COUNT(*) AS orphans FROM stg.results        r WHERE NOT EXISTS (SELECT 1 FROM stg.races        p WHERE p.raceId        = r.raceId)        UNION ALL
+SELECT 'results->drivers'      AS fk, COUNT(*) AS orphans FROM stg.results        r WHERE NOT EXISTS (SELECT 1 FROM stg.drivers      p WHERE p.driverId      = r.driverId)      UNION ALL
+SELECT 'results->constructors' AS fk, COUNT(*) AS orphans FROM stg.results        r WHERE NOT EXISTS (SELECT 1 FROM stg.constructors p WHERE p.constructorId = r.constructorId) UNION ALL
+SELECT 'results->status'       AS fk, COUNT(*) AS orphans FROM stg.results        r WHERE NOT EXISTS (SELECT 1 FROM stg.status       p WHERE p.statusId      = r.statusId)       UNION ALL
+SELECT 'races->circuits'       AS fk, COUNT(*) AS orphans FROM stg.races          r WHERE NOT EXISTS (SELECT 1 FROM stg.circuits     p WHERE p.circuitId     = r.circuitId)      UNION ALL
+SELECT 'races->seasons'        AS fk, COUNT(*) AS orphans FROM stg.races          r WHERE NOT EXISTS (SELECT 1 FROM stg.seasons      p WHERE p.[year]        = r.[year]);
+GO
+
+PRINT N'====================================================================';
+PRINT N'7.4 RESULTS.POSITION NULL RATE (SO VOI SOURCE: ~40.2%)';
+PRINT N'Expected: ~11,074 NULL (~40.2%) - DNF / unclassified finishes';
+PRINT N'====================================================================';
+
+SELECT
+    COUNT(*)                                              AS total_rows,
+    SUM(CASE WHEN position IS NULL THEN 1 ELSE 0 END)    AS position_null,
+    CAST(100.0 * SUM(CASE WHEN position IS NULL THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5,1)) AS pct_null
 FROM stg.results;
 GO
 
 PRINT N'====================================================================';
-PRINT N'3. KIEM TRA KHOA NGOAI MOI COI (ORPHAN FOREIGN KEY CHECKS)';
-PRINT N'Ket qua mong muon: Tat ca cac truy van tra ve 0 dong orphan';
+PRINT N'7.5 RESULTS.FASTESTLAPSPEED NULL RATE (SO VOI SOURCE: ~70.1%)';
+PRINT N'Expected: ~19,316 NULL (~70.1%) - Source limitation';
 PRINT N'====================================================================';
 
--- Orphan check: races.circuitId -> circuits.circuitId
-SELECT 'races -> circuits' AS Relationship, COUNT(*) AS OrphanCount
-FROM stg.races r
-LEFT JOIN stg.circuits c ON r.circuitId = c.circuitId
-WHERE c.circuitId IS NULL
-UNION ALL
--- Orphan check: races.year -> seasons.year
-SELECT 'races -> seasons', COUNT(*)
-FROM stg.races r
-LEFT JOIN stg.seasons s ON r.[year] = s.[year]
-WHERE s.[year] IS NULL
-UNION ALL
--- Orphan check: results.raceId -> races.raceId
-SELECT 'results -> races', COUNT(*)
-FROM stg.results res
-LEFT JOIN stg.races r ON res.raceId = r.raceId
-WHERE r.raceId IS NULL
-UNION ALL
--- Orphan check: results.driverId -> drivers.driverId
-SELECT 'results -> drivers', COUNT(*)
-FROM stg.results res
-LEFT JOIN stg.drivers d ON res.driverId = d.driverId
-WHERE d.driverId IS NULL
-UNION ALL
--- Orphan check: results.constructorId -> constructors.constructorId
-SELECT 'results -> constructors', COUNT(*)
-FROM stg.results res
-LEFT JOIN stg.constructors c ON res.constructorId = c.constructorId
-WHERE c.constructorId IS NULL
-UNION ALL
--- Orphan check: results.statusId -> status.statusId
-SELECT 'results -> status', COUNT(*)
-FROM stg.results res
-LEFT JOIN stg.status st ON res.statusId = st.statusId
-WHERE st.statusId IS NULL;
+SELECT
+    COUNT(*)                                              AS total_rows,
+    SUM(CASE WHEN fastestLapSpeed IS NULL THEN 1 ELSE 0 END) AS fls_null,
+    CAST(100.0 * SUM(CASE WHEN fastestLapSpeed IS NULL THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5,1)) AS pct_null
+FROM stg.results;
 GO
 
 PRINT N'====================================================================';
-PRINT N'4. XAC MINH XU LY NULL HOP LE (KHONG EP 0 HOAC MAT GIA TRI THIEU)';
+PRINT N'7.6 KIEM TRA \N KHONG CON TON TAI DANG STRING TRONG STAGE';
+PRINT N'Expected: 0 rows';
 PRINT N'====================================================================';
 
-SELECT 'results.position (DNF/unclassified)' AS FieldCheck,
-       COUNT(*) AS TotalRows,
-       SUM(CASE WHEN position IS NULL THEN 1 ELSE 0 END) AS NullCount,
-       SUM(CASE WHEN position = 0 THEN 1 ELSE 0 END) AS ZeroCount
-FROM stg.results
+SELECT 'results.positionText' AS check_col, COUNT(*) AS invalid_sentinel_count
+FROM stg.results WHERE positionText = N'\N'
 UNION ALL
-SELECT 'drivers.number (historical)',
-       COUNT(*),
-       SUM(CASE WHEN number IS NULL THEN 1 ELSE 0 END),
-       SUM(CASE WHEN number = 0 THEN 1 ELSE 0 END)
-FROM stg.drivers
-UNION ALL
-SELECT 'races.time (early races)',
-       COUNT(*),
-       SUM(CASE WHEN [time] IS NULL THEN 1 ELSE 0 END),
-       0
-FROM stg.races;
+SELECT 'drivers.code', COUNT(*)
+FROM stg.drivers WHERE code = N'\N';
 GO
 
 PRINT N'====================================================================';
-PRINT N'5. KIEM TRA LOG VA TRANG THAI BATCH (CTL TABLES)';
+PRINT N'7.7 KIEM TRA LOG BATCH VA RUN (CTL TABLES)';
 PRINT N'====================================================================';
 
--- Danh sach cac run gan nhat
+-- 1. Trang thai tung batch (ctl.etl_batch_state)
+SELECT source_name, source_table, batch_key, batch_status, source_row_count, loaded_at_utc
+FROM ctl.etl_batch_state
+ORDER BY loaded_at_utc DESC;
+
+-- 2. Lich su cac run gan nhat (ctl.etl_run_log)
 SELECT TOP 10
     run_id, pipeline_name, source_file, target_table, load_mode,
     batch_key, run_status, rows_read, rows_written, rows_rejected,
     started_at_utc, completed_at_utc, error_message
 FROM ctl.etl_run_log
 ORDER BY started_at_utc DESC;
-
--- Danh sach batch da nap va trang thai
-SELECT source_name, source_table, batch_key, source_row_count, batch_status, loaded_at_utc
-FROM ctl.etl_batch_state
-ORDER BY loaded_at_utc DESC;
 GO
