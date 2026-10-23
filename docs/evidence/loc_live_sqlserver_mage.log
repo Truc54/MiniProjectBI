@@ -1,5 +1,5 @@
 Traceback (most recent call last):
-  File "/tmp/live_integration.py", line 90, in mage_run
+  File "/tmp/live_integration.py", line 92, in mage_run
     pipeline.execute_sync(global_vars=variables, run_tests=False, update_status=False)
   File "/usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/pipeline.py", line 826, in execute_sync
     run_blocks_sync(
@@ -20,4 +20,4 @@ Traceback (most recent call last):
   File "<string>", line 10, in export_data_to_sqlserver
   File "/home/src/project/f1_etl/sqlserver.py", line 194, in export_payload
     raise EtlRunError(f'run_id={run_id}: {message}') from None
-f1_etl.sqlserver.EtlRunError: run_id=4a6a95d5-1cda-4aee-b95b-bb037ce530b3: status.csv: duplicate natural key 1; invalid rows=1
+f1_etl.sqlserver.EtlRunError: run_id=374ebb96-d1b6-4fe5-acc9-37c218e9495e: status.csv: duplicate natural key 1; invalid rows=1

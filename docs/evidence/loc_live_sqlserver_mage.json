@@ -1,8 +1,14 @@
 {
   "status": "success",
   "backend": "sqlserver_and_mage",
-  "timestamp_utc": "2026-10-21T04:26:44.402584+00:00",
-  "dung_commit": "5b7113f64f81b670830f3975bf038dedf58f7b9e",
+  "timestamp_utc": "2026-10-23T16:42:41.237641+00:00",
+  "dung_commit": "84081c0",
+  "mage_execution": {
+    "method": "Pipeline.execute_sync",
+    "run_tests": false,
+    "update_status": false,
+    "block_statuses_persisted": false
+  },
   "runs": [
     {
       "variables": {
@@ -11,7 +17,7 @@
         "target_table": "circuits",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full1_circuits",
+        "batch_key": "live_903bbf6e_full1_circuits",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -19,7 +25,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "9A7031F9-BCAB-4AB9-A927-E7F305F88CC1",
+      "run_id": "4DB63B2A-4304-489A-8355-8E8846593665",
       "status": "success",
       "rows_read": 78,
       "rows_written": 78,
@@ -38,7 +44,7 @@
         "target_table": "constructors",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full1_constructors",
+        "batch_key": "live_903bbf6e_full1_constructors",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -46,7 +52,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "08CC6FBD-780A-4BE2-9D0E-FB4B0F0747B6",
+      "run_id": "7B561131-9BA5-446D-B480-E8DFE600D2BD",
       "status": "success",
       "rows_read": 214,
       "rows_written": 214,
@@ -65,7 +71,7 @@
         "target_table": "drivers",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full1_drivers",
+        "batch_key": "live_903bbf6e_full1_drivers",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -73,7 +79,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "5F994A07-E66C-4C01-A1EE-6A7446206D43",
+      "run_id": "E5869091-4243-4291-A8F0-432ED33DBF8F",
       "status": "success",
       "rows_read": 879,
       "rows_written": 879,
@@ -92,7 +98,7 @@
         "target_table": "status",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full1_status",
+        "batch_key": "live_903bbf6e_full1_status",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -100,7 +106,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "A067ADB1-FAA2-4A8A-8951-3B59E88E18EC",
+      "run_id": "F860FAC7-6243-4B50-9C8E-CD8102F17AB7",
       "status": "success",
       "rows_read": 141,
       "rows_written": 141,
@@ -119,7 +125,7 @@
         "target_table": "seasons",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full1_seasons",
+        "batch_key": "live_903bbf6e_full1_seasons",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -127,7 +133,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "1A39C06D-B0D9-4D48-A2EC-FB2A89689DB1",
+      "run_id": "300FB721-2409-48BB-BCBA-7F4A41BF2501",
       "status": "success",
       "rows_read": 77,
       "rows_written": 77,
@@ -146,7 +152,7 @@
         "target_table": "races",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full1_races",
+        "batch_key": "live_903bbf6e_full1_races",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -154,7 +160,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "B86ABFC7-8871-4A02-B1CF-DE26A7C131BC",
+      "run_id": "A36E0883-E0EE-4716-B8EA-80C9723BFF6F",
       "status": "success",
       "rows_read": 1164,
       "rows_written": 1164,
@@ -173,7 +179,7 @@
         "target_table": "results",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full1_results",
+        "batch_key": "live_903bbf6e_full1_results",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -181,7 +187,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "E8424277-8BDB-4DC5-AE7A-9AC8C7316AB9",
+      "run_id": "64387579-1E66-4AA1-B208-7DC8B9DA75F9",
       "status": "success",
       "rows_read": 27568,
       "rows_written": 27568,
@@ -200,7 +206,7 @@
         "target_table": "circuits",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full2_circuits",
+        "batch_key": "live_903bbf6e_full2_circuits",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -208,7 +214,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "5859FC1B-CD5C-4BC2-B68D-D5797DF07A89",
+      "run_id": "A9BB571D-C9D5-44B8-9351-38229E6DD50C",
       "status": "success",
       "rows_read": 78,
       "rows_written": 78,
@@ -227,7 +233,7 @@
         "target_table": "constructors",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full2_constructors",
+        "batch_key": "live_903bbf6e_full2_constructors",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -235,7 +241,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "93A708D6-63BC-47EA-AF60-6923BC6FCBDE",
+      "run_id": "C6213239-15AA-48C6-9E2C-FCFFA000D04B",
       "status": "success",
       "rows_read": 214,
       "rows_written": 214,
@@ -254,7 +260,7 @@
         "target_table": "drivers",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full2_drivers",
+        "batch_key": "live_903bbf6e_full2_drivers",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -262,7 +268,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "CB6B9FB6-0FC3-4E8F-B21E-D8C1DC2CD678",
+      "run_id": "8FD9E203-A722-4EDD-B404-2BAD4DC6DEF5",
       "status": "success",
       "rows_read": 879,
       "rows_written": 879,
@@ -281,7 +287,7 @@
         "target_table": "status",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full2_status",
+        "batch_key": "live_903bbf6e_full2_status",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -289,7 +295,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "2241A8CD-47CF-4B0C-9367-F619E4705481",
+      "run_id": "DA5F9F27-B68E-43DF-91E0-FDC235C7B8DC",
       "status": "success",
       "rows_read": 141,
       "rows_written": 141,
@@ -308,7 +314,7 @@
         "target_table": "seasons",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full2_seasons",
+        "batch_key": "live_903bbf6e_full2_seasons",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -316,7 +322,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "374EAB82-EFA2-4438-BCCC-4EEB5B236811",
+      "run_id": "7BEDBB62-F063-498F-B8B0-D0E2824D0982",
       "status": "success",
       "rows_read": 77,
       "rows_written": 77,
@@ -335,7 +341,7 @@
         "target_table": "races",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full2_races",
+        "batch_key": "live_903bbf6e_full2_races",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -343,7 +349,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "7AB350BA-ACA2-4EFD-A1EF-982F1CA91E3D",
+      "run_id": "28C964A0-96AC-4BE7-A1A2-3FC92D5177E7",
       "status": "success",
       "rows_read": 1164,
       "rows_written": 1164,
@@ -362,7 +368,7 @@
         "target_table": "results",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_full2_results",
+        "batch_key": "live_903bbf6e_full2_results",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -370,7 +376,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "E7865D80-6EA0-4B28-A75C-C7AA1BCDA4C4",
+      "run_id": "00DA3878-E92F-4BE1-BC6F-DD2C31F745A4",
       "status": "success",
       "rows_read": 27568,
       "rows_written": 27568,
@@ -389,7 +395,7 @@
         "target_table": "circuits",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_circuits_part1",
+        "batch_key": "live_903bbf6e_circuits_part1",
         "key_max": 40,
         "env": "dev",
         "configuration": {},
@@ -398,7 +404,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "BCE09363-B6B8-4F9E-888F-890BFEA109CD",
+      "run_id": "2DEB929C-AC43-436F-A562-0148E4EDE885",
       "status": "success",
       "rows_read": 39,
       "rows_written": 39,
@@ -422,7 +428,7 @@
         "target_table": "circuits",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_circuits_part2",
+        "batch_key": "live_903bbf6e_circuits_part2",
         "key_min": 41,
         "env": "dev",
         "configuration": {},
@@ -431,7 +437,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "4876D29D-FA93-4451-88FE-46F46B58CDB1",
+      "run_id": "39178127-9999-4ABF-BBCE-A1234BA9C603",
       "status": "success",
       "rows_read": 39,
       "rows_written": 39,
@@ -455,7 +461,7 @@
         "target_table": "circuits",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_circuits_part2",
+        "batch_key": "live_903bbf6e_circuits_part2",
         "key_min": 41,
         "env": "dev",
         "configuration": {},
@@ -464,7 +470,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "0515DBF8-222E-40DB-A021-3D959EDF4B9C",
+      "run_id": "C1B6C02C-29E3-4A0F-AC94-34D805DA2867",
       "status": "success",
       "rows_read": 39,
       "rows_written": 39,
@@ -488,7 +494,7 @@
         "target_table": "constructors",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_constructors_part1",
+        "batch_key": "live_903bbf6e_constructors_part1",
         "key_max": 108,
         "env": "dev",
         "configuration": {},
@@ -497,7 +503,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "E28F4EC9-69DD-4024-B7BE-5BC34900F8B8",
+      "run_id": "1DCE648B-5D49-4991-B3BF-0A335D2C6702",
       "status": "success",
       "rows_read": 107,
       "rows_written": 107,
@@ -521,7 +527,7 @@
         "target_table": "constructors",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_constructors_part2",
+        "batch_key": "live_903bbf6e_constructors_part2",
         "key_min": 109,
         "env": "dev",
         "configuration": {},
@@ -530,7 +536,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "861E31D4-F57D-46F7-B4C9-24BAC00EE837",
+      "run_id": "B06427D5-52CF-4AB3-A4CD-FA329B178AC2",
       "status": "success",
       "rows_read": 107,
       "rows_written": 107,
@@ -554,7 +560,7 @@
         "target_table": "constructors",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_constructors_part2",
+        "batch_key": "live_903bbf6e_constructors_part2",
         "key_min": 109,
         "env": "dev",
         "configuration": {},
@@ -563,7 +569,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "7E93A12A-01F4-4303-8E6F-6A4A417EA6F2",
+      "run_id": "9A252985-435B-47B3-8AE7-11DF2A18D17B",
       "status": "success",
       "rows_read": 107,
       "rows_written": 107,
@@ -587,7 +593,7 @@
         "target_table": "drivers",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_drivers_part1",
+        "batch_key": "live_903bbf6e_drivers_part1",
         "key_max": 439,
         "env": "dev",
         "configuration": {},
@@ -596,7 +602,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "90C984FF-AC70-4C94-9AE0-4B8747187916",
+      "run_id": "865B2476-E4A7-4FE8-A2D8-FE2B38C99136",
       "status": "success",
       "rows_read": 439,
       "rows_written": 439,
@@ -620,7 +626,7 @@
         "target_table": "drivers",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_drivers_part2",
+        "batch_key": "live_903bbf6e_drivers_part2",
         "key_min": 440,
         "env": "dev",
         "configuration": {},
@@ -629,7 +635,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "568383B2-788D-4266-A8A8-99639F605582",
+      "run_id": "D15FC9DD-E11B-41BE-8DBF-67FEAC14D322",
       "status": "success",
       "rows_read": 440,
       "rows_written": 440,
@@ -653,7 +659,7 @@
         "target_table": "drivers",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_drivers_part2",
+        "batch_key": "live_903bbf6e_drivers_part2",
         "key_min": 440,
         "env": "dev",
         "configuration": {},
@@ -662,7 +668,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "26E896B5-280F-4FF7-B18C-0219DF79E6B3",
+      "run_id": "C0A4FACD-F589-441B-BBFC-E04C7576B308",
       "status": "success",
       "rows_read": 440,
       "rows_written": 440,
@@ -686,7 +692,7 @@
         "target_table": "status",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_status_part1",
+        "batch_key": "live_903bbf6e_status_part1",
         "key_max": 72,
         "env": "dev",
         "configuration": {},
@@ -695,7 +701,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "935C9234-1361-413A-A58A-BCFFB5130FBF",
+      "run_id": "C2E6BB55-6FD5-4F03-9C02-22E38B332E90",
       "status": "success",
       "rows_read": 70,
       "rows_written": 70,
@@ -719,7 +725,7 @@
         "target_table": "status",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_status_part2",
+        "batch_key": "live_903bbf6e_status_part2",
         "key_min": 73,
         "env": "dev",
         "configuration": {},
@@ -728,7 +734,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "8C60C05A-8E1F-4AEE-8C0C-AAA0EF9F7410",
+      "run_id": "B169AC03-AEF1-4920-AD67-DB00B800F92E",
       "status": "success",
       "rows_read": 71,
       "rows_written": 71,
@@ -752,7 +758,7 @@
         "target_table": "status",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_status_part2",
+        "batch_key": "live_903bbf6e_status_part2",
         "key_min": 73,
         "env": "dev",
         "configuration": {},
@@ -761,7 +767,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "48D9767E-8E6C-40D6-9509-83E3163CD11A",
+      "run_id": "2C79F3E8-54CC-48C7-8AAD-0B860CF2D80C",
       "status": "success",
       "rows_read": 71,
       "rows_written": 71,
@@ -785,7 +791,7 @@
         "target_table": "seasons",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_seasons_part1",
+        "batch_key": "live_903bbf6e_seasons_part1",
         "key_max": 1987,
         "env": "dev",
         "configuration": {},
@@ -794,7 +800,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "3B7D83AD-7B0A-4A4E-B93A-7742C851EB02",
+      "run_id": "E0A6A224-7664-4411-8316-52BA01A745F2",
       "status": "success",
       "rows_read": 38,
       "rows_written": 38,
@@ -818,7 +824,7 @@
         "target_table": "seasons",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_seasons_part2",
+        "batch_key": "live_903bbf6e_seasons_part2",
         "key_min": 1988,
         "env": "dev",
         "configuration": {},
@@ -827,7 +833,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "65CE3448-5468-4AF4-B4CB-AA74FF9325AC",
+      "run_id": "AFB9EA37-F730-4FBB-BA86-C0DF7C940955",
       "status": "success",
       "rows_read": 39,
       "rows_written": 39,
@@ -851,7 +857,7 @@
         "target_table": "seasons",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_seasons_part2",
+        "batch_key": "live_903bbf6e_seasons_part2",
         "key_min": 1988,
         "env": "dev",
         "configuration": {},
@@ -860,7 +866,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "63436949-B21D-4770-85FA-A3C0E00FEA0B",
+      "run_id": "6AE154D6-BB8C-41DB-BC50-D571A99FA940",
       "status": "success",
       "rows_read": 39,
       "rows_written": 39,
@@ -884,7 +890,7 @@
         "target_table": "races",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_races_part1",
+        "batch_key": "live_903bbf6e_races_part1",
         "key_max": 582,
         "env": "dev",
         "configuration": {},
@@ -893,7 +899,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "CDAA8027-120C-4F21-B917-9DF641D406CD",
+      "run_id": "E8A4F1A3-F292-49EA-8D73-805CCB94FFBE",
       "status": "success",
       "rows_read": 582,
       "rows_written": 582,
@@ -917,7 +923,7 @@
         "target_table": "races",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_races_part2",
+        "batch_key": "live_903bbf6e_races_part2",
         "key_min": 583,
         "env": "dev",
         "configuration": {},
@@ -926,7 +932,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "3E0C9B3B-ADA7-4155-9C2F-FE6A0488D9D4",
+      "run_id": "693E9BF7-98F9-48FF-81CB-4DAE18B60275",
       "status": "success",
       "rows_read": 582,
       "rows_written": 582,
@@ -950,7 +956,7 @@
         "target_table": "races",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_races_part2",
+        "batch_key": "live_903bbf6e_races_part2",
         "key_min": 583,
         "env": "dev",
         "configuration": {},
@@ -959,7 +965,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "BF9EFBB0-11A8-4684-935C-1EAD73E5EA26",
+      "run_id": "1E116E80-35C2-4560-8593-A80201BE5A9B",
       "status": "success",
       "rows_read": 582,
       "rows_written": 582,
@@ -983,7 +989,7 @@
         "target_table": "results",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_results_part1",
+        "batch_key": "live_903bbf6e_results_part1",
         "key_max": 13784,
         "env": "dev",
         "configuration": {},
@@ -992,7 +998,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "33632ECB-43FA-4804-A56A-C06E147A6CD5",
+      "run_id": "0AF9E060-08BA-4430-940B-D5928C5D71FF",
       "status": "success",
       "rows_read": 13784,
       "rows_written": 13784,
@@ -1016,7 +1022,7 @@
         "target_table": "results",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_results_part2",
+        "batch_key": "live_903bbf6e_results_part2",
         "key_min": 13785,
         "env": "dev",
         "configuration": {},
@@ -1025,7 +1031,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "3A45B444-A9F3-4A35-87CD-262A44BB261E",
+      "run_id": "E235C197-0071-4B3B-9442-39E42801FCD6",
       "status": "success",
       "rows_read": 13784,
       "rows_written": 13784,
@@ -1049,7 +1055,7 @@
         "target_table": "results",
         "schema_name": "stg",
         "load_mode": "incremental",
-        "batch_key": "live_9691c5d2_results_part2",
+        "batch_key": "live_903bbf6e_results_part2",
         "key_min": 13785,
         "env": "dev",
         "configuration": {},
@@ -1058,7 +1064,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "1F978AFC-9B62-4CBB-8DCC-0FECCAF96017",
+      "run_id": "AA215C2A-57D6-40DD-BF68-AF090818589E",
       "status": "success",
       "rows_read": 13784,
       "rows_written": 13784,
@@ -1082,7 +1088,7 @@
         "target_table": "status",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_duplicate_failure",
+        "batch_key": "live_903bbf6e_duplicate_failure",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -1090,7 +1096,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "4A6A95D5-1CDA-4AEE-B95B-BB037CE530B3",
+      "run_id": "374EBB96-D1B6-4FE5-ACC9-37C218E9495E",
       "status": "failed",
       "rows_read": 2,
       "rows_written": 0,
@@ -1109,7 +1115,7 @@
         "target_table": "status",
         "schema_name": "stg",
         "load_mode": "full",
-        "batch_key": "live_9691c5d2_final_retry",
+        "batch_key": "live_903bbf6e_final_retry",
         "env": "dev",
         "configuration": {},
         "context": {},
@@ -1117,7 +1123,7 @@
         "block_uuid": "load_sqlserver",
         "repo_path": "/home/src/project"
       },
-      "run_id": "BDBD2C93-872F-4D22-BEFA-5C887E7711E2",
+      "run_id": "4A15D98E-B3B7-4857-8546-3A4D888F2116",
       "status": "success",
       "rows_read": 141,
       "rows_written": 141,
@@ -1459,13 +1465,13 @@
   "failure_checks": [
     {
       "kind": "mage_duplicate_key",
-      "run_id": "4A6A95D5-1CDA-4AEE-B95B-BB037CE530B3",
+      "run_id": "374EBB96-D1B6-4FE5-ACC9-37C218E9495E",
       "stage_unchanged": true
     },
     {
       "kind": "sql_write_rollback",
       "audit": {
-        "run_id": "80203659-CD1F-4980-9735-E4C7A91957C4",
+        "run_id": "4C5EFADA-EDE9-478A-8D2E-A305416AD70B",
         "run_status": "failed",
         "rows_written": 0,
         "error_message": "RuntimeError: ETL operation failed; check connection, DDL and runtime configuration"
@@ -1506,117 +1512,111 @@
     {
       "source_name": "circuits.csv",
       "source_table": "circuits",
-      "batch_key": "live_9691c5d2_circuits_part1",
+      "batch_key": "live_903bbf6e_circuits_part1",
       "batch_status": "success",
       "source_row_count": 39,
-      "last_run_id": "BCE09363-B6B8-4F9E-888F-890BFEA109CD"
+      "last_run_id": "2DEB929C-AC43-436F-A562-0148E4EDE885"
     },
     {
       "source_name": "circuits.csv",
       "source_table": "circuits",
-      "batch_key": "live_9691c5d2_circuits_part2",
+      "batch_key": "live_903bbf6e_circuits_part2",
       "batch_status": "success",
       "source_row_count": 39,
-      "last_run_id": "0515DBF8-222E-40DB-A021-3D959EDF4B9C"
+      "last_run_id": "C1B6C02C-29E3-4A0F-AC94-34D805DA2867"
     },
     {
       "source_name": "constructors.csv",
       "source_table": "constructors",
-      "batch_key": "live_9691c5d2_constructors_part1",
+      "batch_key": "live_903bbf6e_constructors_part1",
       "batch_status": "success",
       "source_row_count": 107,
-      "last_run_id": "E28F4EC9-69DD-4024-B7BE-5BC34900F8B8"
+      "last_run_id": "1DCE648B-5D49-4991-B3BF-0A335D2C6702"
     },
     {
       "source_name": "constructors.csv",
       "source_table": "constructors",
-      "batch_key": "live_9691c5d2_constructors_part2",
+      "batch_key": "live_903bbf6e_constructors_part2",
       "batch_status": "success",
       "source_row_count": 107,
-      "last_run_id": "7E93A12A-01F4-4303-8E6F-6A4A417EA6F2"
+      "last_run_id": "9A252985-435B-47B3-8AE7-11DF2A18D17B"
     },
     {
       "source_name": "drivers.csv",
       "source_table": "drivers",
-      "batch_key": "live_9691c5d2_drivers_part1",
+      "batch_key": "live_903bbf6e_drivers_part1",
       "batch_status": "success",
       "source_row_count": 439,
-      "last_run_id": "90C984FF-AC70-4C94-9AE0-4B8747187916"
+      "last_run_id": "865B2476-E4A7-4FE8-A2D8-FE2B38C99136"
     },
     {
       "source_name": "drivers.csv",
       "source_table": "drivers",
-      "batch_key": "live_9691c5d2_drivers_part2",
+      "batch_key": "live_903bbf6e_drivers_part2",
       "batch_status": "success",
       "source_row_count": 440,
-      "last_run_id": "26E896B5-280F-4FF7-B18C-0219DF79E6B3"
+      "last_run_id": "C0A4FACD-F589-441B-BBFC-E04C7576B308"
     },
     {
       "source_name": "races.csv",
       "source_table": "races",
-      "batch_key": "live_9691c5d2_races_part1",
+      "batch_key": "live_903bbf6e_races_part1",
       "batch_status": "success",
       "source_row_count": 582,
-      "last_run_id": "CDAA8027-120C-4F21-B917-9DF641D406CD"
+      "last_run_id": "E8A4F1A3-F292-49EA-8D73-805CCB94FFBE"
     },
     {
       "source_name": "races.csv",
       "source_table": "races",
-      "batch_key": "live_9691c5d2_races_part2",
+      "batch_key": "live_903bbf6e_races_part2",
       "batch_status": "success",
       "source_row_count": 582,
-      "last_run_id": "BF9EFBB0-11A8-4684-935C-1EAD73E5EA26"
+      "last_run_id": "1E116E80-35C2-4560-8593-A80201BE5A9B"
     },
     {
       "source_name": "results.csv",
       "source_table": "results",
-      "batch_key": "live_9691c5d2_results_part1",
+      "batch_key": "live_903bbf6e_results_part1",
       "batch_status": "success",
       "source_row_count": 13784,
-      "last_run_id": "33632ECB-43FA-4804-A56A-C06E147A6CD5"
+      "last_run_id": "0AF9E060-08BA-4430-940B-D5928C5D71FF"
     },
     {
       "source_name": "results.csv",
       "source_table": "results",
-      "batch_key": "live_9691c5d2_results_part2",
+      "batch_key": "live_903bbf6e_results_part2",
       "batch_status": "success",
       "source_row_count": 13784,
-      "last_run_id": "1F978AFC-9B62-4CBB-8DCC-0FECCAF96017"
+      "last_run_id": "AA215C2A-57D6-40DD-BF68-AF090818589E"
     },
     {
       "source_name": "seasons.csv",
       "source_table": "seasons",
-      "batch_key": "live_9691c5d2_seasons_part1",
+      "batch_key": "live_903bbf6e_seasons_part1",
       "batch_status": "success",
       "source_row_count": 38,
-      "last_run_id": "3B7D83AD-7B0A-4A4E-B93A-7742C851EB02"
+      "last_run_id": "E0A6A224-7664-4411-8316-52BA01A745F2"
     },
     {
       "source_name": "seasons.csv",
       "source_table": "seasons",
-      "batch_key": "live_9691c5d2_seasons_part2",
+      "batch_key": "live_903bbf6e_seasons_part2",
       "batch_status": "success",
       "source_row_count": 39,
-      "last_run_id": "63436949-B21D-4770-85FA-A3C0E00FEA0B"
+      "last_run_id": "6AE154D6-BB8C-41DB-BC50-D571A99FA940"
     },
     {
       "source_name": "status.csv",
       "source_table": "status",
-      "batch_key": "live_9691c5d2_final_retry",
+      "batch_key": "live_903bbf6e_final_retry",
       "batch_status": "success",
       "source_row_count": 141,
-      "last_run_id": "BDBD2C93-872F-4D22-BEFA-5C887E7711E2"
+      "last_run_id": "4A15D98E-B3B7-4857-8546-3A4D888F2116"
     }
   ],
   "null_blank_checks": {
     "null_positions": 11074,
     "blank_driver_rows": 14
   },
-  "completed_at_utc": "2026-10-21T04:27:06.362434+00:00",
-  "mage_execution": {
-    "method": "Pipeline.execute_sync",
-    "run_tests": false,
-    "update_status": false,
-    "block_statuses_persisted": false
-  }
+  "completed_at_utc": "2026-10-23T16:42:59.624323+00:00"
 }

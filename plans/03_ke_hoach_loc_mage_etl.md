@@ -25,7 +25,7 @@ Code trên nhánh `Loc` đã triển khai theo contract nhánh `Dung`, commit
 | L4 | Audit thật: 36 success, 2 failed chủ động; lock giữa 2 phiên đã pass | Review log/evidence với Dũng |
 | L5 | Runbook, suite integration, evidence SQL Server/Mage engine đã có | Người dùng đăng nhập UI sau; review nhóm |
 
-Source và Stage đạt 30.121 dòng. 20 tests pass trong Mage runtime; suite SQL
+Source và Stage đạt 30.121 dòng. 21 tests pass trong Mage runtime (chạy lại 23/10 sau khi merge `Dung` 84081c0); suite SQL
 Server 2022 + Mage 0.9.79 thật đã pass full/incremental/rerun, đối soát từng giá trị,
 failure/rollback/retry và application lock. Evidence:
 [`loc_live_sqlserver_mage.json`](../docs/evidence/loc_live_sqlserver_mage.json).

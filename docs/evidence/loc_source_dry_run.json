@@ -1,6 +1,6 @@
 {
   "status": "success",
-  "timestamp_utc": "2026-10-21T03:59:07.208014+00:00",
+  "timestamp_utc": "2026-10-23T16:42:12.556236+00:00",
   "backend": "source_only",
   "runs": [],
   "source": [
@@ -31,8 +31,8 @@
       "key_min": 1,
       "key_max": 880,
       "key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499",
-      "null_cells": 1601,
-      "empty_cells": 28
+      "null_cells": 1629,
+      "empty_cells": 0
     },
     {
       "table": "status",

@@ -1,4 +1,3 @@
-Backend: Python + SQLite, NOT a SQL Server integration run.
 test_all_core_files_counts_and_relationships (test_etl.SourceTests) ... ok
 test_bad_header_row_shape_and_encoding (test_etl.SourceTests) ... ok
 test_bom_null_blank_and_zero (test_etl.SourceTests) ... ok
@@ -12,6 +11,8 @@ test_reject_paths_unknown_files_and_identifier_mismatch (test_etl.SourceTests) .
 test_symlink_escape_rejected (test_etl.SourceTests) ... ok
 test_typed_values_dates_decimal_precision_and_times (test_etl.SourceTests) ... ok
 test_all_core_typed_inserts_counts_nulls_and_fk_reconciliation (test_etl.TransactionTests) ... ok
+test_dung_races_demo_split_1101_plus_63_and_rerun (test_etl.TransactionTests)
+Dung's contract demo (year<=2023 / >=2024) as inclusive raceId ranges. ... ok
 test_failure_after_delete_rolls_back_and_retry_succeeds (test_etl.TransactionTests) ... ok
 test_full_twice_has_same_keys_data_and_audit (test_etl.TransactionTests) ... ok
 test_incremental_from_empty_rerun_and_update (test_etl.TransactionTests) ... ok
@@ -21,6 +22,6 @@ test_source_and_validation_failures_have_ctl_records (test_etl.TransactionTests)
 test_success_audit_error_rolls_back_stage (test_etl.TransactionTests) ... ok
 
 ----------------------------------------------------------------------
-Ran 20 tests in 5.721s
+Ran 21 tests in 5.703s
 
 OK
