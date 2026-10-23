@@ -20,7 +20,7 @@ Dataset source: https://www.kaggle.com/datasets/atharvranjan/formula-1-world-cha
 
 1. Copy `.env.example` to `.env` and enter credentials for a SQL Server account created for this project. Do not commit `.env`.
 2. Create or select the project database in SQL Server.
-3. Apply Dung's complete DDL (`01`, `02`, `03`) against that database. Until his branch is merged, read the pinned handoff and setup steps in [the ETL runbook](docs/etl_runbook.md).
+3. Apply Dung's DDL in `sqlserver/ddl/` (`00`–`03`, or `python sqlserver/run_all_ddl.py`); see [docs/sql_server_setup.md](docs/sql_server_setup.md) and [the ETL runbook](docs/etl_runbook.md).
 4. The Mage Dockerfile checks/installs Microsoft ODBC Driver 18 inside the container. Host CLI use needs the driver on the host as well.
 5. Configure SQL Server network access, then start Mage with Docker Compose.
 

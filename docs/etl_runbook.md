@@ -17,7 +17,7 @@ Các file đã đọc ở nhánh Dũng:
 ETL dùng đúng natural PK, tên cột camelCase, nullability, độ dài Unicode,
 `DECIMAL`, `DATE`, `TIME(0)` và 4 cột lineage của Dũng. Mọi bảng phải có sẵn;
 exporter không tự tạo hay thay thế cấu trúc bảng. Các check contract nằm trong
-`mage/project/f1_etl/contract.py` và được đối chiếu với snapshot DDL trong tests.
+`mage/project/f1_etl/contract.py` và được tests đối chiếu với `sqlserver/ddl/`.
 
 ## Kiểm tra nguồn ngay trên máy, chưa cần database
 
@@ -277,8 +277,8 @@ Kết quả:
    rồi lấy được lock khi phiên trước nhả.
 6. Retry thành công, cuối suite có **36 success + 2 failed chủ động** trong ctl,
    **30.121 dòng**, không duplicate/NULL PK, **6 FK không orphan**,
-   **11.074 position NULL**, giữ **14 drivers có nationality/url trống**.
-7. 20 unit/transaction tests cũng pass bên trong chính Mage runtime 1.4.54.
+   **11.074 position NULL**, **14 drivers có nationality/url NULL** (chuỗi rỗng → NULL từ 23/10).
+7. 21 unit/transaction tests cũng pass bên trong chính Mage runtime (SQLAlchemy 1.4.54).
 
 Bằng chứng chính: `docs/evidence/loc_live_sqlserver_mage.json`, log cùng tên,
 `loc_live_stage_checks.json`, `loc_unit_tests_mage_runtime.txt`.
