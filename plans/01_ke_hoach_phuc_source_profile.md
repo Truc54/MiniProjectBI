@@ -43,11 +43,11 @@
 
 ### P4. Business context và data-use caveats - 5 điểm
 
-- [ ] Viết bối cảnh phân tích F1 theo mùa giải, tay đua, constructor, circuit và kết quả.
-- [ ] Đề xuất người dùng: performance/media analyst hoặc người theo dõi F1; ghi quyết định mà dashboard hỗ trợ.
-- [ ] Đề xuất/duyệt câu hỏi nghiệp vụ trong `docs/business_requirements.md`: performance trend, comparison, grid-to-finish, status/outcome, bất thường theo race/circuit.
-- [ ] Rà KPI với Trực: points so sánh theo mùa/era; finish position chỉ trên classified result; status group không gộp DNS/DSQ thành DNF.
-- [ ] Xác nhận giới hạn: dữ liệu lịch sử, rule points thay đổi theo thời kỳ, không suy luận quan hệ nhân quả từ grid/circuit.
+- [x] Viết bối cảnh phân tích F1 theo mùa giải, tay đua, constructor, circuit và kết quả.
+- [x] Đề xuất người dùng: performance/media analyst hoặc người theo dõi F1; ghi quyết định mà dashboard hỗ trợ.
+- [x] Đề xuất/duyệt câu hỏi nghiệp vụ trong `docs/business_requirements.md`: performance trend, comparison, grid-to-finish, status/outcome, bất thường theo race/circuit.
+- [x] Rà KPI với Trực: points so sánh theo mùa/era; finish position chỉ trên classified result; status group không gộp DNS/DSQ thành DNF.
+- [x] Xác nhận giới hạn: dữ liệu lịch sử, rule points thay đổi theo thời kỳ, không suy luận quan hệ nhân quả từ grid/circuit.
 
 **Hoàn tất khi:** câu hỏi/KPI dùng được với cột có thật và nêu rõ giới hạn dữ liệu.
 
@@ -76,4 +76,6 @@ Các việc sau thuộc Phase 2/3, không tính vào 25 điểm tải Phase 1:
 - **Phase 2:** cung cấp phần dataset/provenance, business context, câu hỏi và KPI narrative cho report PDF; cùng Trực chọn KPI và filter cho trang Overview; xác minh các câu kết luận trong report đúng với số đo trên dashboard.
 - **Phase 3:** chuẩn bị các ví dụ tóm tắt KPI có baseline/thời kỳ và evidence; review câu trả lời AI với tư cách analyst, đánh dấu câu không được dữ liệu hỗ trợ.
 - **Final handoff:** xác nhận Kaggle URL, license, snapshot/version, limitations và source tables nằm trong deployment guide/video; cập nhật profile nếu nhóm đổi snapshot.
+
+
 
