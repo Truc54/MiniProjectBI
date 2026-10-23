@@ -81,15 +81,15 @@ def export_data_to_sqlserver(df: pd.DataFrame, **kwargs):
     # Convert empty strings and literal \N to None (SQL NULL) per Contract Section 1
     export_df = export_df.replace({'': None, r'\N': None})
 
-    # Drop legacy columns if present
-    for legacy_col in ['source_file', '_source_file', '_ingested_at_utc']:
+    # Drop duplicate or legacy columns if present
+    for legacy_col in ['source_file', '_src_file', '_loaded_at_utc']:
         if legacy_col in export_df.columns:
             export_df = export_df.drop(columns=[legacy_col])
 
-    export_df['_src_file'] = file_name
+    export_df['_source_file'] = file_name
     export_df['_batch_key'] = batch_key
-    export_df['_loaded_at_utc'] = now_utc
-    export_df['_load_mode'] = load_mode.upper()
+    export_df['_load_mode'] = load_mode.lower()
+    export_df['_ingested_at_utc'] = now_utc
 
     engine = create_sqlserver_engine()
 

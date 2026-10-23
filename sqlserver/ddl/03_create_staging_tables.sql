@@ -2,7 +2,7 @@
 -- Script: 03_create_staging_tables.sql
 -- Description: DDL Idempotent tao 7 bang Staging loi (stg) cho Formula 1 Dataset
 -- Tac gia: Dung (SQL Server & Staging)
--- Phien ban: 2.0 (Dong bo voi Source-to-Stage Mapping Contract P3-v1.0 cua Phuc & Model cua Truc)
+-- Phien ban: 2.1 (Contract chuan hoa theo commit 5b7113f duoc Loc & Phuc xac thuc)
 -- Thu tu tao: circuits, constructors, drivers, status, seasons, races, results
 -- ============================================================================
 
@@ -15,28 +15,28 @@ GO
 
 -- ----------------------------------------------------------------------------
 -- 1. stg.circuits (circuits.csv - 78 rows)
--- Grain: Mot dong moi circuit (duong dua)
--- Natural key: circuitId (PK)
+-- Grain: Mot dong moi circuit
+-- Natural key: circuitId
 -- ----------------------------------------------------------------------------
 IF OBJECT_ID(N'stg.circuits', N'U') IS NULL
 BEGIN
     CREATE TABLE stg.circuits (
         circuitId           INT NOT NULL,
         circuitRef          NVARCHAR(100) NOT NULL,
-        name                NVARCHAR(255) NOT NULL,
-        location            NVARCHAR(100) NOT NULL,
-        country             NVARCHAR(100) NOT NULL,
-        lat                 FLOAT NOT NULL,
-        lng                 FLOAT NOT NULL,
-        alt                 INT NOT NULL,
-        url                 NVARCHAR(500) NOT NULL,
+        name                NVARCHAR(200) NOT NULL,
+        location            NVARCHAR(100) NULL,
+        country             NVARCHAR(100) NULL,
+        lat                 DECIMAL(9, 6) NULL,
+        lng                 DECIMAL(9, 6) NULL,
+        alt                 INT NULL,
+        url                 NVARCHAR(500) NULL,
 
-        -- Metadata Lineage columns (Contract Section 5)
-        _src_file           NVARCHAR(260) NOT NULL,
-        _batch_key          NVARCHAR(100) NOT NULL,
-        _loaded_at_utc      DATETIME2(3) NOT NULL
-            CONSTRAINT DF_stg_circuits_loaded DEFAULT SYSUTCDATETIME(),
-        _load_mode          VARCHAR(20) NOT NULL,
+        -- Metadata Lineage columns
+        _source_file        NVARCHAR(260) NULL,
+        _batch_key          NVARCHAR(100) NULL,
+        _load_mode          VARCHAR(20) NULL,
+        _ingested_at_utc    DATETIME2(3) NOT NULL
+            CONSTRAINT DF_stg_circuits_ingested DEFAULT SYSUTCDATETIME(),
 
         CONSTRAINT PK_stg_circuits PRIMARY KEY CLUSTERED (circuitId)
     );
@@ -47,23 +47,23 @@ GO
 -- ----------------------------------------------------------------------------
 -- 2. stg.constructors (constructors.csv - 214 rows)
 -- Grain: Mot dong moi constructor (doi dua)
--- Natural key: constructorId (PK)
+-- Natural key: constructorId
 -- ----------------------------------------------------------------------------
 IF OBJECT_ID(N'stg.constructors', N'U') IS NULL
 BEGIN
     CREATE TABLE stg.constructors (
         constructorId       INT NOT NULL,
         constructorRef      NVARCHAR(100) NOT NULL,
-        name                NVARCHAR(255) NOT NULL,
-        nationality         NVARCHAR(100) NOT NULL,
-        url                 NVARCHAR(500) NOT NULL,
+        name                NVARCHAR(200) NOT NULL,
+        nationality         NVARCHAR(100) NULL,
+        url                 NVARCHAR(500) NULL,
 
-        -- Metadata Lineage columns (Contract Section 5)
-        _src_file           NVARCHAR(260) NOT NULL,
-        _batch_key          NVARCHAR(100) NOT NULL,
-        _loaded_at_utc      DATETIME2(3) NOT NULL
-            CONSTRAINT DF_stg_constructors_loaded DEFAULT SYSUTCDATETIME(),
-        _load_mode          VARCHAR(20) NOT NULL,
+        -- Metadata Lineage columns
+        _source_file        NVARCHAR(260) NULL,
+        _batch_key          NVARCHAR(100) NULL,
+        _load_mode          VARCHAR(20) NULL,
+        _ingested_at_utc    DATETIME2(3) NOT NULL
+            CONSTRAINT DF_stg_constructors_ingested DEFAULT SYSUTCDATETIME(),
 
         CONSTRAINT PK_stg_constructors PRIMARY KEY CLUSTERED (constructorId)
     );
@@ -73,9 +73,9 @@ GO
 
 -- ----------------------------------------------------------------------------
 -- 3. stg.drivers (drivers.csv - 879 rows)
--- Grain: Mot dong moi tay dua F1
--- Natural key: driverId (PK)
--- Luu y: number (816 \N), code (771 \N), dob (14 \N), nationality & url (14 "") co NULL
+-- Grain: Mot dong moi driver (tay dua)
+-- Natural key: driverId
+-- Luu y: number, code, dob co gia tri \N trong nguon -> NULL hop le
 -- ----------------------------------------------------------------------------
 IF OBJECT_ID(N'stg.drivers', N'U') IS NULL
 BEGIN
@@ -83,19 +83,19 @@ BEGIN
         driverId            INT NOT NULL,
         driverRef           NVARCHAR(100) NOT NULL,
         number              INT NULL,
-        code                NCHAR(3) NULL,
+        code                NVARCHAR(10) NULL,
         forename            NVARCHAR(100) NOT NULL,
         surname             NVARCHAR(100) NOT NULL,
         dob                 DATE NULL,
         nationality         NVARCHAR(100) NULL,
         url                 NVARCHAR(500) NULL,
 
-        -- Metadata Lineage columns (Contract Section 5)
-        _src_file           NVARCHAR(260) NOT NULL,
-        _batch_key          NVARCHAR(100) NOT NULL,
-        _loaded_at_utc      DATETIME2(3) NOT NULL
-            CONSTRAINT DF_stg_drivers_loaded DEFAULT SYSUTCDATETIME(),
-        _load_mode          VARCHAR(20) NOT NULL,
+        -- Metadata Lineage columns
+        _source_file        NVARCHAR(260) NULL,
+        _batch_key          NVARCHAR(100) NULL,
+        _load_mode          VARCHAR(20) NULL,
+        _ingested_at_utc    DATETIME2(3) NOT NULL
+            CONSTRAINT DF_stg_drivers_ingested DEFAULT SYSUTCDATETIME(),
 
         CONSTRAINT PK_stg_drivers PRIMARY KEY CLUSTERED (driverId)
     );
@@ -106,20 +106,20 @@ GO
 -- ----------------------------------------------------------------------------
 -- 4. stg.status (status.csv - 141 rows)
 -- Grain: Mot dong moi finishing status code
--- Natural key: statusId (PK)
+-- Natural key: statusId
 -- ----------------------------------------------------------------------------
 IF OBJECT_ID(N'stg.status', N'U') IS NULL
 BEGIN
     CREATE TABLE stg.status (
         statusId            INT NOT NULL,
-        status              NVARCHAR(255) NOT NULL,
+        status              NVARCHAR(100) NOT NULL,
 
-        -- Metadata Lineage columns (Contract Section 5)
-        _src_file           NVARCHAR(260) NOT NULL,
-        _batch_key          NVARCHAR(100) NOT NULL,
-        _loaded_at_utc      DATETIME2(3) NOT NULL
-            CONSTRAINT DF_stg_status_loaded DEFAULT SYSUTCDATETIME(),
-        _load_mode          VARCHAR(20) NOT NULL,
+        -- Metadata Lineage columns
+        _source_file        NVARCHAR(260) NULL,
+        _batch_key          NVARCHAR(100) NULL,
+        _load_mode          VARCHAR(20) NULL,
+        _ingested_at_utc    DATETIME2(3) NOT NULL
+            CONSTRAINT DF_stg_status_ingested DEFAULT SYSUTCDATETIME(),
 
         CONSTRAINT PK_stg_status PRIMARY KEY CLUSTERED (statusId)
     );
@@ -128,22 +128,22 @@ END
 GO
 
 -- ----------------------------------------------------------------------------
--- 5. stg.seasons (seasons.csv - 77 rows, 1950-2026)
+-- 5. stg.seasons (seasons.csv - 77 rows)
 -- Grain: Mot dong moi championship season
--- Natural key: year (PK)
+-- Natural key: year
 -- ----------------------------------------------------------------------------
 IF OBJECT_ID(N'stg.seasons', N'U') IS NULL
 BEGIN
     CREATE TABLE stg.seasons (
-        [year]              SMALLINT NOT NULL,
-        url                 NVARCHAR(500) NOT NULL,
+        [year]              INT NOT NULL,
+        url                 NVARCHAR(500) NULL,
 
-        -- Metadata Lineage columns (Contract Section 5)
-        _src_file           NVARCHAR(260) NOT NULL,
-        _batch_key          NVARCHAR(100) NOT NULL,
-        _loaded_at_utc      DATETIME2(3) NOT NULL
-            CONSTRAINT DF_stg_seasons_loaded DEFAULT SYSUTCDATETIME(),
-        _load_mode          VARCHAR(20) NOT NULL,
+        -- Metadata Lineage columns
+        _source_file        NVARCHAR(260) NULL,
+        _batch_key          NVARCHAR(100) NULL,
+        _load_mode          VARCHAR(20) NULL,
+        _ingested_at_utc    DATETIME2(3) NOT NULL
+            CONSTRAINT DF_stg_seasons_ingested DEFAULT SYSUTCDATETIME(),
 
         CONSTRAINT PK_stg_seasons PRIMARY KEY CLUSTERED ([year])
     );
@@ -152,23 +152,23 @@ END
 GO
 
 -- ----------------------------------------------------------------------------
--- 6. stg.races (races.csv - 1,164 rows, 1950-2026)
--- Grain: Mot dong moi su kien race (Grand Prix)
--- Natural key: raceId (PK)
+-- 6. stg.races (races.csv - 1,164 rows)
+-- Grain: Mot dong moi race event
+-- Natural key: raceId
 -- Tham chieu: circuitId -> stg.circuits, year -> stg.seasons
--- Luu y: time va cac session schedule (fp1-3, quali, sprint) co NULL hop le
+-- Luu y: cac cot session schedule (fp1-3, quali, sprint) va time co \N -> NULL
 -- ----------------------------------------------------------------------------
 IF OBJECT_ID(N'stg.races', N'U') IS NULL
 BEGIN
     CREATE TABLE stg.races (
         raceId              INT NOT NULL,
-        [year]              SMALLINT NOT NULL,
-        [round]             TINYINT NOT NULL,
+        [year]              INT NOT NULL,
+        [round]             INT NOT NULL,
         circuitId           INT NOT NULL,
-        name                NVARCHAR(255) NOT NULL,
+        name                NVARCHAR(200) NOT NULL,
         [date]              DATE NOT NULL,
         [time]              TIME(0) NULL,
-        url                 NVARCHAR(500) NOT NULL,
+        url                 NVARCHAR(500) NULL,
         fp1_date            DATE NULL,
         fp1_time            TIME(0) NULL,
         fp2_date            DATE NULL,
@@ -180,12 +180,12 @@ BEGIN
         sprint_date         DATE NULL,
         sprint_time         TIME(0) NULL,
 
-        -- Metadata Lineage columns (Contract Section 5)
-        _src_file           NVARCHAR(260) NOT NULL,
-        _batch_key          NVARCHAR(100) NOT NULL,
-        _loaded_at_utc      DATETIME2(3) NOT NULL
-            CONSTRAINT DF_stg_races_loaded DEFAULT SYSUTCDATETIME(),
-        _load_mode          VARCHAR(20) NOT NULL,
+        -- Metadata Lineage columns
+        _source_file        NVARCHAR(260) NULL,
+        _batch_key          NVARCHAR(100) NULL,
+        _load_mode          VARCHAR(20) NULL,
+        _ingested_at_utc    DATETIME2(3) NOT NULL
+            CONSTRAINT DF_stg_races_ingested DEFAULT SYSUTCDATETIME(),
 
         CONSTRAINT PK_stg_races PRIMARY KEY CLUSTERED (raceId)
     );
@@ -199,10 +199,10 @@ GO
 
 -- ----------------------------------------------------------------------------
 -- 7. stg.results (results.csv - 27,568 rows)
--- Grain: Mot ket qua cua mot tay dua trong mot race event (Central Fact)
--- Natural key: resultId (PK)
+-- Grain: Mot dong cho ket qua cua mot tay dua trong mot race event
+-- Natural key: resultId
 -- Tham chieu: raceId -> races, driverId -> drivers, constructorId -> constructors, statusId -> status
--- Luu y: position (40.2% NULL DNF/unclassified), fastestLapSpeed (70.1% NULL)
+-- Luu y: position, time, milliseconds, fastestLapSpeed co the la NULL do DNF/chua co thong ke
 -- ----------------------------------------------------------------------------
 IF OBJECT_ID(N'stg.results', N'U') IS NULL
 BEGIN
@@ -223,15 +223,15 @@ BEGIN
         fastestLap          INT NULL,
         [rank]              INT NULL,
         fastestLapTime      NVARCHAR(50) NULL,
-        fastestLapSpeed     DECIMAL(8, 3) NULL,
+        fastestLapSpeed     DECIMAL(7, 3) NULL,
         statusId            INT NOT NULL,
 
-        -- Metadata Lineage columns (Contract Section 5)
-        _src_file           NVARCHAR(260) NOT NULL,
-        _batch_key          NVARCHAR(100) NOT NULL,
-        _loaded_at_utc      DATETIME2(3) NOT NULL
-            CONSTRAINT DF_stg_results_loaded DEFAULT SYSUTCDATETIME(),
-        _load_mode          VARCHAR(20) NOT NULL,
+        -- Metadata Lineage columns
+        _source_file        NVARCHAR(260) NULL,
+        _batch_key          NVARCHAR(100) NULL,
+        _load_mode          VARCHAR(20) NULL,
+        _ingested_at_utc    DATETIME2(3) NOT NULL
+            CONSTRAINT DF_stg_results_ingested DEFAULT SYSUTCDATETIME(),
 
         CONSTRAINT PK_stg_results PRIMARY KEY CLUSTERED (resultId)
     );

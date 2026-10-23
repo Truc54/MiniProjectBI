@@ -26,10 +26,10 @@ Cơ sở dữ liệu dự án trên SQL Server (`F1_BI`) được phân tách th
 
 | Cột kỹ thuật | Kiểu dữ liệu | Nullable | Mô tả & Quy ước |
 |---|---|:---:|---|
-| `_src_file` | `NVARCHAR(260)` | NO | Tên file nguồn (ví dụ: `'results.csv'`) |
-| `_batch_key` | `NVARCHAR(100)` | NO | Mã định danh batch (ví dụ: `'results_full_20261022'`) |
-| `_loaded_at_utc` | `DATETIME2(3)` | NO | Mốc thời gian nạp vào SQL Server (mặc định `SYSUTCDATETIME()`) |
-| `_load_mode` | `VARCHAR(20)` | NO | Chế độ nạp: `'FULL'` hoặc `'INCREMENTAL'` |
+| `_source_file` | `NVARCHAR(260)` | YES | Tên file nguồn (ví dụ: `'results.csv'`, alias `_src_file`) |
+| `_batch_key` | `NVARCHAR(100)` | YES | Mã định danh batch (ví dụ: `'full'`, `'keys_1_1000'`) |
+| `_load_mode` | `VARCHAR(20)` | YES | Chế độ nạp: `'full'` hoặc `'incremental'` |
+| `_ingested_at_utc` | `DATETIME2(3)` | NO | Mốc thời gian nạp vào SQL Server (mặc định `SYSUTCDATETIME()`, alias `_loaded_at_utc`) |
 
 ### 2.2. Xử lý giá trị thiếu (Missing Values)
 * Ký hiệu `\N` từ file CSV được Mage chuyển thành `NULL` của SQL Server.
@@ -51,7 +51,7 @@ Grain: Một dòng cho mỗi trường đua.
 * `lng` (`FLOAT`, NOT NULL) - Kinh độ địa lý
 * `alt` (`INT`, NOT NULL) - Độ cao so với mực nước biển (mét, 0 là placeholder hợp lệ)
 * `url` (`NVARCHAR(500)`, NOT NULL)
-* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
+* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
 
 ### 3.2. `stg.constructors` (constructors.csv - 214 dòng)
 Grain: Một dòng cho mỗi đội đua (nhà sản xuất xe).
@@ -60,7 +60,7 @@ Grain: Một dòng cho mỗi đội đua (nhà sản xuất xe).
 * `name` (`NVARCHAR(255)`, NOT NULL)
 * `nationality` (`NVARCHAR(100)`, NOT NULL)
 * `url` (`NVARCHAR(500)`, NOT NULL)
-* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
+* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
 
 ### 3.3. `stg.drivers` (drivers.csv - 879 dòng)
 Grain: Một dòng cho mỗi tay đua F1.
@@ -73,19 +73,19 @@ Grain: Một dòng cho mỗi tay đua F1.
 * `dob` (`DATE`, NULL) - Ngày sinh (14 dòng cổ điển `NULL`)
 * `nationality` (`NVARCHAR(100)`, NULL) - Chuỗi rỗng `""` -> NULL (14 dòng)
 * `url` (`NVARCHAR(500)`, NULL) - Chuỗi rỗng `""` -> NULL (14 dòng)
-* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
+* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
 
 ### 3.4. `stg.status` (status.csv - 141 dòng)
 Grain: Một dòng cho mỗi mã trạng thái kết thúc chặng đua.
 * `statusId` (`INT`, NOT NULL) - **Primary Key**
 * `status` (`NVARCHAR(255)`, NOT NULL) - Mô tả (ví dụ: Finished, Disqualified, Collision, Engine)
-* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
+* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
 
 ### 3.5. `stg.seasons` (seasons.csv - 77 dòng)
 Grain: Một dòng cho mỗi mùa giải từ 1950 đến 2026.
 * `year` (`SMALLINT`, NOT NULL) - **Primary Key**
 * `url` (`NVARCHAR(500)`, NOT NULL)
-* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
+* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
 
 ### 3.6. `stg.races` (races.csv - 1,164 dòng)
 Grain: Một dòng cho mỗi sự kiện Grand Prix.
@@ -102,7 +102,7 @@ Grain: Một dòng cho mỗi sự kiện Grand Prix.
 * `fp3_date` (`DATE`, NULL), `fp3_time` (`TIME(0)`, NULL)
 * `quali_date` (`DATE`, NULL), `quali_time` (`TIME(0)`, NULL)
 * `sprint_date` (`DATE`, NULL), `sprint_time` (`TIME(0)`, NULL)
-* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
+* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
 * **Indexes:** `IX_stg_races_year`, `IX_stg_races_circuitId`
 
 ### 3.7. `stg.results` (results.csv - 27,568 dòng)
@@ -125,7 +125,7 @@ Grain: Kết quả phân hạng của 1 tay đua trong 1 chặng đua (bảng fa
 * `fastestLapTime` (`NVARCHAR(50)`, NULL) - Thời gian vòng nhanh nhất (ví dụ: '1:27.452')
 * `fastestLapSpeed` (`DECIMAL(8, 3)`, NULL) - Vận tốc vòng nhanh nhất (km/h, 19,316 dòng ~ 70.1% NULL)
 * `statusId` (`INT`, NOT NULL) - Tham chiếu `status.statusId`
-* Các cột lineage: `_src_file`, `_batch_key`, `_loaded_at_utc`, `_load_mode`
+* Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
 * **Indexes:** `IX_stg_results_raceId`, `IX_stg_results_driverId`, `IX_stg_results_constructorId`, `IX_stg_results_statusId`
 
 ---
