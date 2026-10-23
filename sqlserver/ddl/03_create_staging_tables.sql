@@ -2,7 +2,7 @@
 -- Script: 03_create_staging_tables.sql
 -- Description: DDL Idempotent tao 7 bang Staging loi (stg) cho Formula 1 Dataset
 -- Tac gia: Dung (SQL Server & Staging)
--- Phien ban: 1.0 (Phase 1 Contract - Chot voi Loc & Phuc)
+-- Phien ban: 2.1 (Contract chuan hoa theo commit 5b7113f duoc Loc & Phuc xac thuc)
 -- Thu tu tao: circuits, constructors, drivers, status, seasons, races, results
 -- ============================================================================
 

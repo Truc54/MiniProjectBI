@@ -1,4 +1,4 @@
-"""Atomic stage writes and audit compatible with Dung commit 5b7113f."""
+"""Atomic stage writes and audit compatible with sqlserver/ddl (Dung commit 84081c0)."""
 
 from contextlib import contextmanager
 from datetime import datetime, timezone
@@ -94,7 +94,7 @@ def set_batch(conn, params, status, row_count=0):
 def reflect_stage(conn, table_name):
     stage = Table(table_name, MetaData(), schema='stg', autoload_with=conn)
     if set(stage.c.keys()) != set(TABLES[table_name].columns) | set(LINEAGE):
-        raise QualityError(f'stg.{table_name}: columns differ from Dung contract 5b7113f')
+        raise QualityError(f'stg.{table_name}: columns differ from sqlserver/ddl contract')
     if [col.name for col in stage.primary_key] != [TABLES[table_name].key]:
         raise QualityError(f'stg.{table_name}: natural primary key differs from contract')
     return stage

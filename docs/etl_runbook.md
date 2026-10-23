@@ -4,9 +4,9 @@
 
 Luồng: `dataset/*.csv → Mage loader → validation → SQL Server stg + ctl`.
 Thực hiện trên nhánh `Loc`, tham chiếu nhánh [Dung](https://github.com/Truc54/MiniProjectBI/tree/Dung)
-tại commit [`5b7113f64f81b670830f3975bf038dedf58f7b9e`](https://github.com/Truc54/MiniProjectBI/commit/5b7113f64f81b670830f3975bf038dedf58f7b9e).
-Không cần merge nhánh Dũng để phát triển. Bản DDL trong `tests/fixtures/` là
-snapshot tham chiếu để kiểm thử contract, không phải script khởi tạo production.
+tại commit [`84081c0`](https://github.com/Truc54/MiniProjectBI/commit/84081c0) (đã merge vào `Loc`).
+DDL dùng chung là `sqlserver/ddl/` của Dũng; unit test đọc trực tiếp các file này
+để so contract. Cấu trúc bảng giống hệt snapshot `5b7113f` trước đó.
 
 Các file đã đọc ở nhánh Dũng:
 
@@ -41,9 +41,10 @@ không cần Mage, pandas, ODBC hay SQL Server. Exit code khác 0 nghĩa là l�
 | results | 27.568 | resultId |
 | **Tổng** | **30.121** | |
 
-`\N` chính xác thành Python `None` rồi SQL NULL. `''`, `'0'`, `'0.0'`, `'R'`
-được giữ riêng. Bản CSV có 28 ô trống ở nationality/url của drivers, đều
-được giữ là chuỗi rỗng. Optional position/lap/time được phép NULL; không suy ra
+`\N` và chuỗi rỗng `''` đều thành Python `None` rồi SQL NULL (mapping P3-v1.0 của
+Phúc, stage schema của Dũng). `'0'`, `'0.0'`, `'R'` được giữ nguyên. Bản CSV có
+28 ô trống ở nationality/url của 14 drivers, đều thành NULL; cột NOT NULL gặp
+ô trống sẽ bị reject. Optional position/lap/time được phép NULL; không suy ra
 DNF từ position NULL hoặc DNS từ grid=0.
 
 Giờ UTC của races có cả `HH:MM:SS` và `HH:MM:SSZ`. Chỉ khi chuyển sang kiểu SQL,
@@ -59,7 +60,7 @@ này mà không thay đổi nhánh `Loc`, lấy snapshot ra thư mục tạm:
 ```bash
 git fetch origin Dung
 mkdir -p /tmp/miniprojectbi-dung-contract
-git archive 5b7113f64f81b670830f3975bf038dedf58f7b9e sqlserver/ddl | tar -x -C /tmp/miniprojectbi-dung-contract
+git archive origin/Dung sqlserver/ddl | tar -x -C /tmp/miniprojectbi-dung-contract
 ```
 
 Đưa các file đó vào SQL client, thực thi theo thứ tự với database project được
@@ -231,7 +232,7 @@ python3 -m venv .venv
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-Tests dùng snapshot DDL của Dũng để so cột/kiểu/nullable/PK, kiểm tra BOM/NULL/blank,
+Tests đọc DDL `sqlserver/ddl/` của Dũng để so cột/kiểu/nullable/PK, kiểm tra BOM/NULL/blank,
 header/shape/path/symlink, ngày/giờ/precision, duplicate key, batch coverage;
 dùng SQLite với schema `stg`/`ctl` tách biệt để chạy transaction thật cho
 full/rerun/update/rollback/failure logs và lỗi ghi success audit.
@@ -245,7 +246,7 @@ demo SQLite và **kiểm thử SQL Server/Mage thật** (xem phần tiếp theo)
 Môi trường đã dựng và kiểm thử:
 
 - SQL Server 2022 Developer `16.0.4305.5`, container `miniprojectbi-sqlserver-test`.
-- Database `F1_BI` theo đúng DDL nhánh Dũng, commit `5b7113f`; user `f1_loader`
+- Database `F1_BI` theo đúng DDL nhánh Dũng, commit `5b7113f` (cấu trúc không đổi ở `84081c0`); user `f1_loader`
   chỉ có quyền đọc/ghi Stage/control và đọc schema metadata.
 - Mage 0.9.79, Python 3.10.19, SQLAlchemy 1.4.54, pyodbc 5.1.0, ODBC Driver 18.
 - Docker host Apple Silicon; Mage arm64, SQL Server x64 qua emulation. Đây là

@@ -36,7 +36,8 @@ def read_source(variables, data_dir=None):
         for values in reader:
             if len(values) != len(header):
                 raise QualityError(f'{context["file_name"]}: row shape error at CSV line {reader.line_num}', 1)
-            rows.append(dict(zip(header, (None if v == r'\N' else v for v in values))))
+            # Contract P3-v1.0 (Phuc/Dung): both literal \N and empty string become SQL NULL.
+            rows.append(dict(zip(header, (None if v in (r'\N', '') else v for v in values))))
     context['ingested_at_utc'] = datetime.now(timezone.utc).isoformat()
     return dict(context=context, rows=rows, source_rows=len(rows), rows_read=len(rows),
                 rows_rejected=0, error=None, validated=False)

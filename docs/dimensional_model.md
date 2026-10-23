@@ -1,10 +1,14 @@
-# Dimensional model design target
+# Dimensional model contract
 
-This is the Phase 1 design contract; implementation and dbt loading into SQL Server `dw` are later project work. Use one core fact at one explicit grain. Add another fact only if the group adds a separate business process with its own grain.
+This is the Phase 1 design contract for the Phase 2 warehouse implementation. It defines one business process and one core fact grain. It does not claim that `dw.*` or dbt models have been implemented.
 
 ## Business process and grain
 
-Business process: a driver's official race result in a Grand Prix. Grain: exactly one row per source `results.resultId` in `FactRaceResult`. This grain prevents accidental duplication when driver, constructor, circuit, status, and date attributes are joined.
+**Business process:** an official driver's race result in a Formula 1 Grand Prix.
+
+**Fact grain:** exactly one row for each source `results.resultId`. The source result ID is the natural key and must be unique. A race result is not a lap, pit stop, sprint result, or championship-standing snapshot. Those are separate business processes with different grains and are outside this fact.
+
+The fact originates from `stg.results`. A result row is retained when optional measures such as `position`, `time`, `milliseconds`, or fastest-lap fields are NULL. A missing result or dimension match must be reported; it must not silently remove a source result.
 
 ## Star schema
 
@@ -18,33 +22,62 @@ erDiagram
     DIM_STATUS ||--o{ FACT_RACE_RESULT : outcome
 ```
 
-| Table | Key and attributes | Notes |
+Every dimension has a generated integer surrogate key, retains its source natural key as an alternate key, and relates one-to-many to `FactRaceResult`. Use a reserved `Unknown` member (for example, surrogate key `-1`) when a dimension value is genuinely unavailable. Do not use that member to hide an orphan source key.
+
+| Target | Grain and key contract | Attributes and hierarchy |
 |---|---|---|
-| `dw.FactRaceResult` | Surrogate fact key or source `resultId`; foreign keys to all dimensions; source result ID | One row per resultId; preserve source IDs for lineage |
-| `dw.DimDate` | DateSK; date, day, month, quarter, year, weekday | Hierarchy year -> quarter -> month -> day |
-| `dw.DimRace` | RaceSK, source raceId; year, round, official race name | Hierarchy season/year -> round -> race |
-| `dw.DimCircuit` | CircuitSK, source circuitId; circuit, locality, country, lat/lng, altitude | Drill from country to circuit; alt may be placeholder 0 |
-| `dw.DimDriver` | DriverSK, source driverId; full name, code, number, nationality, DOB | Drill from nationality to driver where useful |
-| `dw.DimConstructor` | ConstructorSK, source constructorId; name and nationality | Keep historical source names as provided |
-| `dw.DimStatus` | StatusSK, source statusId; source label and approved outcome group | Group mapping must be reviewable and retain source status |
+| `dw.FactRaceResult` | One row per `results.resultId`; primary key `RaceResultSK`; unique alternate key `SourceResultId` | Dimension FKs `DateSK`, `RaceSK`, `CircuitSK`, `DriverSK`, `ConstructorSK`, `StatusSK`; retain source `resultId`, `raceId`, `driverId`, `constructorId`, and `statusId` for lineage and reconciliation; source measures and derived flags below |
+| `dw.DimDate` | One row per calendar date; generated `DateSK` | Calendar date, day, month number/name, quarter, year, weekday; hierarchy Year -> Quarter -> Month -> Day. Race date comes from `races.date`. |
+| `dw.DimRace` | One row per source `races.raceId`; generated `RaceSK`, alternate key `SourceRaceId` | Season year, round, official race name; hierarchy Year/Season -> Round -> Race. |
+| `dw.DimCircuit` | One row per `circuits.circuitId`; generated `CircuitSK`, alternate key `SourceCircuitId` | Circuit name, locality, country, latitude, longitude, altitude; hierarchy Country -> Circuit. `alt = 0` may be a source placeholder for newer circuits. |
+| `dw.DimDriver` | One row per `drivers.driverId`; generated `DriverSK`, alternate key `SourceDriverId` | Full name, code, permanent number, nationality, date of birth; hierarchy Nationality -> Driver where useful. Missing historical code/number/DOB stays NULL. |
+| `dw.DimConstructor` | One row per `constructors.constructorId`; generated `ConstructorSK`, alternate key `SourceConstructorId` | Historical constructor name and nationality; hierarchy Nationality -> Constructor where useful. Keep the source name rather than rewriting historical team names. |
+| `dw.DimStatus` | One row per `status.statusId`; generated `StatusSK`, alternate key `SourceStatusId` | Keep the exact source label and add the derived `OutcomeGroup` below. |
 
-Each dimension has a generated integer surrogate key. Keep source natural keys as alternate keys for matching and traceability. Dimension-to-fact relationships are one-to-many. In `FactRaceResult`, retain source `resultId` and source foreign keys for reconciliation. If a required dimension key is missing, design an explicit Unknown member rather than dropping the result.
+The fact receives `DateSK` from the race date, `RaceSK` from `results.raceId`, `CircuitSK` from that race's `circuitId`, and the remaining keys from the source driver, constructor, and status IDs. `DimRace` carries season and round for race navigation; `DimCircuit` is a separate conformed filter. Keep relationships single-direction from each dimension to the fact in the semantic model. Use `DimRace` as the authoritative season/round/race hierarchy and `DimDate` for calendar analysis; do not create a second filter path between dimensions.
 
-## Facts, measures and aggregation rules
+### Status outcome groups
 
-| Source attribute / derived value | Target | Aggregation |
+Keep `statusId` and the raw `status` label unchanged. `OutcomeGroup` is a separate analytical attribute with this proposed mapping:
+
+| Group | Source labels/rule |
+|---|---|
+| `CLASSIFIED` | `Finished`, `Lapped`, and labels of the form `+N Lap` / `+N Laps` |
+| `DNS` | `Did not start`, `Withdrew` |
+| `DSQ` | `Disqualified`, `Excluded`, `Underweight` (confirm with the analyst before publishing) |
+| `RETIREMENT_DNF` | Known accident, mechanical, damage, medical, or retirement labels from `status.csv`; retain the exact label for detail |
+| `OTHER` | `Not classified`, `Did not qualify`, `Did not prequalify`, `107% Rule`, `Not restarted`, and any unrecognized future label until reviewed |
+
+The mapping is a draft for the current source snapshot and needs analyst review. A numeric `position` determines whether a result has a classified finish; the outcome group explains the source status and must not override that value. A mismatch between the source status group and numeric position is a discrepancy to review.
+
+This is a star schema: descriptive attributes are kept in their dimensions and each dimension joins directly to the fact. No snowflake split is needed for Phase 1. Normalize only if Phase 2 identifies a concrete reuse or maintenance reason and documents the changed relationship path.
+
+## Measures and aggregation rules
+
+| Source or derived field | Semantic measure | Aggregation and population |
 |---|---|---|
-| `points` | Points | Additive; sum by driver/team/race/season |
-| `laps` | LapsCompleted | Additive only at the result grain and clearly labeled |
-| Constant 1 per result | ResultCount | Additive count of entries |
-| `positionOrder = 1` | WinFlag | Sum to count wins |
-| valid `position` in 1..3 | PodiumFlag | Sum to count podiums |
-| `grid`, classified `position` | GridPosition, FinishPosition | Non-additive; average/median only with explicit validity filters |
-| `grid - position` | PlacesGained | Derived only for positive grid and valid classified finish |
-| `milliseconds` | RaceMilliseconds | Non-additive and NULL when unavailable; only compare with a defined population |
+| `results.points` | Points | Additive at result grain. Sum under the active filters; raw totals across seasons/eras are not directly comparable because scoring rules changed. |
+| `results.laps` | Laps completed | Additive only as driver-result laps; label it clearly and do not present it as unique race laps. |
+| Constant `1` | Result entries | Additive row count. One entry is one `resultId`, not one race. |
+| `positionOrder = 1` | Wins | Additive win flag/count using the source order field. Do not infer a win from NULL `position`. |
+| Numeric `position` from 1 through 3 | Podiums | Additive flag/count for classified finishes only. |
+| `results.grid` | Grid position | Non-additive. Average/median only with an explicit valid-grid population; `0` is not a valid start position for grid-to-finish analysis. |
+| `results.position` | Finish position | Non-additive. Average/median only for numeric classified positions; lower is better. NULL is not a position. |
+| `grid - position` | Places gained | Derived per row only when `grid > 0` and `position` is a positive numeric classified finish. Positive means gained places. Report eligible row count with the statistic. |
+| `results.milliseconds`, `time`, fastest-lap time/speed | Time/speed measures | Non-additive. Keep NULL when unavailable; compare only with a documented population and compatible time meaning. Never sum them. |
+| `position IS NULL` | Non-classified entry flag | Derive at row level for the non-classified rate. Do not substitute `OutcomeGroup` for this test; show the status breakdown alongside it. |
 
-Do not sum positions, speed, race time, or fastest-lap time. Build the status-group mapping from source labels and record the classification rule so that an unclassified result, retirement, DNS, and disqualification remain distinguishable.
+Rates and averages must be recomputed from their numerator and denominator in the active filter context. Do not average pre-aggregated percentages or sum positions, speed, or time. `statusId` is mandatory for the source fact contract; an unknown status label stays in `OTHER` until reviewed and is exposed as a quality finding.
 
-## Source to model lineage
+## Source lineage and Phase 2 tests
 
-`FactRaceResult` originates from `stg.results`; `DimDate`/`DimRace` from `stg.races` and `stg.seasons`; `DimCircuit` from `stg.circuits`; `DimDriver` from `stg.drivers`; `DimConstructor` from `stg.constructors`; and `DimStatus` from `stg.status`. dbt models will clean types/NULLs, apply surrogate keys, test uniqueness and relationships, and expose the documented model dependencies before the Power BI semantic model is built.
+| Target | Source |
+|---|---|
+| `FactRaceResult` | `stg.results` |
+| `DimDate`, `DimRace` | `stg.races`; `stg.seasons` supports season coverage validation |
+| `DimCircuit` | `stg.circuits` |
+| `DimDriver` | `stg.drivers` |
+| `DimConstructor` | `stg.constructors` |
+| `DimStatus` | `stg.status` plus the reviewed mapping contract |
+
+Phase 2 dbt work must document model dependencies and test dimension natural-key uniqueness/not-null, fact `SourceResultId` uniqueness/not-null, all fact-to-dimension relationships, and outcome-group coverage. Source NULLs remain NULL through staging and cleaning unless a documented business rule derives a separate field.

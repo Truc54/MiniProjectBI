@@ -1,4 +1,4 @@
-"""Source guards and actual transaction tests using Dung's DDL snapshot.
+"""Source guards and actual transaction tests using Dung's DDL in sqlserver/ddl.
 
 SQLite checks rollback/reruns/audit, not SQL Server driver or locking behavior.
 Run: python -m unittest discover -s tests -v
@@ -31,7 +31,8 @@ def payload(name='status', **variables):
 
 def ddl_tables():
     """Extract column definitions and PKs from the immutable handoff (not ETL code)."""
-    for path in sorted((ROOT / 'tests/fixtures').glob('dung_5b7113f_*.sql')):
+    for path in (ROOT / 'sqlserver/ddl/02_create_control_tables.sql',
+                 ROOT / 'sqlserver/ddl/03_create_staging_tables.sql'):
         content = path.read_text()
         for match in re.finditer(r'CREATE TABLE (\w+)\.(\w+)\s*\((.*?)\n    \);', content, re.S):
             schema, name, body = match.groups()
@@ -76,7 +77,7 @@ class SourceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as root:
             Path(root, 'status.csv').write_text('\ufeffstatusId,status\n1,\\N\n2,\n3,0\n', encoding='utf-8')
             p = read_source({'table_name': 'status'}, root)
-            self.assertEqual([r['status'] for r in p['rows']], [None, '', '0'])
+            self.assertEqual([r['status'] for r in p['rows']], [None, None, '0'])
 
     def test_reject_paths_unknown_files_and_identifier_mismatch(self):
         for variables in ({'file_name': '../results.csv'}, {'file_name': '/tmp/results.csv'},
@@ -309,7 +310,7 @@ class TransactionTests(unittest.TestCase):
         self.assertEqual([r['orphan_count'] for r in report['relationships']], [0] * 6)
         rows = self.query('SELECT position FROM stg.results WHERE position IS NULL')
         self.assertEqual(len(rows), 11074)
-        self.assertEqual(len(self.query("SELECT * FROM stg.drivers WHERE nationality='' AND url=''")), 14)
+        self.assertEqual(len(self.query("SELECT * FROM stg.drivers WHERE nationality IS NULL AND url IS NULL")), 14)
         with self.engine.begin() as conn:
             conn.execute(text('UPDATE stg.results SET driverId=999999 WHERE resultId=1'))
         report = check_stage(self.engine)

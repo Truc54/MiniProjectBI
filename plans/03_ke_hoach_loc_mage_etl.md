@@ -15,7 +15,7 @@
 ### Cập nhật triển khai ngày 21/10/2026
 
 Code trên nhánh `Loc` đã triển khai theo contract nhánh `Dung`, commit
-`5b7113f64f81b670830f3975bf038dedf58f7b9e`. Hướng dẫn: [ETL runbook](../docs/etl_runbook.md).
+`84081c0` (đã merge; DDL tại `sqlserver/ddl/`). Hướng dẫn: [ETL runbook](../docs/etl_runbook.md).
 
 | Hạng mục | Trạng thái hiện tại | Còn cần để nghiệm thu |
 |---|---|---|
@@ -38,7 +38,7 @@ phản ánh code/kiểm thử đã làm; peer review nhóm và demo UI chưa đ�
 
 - [x] Giữ loader generic cho tên file trong whitelist; mặc định/cấu hình theo table mapping được Phúc chốt.
 - [x] Chặn path traversal; file phải tồn tại; báo rõ file/table khi đọc lỗi.
-- [x] Đọc UTF-8 BOM; bảo toàn giá trị nguồn; parse đúng literal `\N` thành null mà không biến 0 hoặc chuỗi rỗng thành null.
+- [x] Đọc UTF-8 BOM; bảo toàn giá trị nguồn; parse literal `\N` và chuỗi rỗng thành null theo mapping P3-v1.0; không biến 0 thành null.
 - [x] Thêm source metadata cần thiết (file, batch, ingestion timestamp) theo interface đã thống nhất với Dũng.
 - [x] Truyền rõ `file_name`, `table_name`, `target_table`, `load_mode`, `batch_key` và các tham số kết nối qua môi trường an toàn.
 

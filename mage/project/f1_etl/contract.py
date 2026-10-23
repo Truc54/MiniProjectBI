@@ -1,4 +1,4 @@
-"""Source/SQL contract read from Dung commit 5b7113f (2026-10-21)."""
+"""Source/SQL contract from Dung branch commit 84081c0 (sqlserver/ddl, 2026-10-22)."""
 
 from dataclasses import dataclass
 from datetime import date, time
@@ -31,7 +31,7 @@ class Column:
             if self.kind == 'text':
                 if len(value.encode('utf-16-le')) // 2 > self.size:
                     raise ValueError('text exceeds SQL NVARCHAR length')
-                return value  # Empty strings are preserved.
+                return value
             if self.kind == 'int':
                 if not re.fullmatch(r'[+-]?[0-9]+', value):
                     raise ValueError('expected integer')

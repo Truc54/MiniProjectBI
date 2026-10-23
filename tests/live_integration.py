@@ -41,7 +41,7 @@ def main():
     engine = create_sqlserver_engine()
     report = dict(status='running', backend='sqlserver_and_mage',
                   timestamp_utc=datetime.now(timezone.utc).isoformat(),
-                  dung_commit='5b7113f64f81b670830f3975bf038dedf58f7b9e',
+                  dung_commit='84081c0',
                   mage_execution=dict(method='Pipeline.execute_sync', run_tests=False,
                                       update_status=False, block_statuses_persisted=False),
                   runs=[], checks=[], failure_checks=[])
@@ -209,7 +209,7 @@ def main():
             'FROM ctl.etl_batch_state ORDER BY source_table, batch_key')
         report['null_blank_checks'] = query("""
             SELECT (SELECT COUNT(*) FROM stg.results WHERE position IS NULL) AS null_positions,
-                   (SELECT COUNT(*) FROM stg.drivers WHERE nationality='' AND url='') AS blank_driver_rows
+                   (SELECT COUNT(*) FROM stg.drivers WHERE nationality IS NULL AND url IS NULL) AS blank_driver_rows
         """)[0]
         if report['null_blank_checks'] != dict(null_positions=11074, blank_driver_rows=14):
             raise AssertionError('Source NULL/blank semantics differ in SQL Server')

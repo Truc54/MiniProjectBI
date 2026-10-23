@@ -10,8 +10,10 @@
 | `loc_live_sqlserver_mage.log` | Exception expected khi block exporter chặn duplicate; run tổng thể vẫn pass | Mage engine |
 | `loc_live_stage_checks.json` | 30.121 dòng ở Stage, 6 FK orphan_count=0, không NULL/trùng PK | SQL Server thật, CLI đối soát cuối |
 
-Contract tham chiếu nhánh `Dung`, commit `5b7113f64f81b670830f3975bf038dedf58f7b9e`.
-Snapshot gốc của Dũng lưu tại `tests/fixtures/dung_5b7113f_*.sql` chỉ để kiểm thử.
+Các file bằng chứng trên được tạo ngày 21/10/2026 với contract nhánh `Dung`, commit
+`5b7113f`, khi chuỗi rỗng còn được giữ nguyên (14 dòng drivers có nationality/url = `''`).
+Từ commit `84081c0` của Dũng, chuỗi rỗng được nạp thành NULL; cần chạy lại
+`tests/live_integration.py` để cập nhật bằng chứng SQL Server.
 CLI và Mage dùng cùng các hàm trong `mage/project/f1_etl/`.
 
 **Kiểm thử thật hoàn tất ngày 21/10/2026:** SQL Server 2022 Developer
