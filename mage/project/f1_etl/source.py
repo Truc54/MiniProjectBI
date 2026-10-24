@@ -21,9 +21,14 @@ def safe_error(exc):
 
 def read_source(variables, data_dir=None):
     context = resolve_request(variables)
-    # Default also works for host CLI without an .env file.
-    root = Path(data_dir or os.environ.get('F1_DATA_DIR') or
-                Path(__file__).resolve().parents[3] / 'dataset').resolve()
+    # Default also works for host CLI without an .env file or when F1_DATA_DIR points to container path.
+    env_dir = os.environ.get('F1_DATA_DIR')
+    if data_dir:
+        root = Path(data_dir).resolve()
+    elif env_dir and Path(env_dir).exists():
+        root = Path(env_dir).resolve()
+    else:
+        root = (Path(__file__).resolve().parents[3] / 'dataset').resolve()
     path = (root / context['file_name']).resolve()
     if path.parent != root:
         raise QualityError('Source path escapes dataset directory (including symlinks)')
