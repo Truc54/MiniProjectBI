@@ -1,4 +1,9 @@
 -- Run after 01_create_schemas.sql in the project database.
+IF DB_ID(N'F1_BI') IS NOT NULL
+BEGIN
+    USE F1_BI;
+END
+GO
 IF OBJECT_ID(N'ctl.etl_run_log', N'U') IS NULL
 BEGIN
     CREATE TABLE ctl.etl_run_log (
