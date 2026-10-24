@@ -8,13 +8,19 @@ The Phase 1 source scope is the seven core CSVs documented in [source profile](s
 
 ## Business questions
 
-| ID | Question | Required dimensions/fields | Required population or breakdown |
-|---|---|---|---|
-| BQ1 | How do race points, wins, podiums, entries, and classified finishes change by season for a selected driver or constructor? | `DimRace` season; `DimDriver`; `DimConstructor`; points, `positionOrder`, `position` | Show result-entry count and scoring-era caveat with points. |
-| BQ2 | Which drivers and constructors contribute the most points or wins in a selected season, race, or circuit? | `DimRace`; `DimCircuit`; `DimDriver`; `DimConstructor`; points and win flag | State selected period and count of result entries. |
-| BQ3 | How does starting grid relate to classified finish and points? | `grid`, numeric `position`, points; race/season, driver/constructor, circuit | Include only rows with `grid > 0` and valid classified finish; show eligible `n`. This is descriptive, not causal. |
-| BQ4 | Which finishing outcomes contribute to non-classified entries by season, constructor, driver, or circuit? | `DimStatus` source label and `OutcomeGroup`; `position`; race and other dimensions | Show both source status and mapped group; do not merge DNS or DSQ into retirement/DNF. |
-| BQ5 | Which race events or circuits show an unusual points/performance change versus a prior race or season? | Race order, circuit, driver/constructor; points, wins, podiums, classified finish | Name the comparison baseline and show event-level entries behind the change. Do not call a change anomalous without a stated threshold or comparison rule. |
+### Race performance analysis
+
+1. Analyze points, wins, podiums, and classified finishes by season and race date.
+2. Compare points, wins, and podiums by driver and constructor within a selected season, race, or circuit.
+3. Compare race results by circuit and country.
+4. Compare starting grid with finishing position and points by season, circuit, driver, and constructor.
+
+### Finishing outcome analysis
+
+5. Analyze non-classified results by status and outcome group across seasons, races, circuits, drivers, and constructors.
+6. Identify races or circuits that explain performance changes compared with the previous race or season.
+
+For grid analysis, include only rows with `grid > 0` and a valid classified finish; describe association without claiming causation. For outcome analysis, show both the source status and its outcome group, and keep DNS and DSQ distinct from retirement/DNF. State the comparison baseline when explaining a change. Show result counts and rate denominators where applicable.
 
 ## KPI definitions
 
@@ -40,17 +46,17 @@ If a source numeric field cannot be parsed, keep the source row, record a conver
 ### Dashboard 1: Overview (descriptive)
 
 - KPI cards: points, wins, podiums, result entries, classified entries, and non-classified rate. Put selected season/period and non-classified numerator/denominator in the visible context.
-- Trend: points and wins by season, with a scoring-system/era caveat for cross-era comparisons.
-- Contribution: points and wins by constructor and driver within the selected season.
-- Distribution: result entries, points, and outcomes by race/circuit/country.
+- Trend: points and wins grouped by `DimRace` season → round → race; offer `DimDate` calendar year → quarter → month → date as the calendar hierarchy where useful. Include a scoring-system/era caveat for cross-era point comparisons.
+- Contribution: points, wins, and podiums grouped by constructor, with drill-through to its drivers; also support grouping by driver or constructor nationality within the selected season, race, or circuit.
+- Distribution: result entries, points, and outcomes grouped by circuit country → circuit and status outcome group → source status label.
 - Filters: season, race/round, driver, constructor, circuit/country, and source status/outcome group.
 
 ### Dashboard 2: Detailed / Diagnostic
 
-- Drill from season to round/race and from constructor to driver; use drill-through to a result-row detail view keyed by source `resultId`.
-- Show status composition by exact source label and `OutcomeGroup`, with row counts and share denominator.
-- Show grid-to-finish distribution only for the eligible population, with eligible `n`, and expose excluded NULL/zero-grid counts.
-- Explain points or podium changes with event-level contribution for the selected driver/constructor and circuit; make comparison baseline explicit (prior event, prior season, or user-selected period).
+- Drill through `DimRace` season → round → race, `DimConstructor` nationality → constructor, `DimDriver` nationality → driver, `DimCircuit` country → circuit, and `DimStatus` outcome group → source label. From a constructor selection, filter/drill through to its drivers; use a result-row detail view keyed by source `resultId`.
+- Show status composition grouped by `OutcomeGroup` and exact source label, then allow breakdown by season/race, circuit, constructor, or driver; include row counts and share denominator.
+- Show grid-to-finish measures grouped by race and compared across circuit, constructor, or driver, using only the eligible population. Display eligible `n` and excluded NULL/zero-grid counts.
+- Explain points or podium changes with event-level contributions grouped by constructor/driver, circuit, and optionally status; make the comparison baseline explicit (prior event, prior season, or user-selected period).
 - Provide a reconciliation view for a selected race/driver/constructor with source IDs, source measures, status label, and derived values. This is a Phase 2 dashboard requirement; no dashboard is claimed to exist in Phase 1.
 
 ## Quantitative evidence for acceptance and report
