@@ -1,159 +1,178 @@
 # Business Context, Analytical Requirements, and KPI Contract
 
-> **Document Version:** P4-v1.1 (Merged) · **Date:** 2026-10-23 · **Owners/Contributors:** Phúc (Data Source & Profiling), Trực (Dimensional Design & QA) · **Reviewers:** Dũng (SQL Server), Lộc (Mage ETL)
+> Document Version: P4-v1.1 (Merged) · Date: 2026-10-23 · Owners/Contributors: Phúc (Data Source & Profiling), Trực (Dimensional Design & QA) · Reviewers: Dũng (SQL Server), Lộc (Mage ETL)
 
 ---
 
 ## 1. Problem Statement, Audience, and Business Context
 
-Formula 1 World Championship (1950–2026) is the pinnacle of international motorsport, spanning 77 seasons, over 1,164 Grand Prix events, and tens of thousands of individual race entries. The BI application supports a **Formula 1 performance analyst, team/media analyst, or informed F1 follower** who needs to compare official race outcomes across drivers, constructors, seasons, and circuits.
+Formula 1 World Championship (1950–2026) spans 77 seasons, over 1,164 Grand Prix events, and tens of thousands of individual race entries. The BI application supports a Formula 1 performance analyst, team/media analyst, or informed F1 follower who needs to compare official race outcomes across drivers, constructors, seasons, and circuits. The decision supported is where performance changed and which result entries explain that change.
 
 The business decisions supported include:
+
 - Where and when performance or reliability changed over time.
 - Which specific race result entries, drivers, or constructors explain that change.
 - How qualifying execution relates to race conversion under different circuit constraints.
 
 ### Scope, Grain, and Non-Causal Boundaries
-- **Source Scope:** Seven core CSVs documented in [source profile](source_profile.md).
-- **Core Business Process & Grain:** Exactly one driver result per Grand Prix (`results.resultId`) in `FactRaceResult`, as defined in [dimensional model](dimensional_model.md). (Laps, pit stops, sprints, practice, and standings require separate grains and are not implied by this contract).
-- **Analytical Stance:** Observational, descriptive, and diagnostic BI. The model describes historical statistical associations. **Grid position or circuit characteristics are descriptive factors, not proof of cause** (e.g., accidents or mechanical failures have complex confounding variables).
+
+- **Source scope:** The seven core CSVs documented in [source profile](source_profile.md).
+- **Core process and grain:** Exactly one driver result per Grand Prix (`results.resultId`) in `FactRaceResult`, as defined in [dimensional model](dimensional_model.md).
+- **Out of scope for this grain:** Lap, pit-stop, sprint, practice, and standings analyses require separate grains and are not implied by this contract.
+- **Analytical stance:** Observational, descriptive, and diagnostic BI. The model describes historical association. Grid position or circuit characteristics are descriptive factors, not proof of cause; accidents, strategy, and mechanical failures are possible confounders.
 
 ---
 
-## 2. Core Business Questions (BQ1 – BQ5)
+## 2. Business Questions
 
-| ID | Business Question | Required Dimensions / Fields | Population & Methodological Criteria |
-|---|---|---|---|
-| **BQ1** | How do race points, wins, podiums, entries, and classified finishes change by season for a driver or constructor? | `DimRace` (season), `DimDriver`, `DimConstructor`, points, `positionOrder`, `position` | Must show result-entry count and scoring-era caveats alongside points. |
-| **BQ2** | Which drivers and constructors contribute the greatest share of points or wins in a selected season, race, or circuit? | `DimRace`, `DimCircuit`, `DimDriver`, `DimConstructor`, points, win flag | State selected filter period, denominator, and result-entry count. |
-| **BQ3** | How does starting grid relate to classified finish position and points scored? | `grid`, numeric `position`, points; race/season, driver/constructor, circuit | Include strictly rows with `grid > 0` and valid classified finish (`position IS NOT NULL`); report eligible sample size `n`. Descriptive, not causal. |
-| **BQ4** | Which finishing outcomes contribute to non-classified entries by season, constructor, driver, or circuit? | `DimStatus` source label and `OutcomeGroup`, `position`, race and dimensions | Display both exact source status and standardized outcome group. Never merge DNS or DSQ into DNF. |
-| **BQ5** | Which race events or circuits exhibit an unusual points/performance change compared to a prior race or season? | Race order, circuit, driver/constructor, points, wins, podiums, classified finish | Name comparison baseline explicitly; expose event-level entries behind change. Never flag anomalies without defined thresholds. |
+### Race performance analysis
+
+1. Analyze points, wins, podiums, and classified finishes by season and race date.
+2. Compare points, wins, and podiums by driver and constructor within a selected season, race, or circuit.
+3. Compare race results by circuit and country.
+4. Compare starting grid with finishing position and points by season, circuit, driver, and constructor.
+
+### Finishing outcome analysis
+
+5. Analyze non-classified results by status and outcome group across seasons, races, circuits, drivers, and constructors.
+6. Identify races or circuits that explain performance changes compared with the previous race or season.
+
+For grid analysis, include only rows with `grid > 0` and a valid classified finish; describe association without claiming causation. For outcome analysis, show both the source status and its outcome group, and keep DNS and DSQ distinct from retirement/DNF. State the comparison baseline when explaining a change. Show result counts and rate denominators where applicable.
 
 ---
 
 ## 3. KPI Definitions, Reproducible Logic, and Caveats
 
-All KPI calculations strictly obey active report filters. Rates and averages are dynamically recomputed from row-level numerators and denominators rather than averaged from displayed subtotals.
+All KPI calculations obey active report filters. Recompute rates and averages from row-level numerators and denominators; do not average displayed subtotals.
 
-| KPI | Formal / Reproducible Definition | DAX / SQL Aggregation Logic | Analytical Caveats & Interpretation Rules |
+| KPI | Reproducible definition | DAX / SQL aggregation logic | Denominator, filter, and interpretation |
 |---|---|---|---|
-| **Result entries** | Total count of race participation records | `COUNT(FactRaceResult[resultId])` | One row represents one driver in one Grand Prix. This is **not** the count of distinct Grand Prix events. |
-| **Total points** | Total championship points awarded | `SUM(FactRaceResult[points])` | **Crucial Caveat:** Scoring systems changed drastically across eras (e.g., 8-6-4-3-2 in 1950s; 9-6-4-3-2-1 in 1960s; 10-6-4-3-2-1 in 1990s; 25-18-15... post-2010; fastest lap & sprint points). Raw points across eras are not directly comparable; compare within season/era or use point share (%). |
-| **Wins** | Total Grand Prix victories | `CALCULATE(COUNTROWS(FactRaceResult), FactRaceResult[positionOrder] = 1)` | Must use official classification order (`positionOrder = 1`). Never infer from `points > 0` or non-null `position`. |
-| **Podiums** | Top-3 race finishes | `CALCULATE(COUNTROWS(FactRaceResult), FactRaceResult[position] IN {1, 2, 3})` | Strictly valid for classified finishers with numeric position 1..3. |
-| **Classified entries** | Entries that completed the race classified | `CALCULATE(COUNTROWS(FactRaceResult), NOT(ISBLANK(FactRaceResult[position])))` | Position is official classification. Unclassified entries (`position IS NULL`) excluded. |
-| **Points per entry** | Average scoring efficiency | `DIVIDE([Total Points], [Result entries], 0)` | Denominator includes all result entries under active filter (including unclassified). Return blank when denominator is 0. |
-| **Mean classified finish** | Average finishing position | `CALCULATE(AVERAGE(FactRaceResult[position]), NOT(ISBLANK(FactRaceResult[position])))` | **Lower is better.** Strictly over classified finishes. Never replace NULL unclassified rows with 0, 20, or 99. |
-| **Grid-to-finish places gained** | Net positions gained/lost from start | `CALCULATE(AVERAGE(FactRaceResult[grid] - FactRaceResult[position]), FactRaceResult[grid] > 0, NOT(ISBLANK(FactRaceResult[position])))` | Positive = gained, zero = held, negative = lost. Strictly require `grid > 0` and classified finish. Report eligible count `n`. |
-| **Non-classified rate (%)** | Share of non-classified results | `DIVIDE(CALCULATE(COUNTROWS(FactRaceResult), ISBLANK(FactRaceResult[position])), [Result entries], 0)` | Report numerator, denominator, and outcome group breakdown. |
-| **Contribution share (%)** | Member KPI divided by parent total | `DIVIDE([Member KPI], [Parent Context KPI], 0)` | Explicitly state parent population (e.g. constructor points / season points). Do not divide by unfiltered global total. |
+| **Result entries** | Count of race participation rows; equivalent to count of unique source `resultId` at the fact grain | `COUNT(FactRaceResult[resultId])` | One row is one driver entry in one Grand Prix, not one Grand Prix event. Show alongside totals when useful. |
+| **Total points** | Total points awarded in the selected result rows | `SUM(FactRaceResult[points])` | Additive in the selected context. Raw points across eras are not directly comparable; compare within a season/era or use a clearly documented normalized measure. |
+| **Wins** | Official race wins | `CALCULATE(COUNTROWS(FactRaceResult), FactRaceResult[positionOrder] = 1)` | Use source-defined winner ordering. Do not infer a win from points or a non-null finish position. |
+| **Podiums** | Classified finishes in positions 1 through 3 | `CALCULATE(COUNTROWS(FactRaceResult), FactRaceResult[position] IN {1, 2, 3})` | Require a valid numeric classified position. |
+| **Classified entries** | Rows with a valid numeric finish `position` | `CALCULATE(COUNTROWS(FactRaceResult), NOT(ISBLANK(FactRaceResult[position])))` | Position is the classification criterion; do not use `positionText` alone. Report its share with the selected entry count. |
+| **Points per entry** | Total points divided by all result rows | `DIVIDE([Total Points], [Result entries])` | The denominator includes every result entry in the selected context, including non-classified entries. Return blank when the denominator is zero. |
+| **Mean classified finish** | Average numeric finish position among classified entries | `CALCULATE(AVERAGE(FactRaceResult[position]), NOT(ISBLANK(FactRaceResult[position])))` | Exclude NULL/unclassified positions. Lower is better; show classified-entry count. Median may be added as a separate measure. |
+| **Grid-to-finish places gained** | Per eligible row, `grid - position`; summarize as mean, median, or distribution | `CALCULATE(AVERAGE(FactRaceResult[grid] - FactRaceResult[position]), FactRaceResult[grid] > 0, NOT(ISBLANK(FactRaceResult[position])))` | Include only `grid > 0` and a valid classified finish. Positive means gained places, zero means held, negative means lost. Show eligible `n` and excluded NULL/zero-grid counts. |
+| **Non-classified rate** | Rows with NULL numeric position divided by all result rows | `DIVIDE(CALCULATE(COUNTROWS(FactRaceResult), ISBLANK(FactRaceResult[position])), [Result entries])` | Denominator is all selected result entries. Show numerator, denominator, and `OutcomeGroup` breakdown. The outcome group does not replace the source-position rule. |
+| **Contribution share** | A member's selected KPI divided by the same KPI for its selected parent population | `DIVIDE([Member KPI], [Parent Context KPI])` | Name the parent population (for example, constructor points divided by season points). Do not divide by an unfiltered global total when report filters are active. |
 
-If a source numeric field cannot be parsed, keep the source row, record a conversion discrepancy, and exclude the invalid value from that KPI until resolved. Preserve SQL NULL separately from zero and empty string.
+If a source numeric field cannot be parsed, keep the source row, record a conversion discrepancy, and exclude the invalid value from that KPI until resolved. Preserve SQL NULL separately from zero and empty string. Status groups and position semantics are defined in the [dimensional model](dimensional_model.md).
 
 ---
 
 ## 4. Status Outcome Grouping Taxonomy
 
-Source table `status.csv` contains 141 distinct statuses. To avoid ad-hoc aggregation errors and maintain semantic integrity, outcomes are standardized into 5 distinct groups in `DimStatus`:
+Source table `status.csv` contains 141 distinct statuses. To avoid ad-hoc aggregation errors and maintain semantic integrity, outcomes are standardized into five groups in `DimStatus`:
 
-```mermaid
+~~~mermaid
 graph TD
     SourceStatus["141 Source Statuses<br/>(status.csv)"] --> G1["1. Finished / Lapped<br/>('Finished', '+1 Lap', '+2 Laps'...)"]
     SourceStatus --> G2["2. Mechanical / Technical Failure<br/>('Engine', 'Gearbox', 'Brakes', 'Hydraulics'...)"]
     SourceStatus --> G3["3. Accident / Incident<br/>('Accident', 'Collision', 'Spun off'...)"]
     SourceStatus --> G4["4. Disqualified / Excluded<br/>('Disqualified', 'Excluded')"]
     SourceStatus --> G5["5. Did Not Start / Non-Participant<br/>('Did not start', 'Withdrew', 'Not qualified'...)"]
-```
+~~~
 
-### Critical Status Integrity Rules:
+### Critical status integrity rules
+
 1. **Never merge DNS/DSQ into DNF:**
-   - Disqualified (`DSQ`): excluded due to sporting/technical regulation infringement.
-   - Did Not Start (`DNS`): vehicle never crossed start line to participate.
-   - Merging these into generic "Did Not Finish" (DNF) distorts mechanical reliability vs sporting penalty statistics.
-2. **Classified vs Unclassified with Status:**
-   - Cars retiring after completing >90% race distance are officially *classified* with a finishing `position` (e.g. 14th) even if their status is "Engine" or "Accident".
+   - Disqualified (DSQ) means excluded due to a sporting or technical regulation infringement.
+   - Did Not Start (DNS) means the vehicle never crossed the start line to participate.
+   - Merging these into generic Did Not Finish (DNF) distorts mechanical reliability and sporting-penalty statistics.
+2. **Classified vs. unclassified with status:**
+   - Cars retiring after completing more than 90% of race distance can be officially classified with a finishing `position` even if their status is Engine or Accident.
    - The authoritative criterion for classified finish is `position IS NOT NULL`.
 
 ---
 
 ## 5. Regulatory and Historical Data-Use Caveats
 
-Any consumer of this BI semantic model (and AI narrative agent) must strictly obey the following data boundaries:
+Any consumer of this BI semantic model or AI narrative agent must follow these data boundaries.
 
-### 5.1 F1 Championship Points Era Incomparability
-- **1950–1959:** 8-6-4-3-2 points (only best 4 or 5 results counted toward title; 1 pt for fastest lap).
+### 5.1 F1 championship points are not comparable across eras
+
+- **1950–1959:** 8-6-4-3-2 points; only the best four or five results counted toward the title, and one point was awarded for fastest lap.
 - **1960:** 8-6-4-3-2-1.
-- **1961–1990:** 9-6-4-3-2-1 (various dropped score rules applied).
-- **1991–2002:** 10-6-4-3-2-1 (all races counted).
+- **1961–1990:** 9-6-4-3-2-1, with dropped-score rules in some seasons.
+- **1991–2002:** 10-6-4-3-2-1, with all races counted.
 - **2003–2009:** 10-8-6-5-4-3-2-1.
-- **2010–Present:** 25-18-15-12-10-8-6-4-2-1 (expanded point depth; bonus point for fastest lap 2019–2024; sprint race points 2021–2026).
-- *Mandatory Guideline:* Cross-era driver point totals must never be evaluated without normalizing by max available points per season or presenting career win/podium conversion percentages.
+- **2010 onward:** 25-18-15-12-10-8-6-4-2-1; fastest-lap bonus points applied in 2019–2024, and sprint-race points began in 2021.
+- **Guideline:** Do not evaluate cross-era driver point totals without normalizing by the maximum available points per season or presenting career win/podium conversion percentages.
 
-### 5.2 Source Extension Coverage Limitations
-- `practice_results.csv`, `weather.csv`, `tire_stints.csv` exist **only for 2025/2026 seasons** (35 Grand Prix events).
-- `lap_times.csv` (632,937 rows) covers **1950–2024 only**; zero records exist for 2025/2026.
-- `fastestLapSpeed` in `results.csv` is completely missing (`NULL`) for all 2025/2026 races due to source API upstream limitations.
-- *Mandatory Guideline:* Dashboards and queries must not interpret the lack of historical weather or tire data (pre-2025) as zero or clear weather.
+### 5.2 Source extension coverage limitations
 
-### 5.3 Non-Causal Nature of Track and Grid Attributes
-- A strong correlation between starting on Pole (`grid = 1`) and winning at Monaco does not imply pole position alone guarantees victory; strategy, safety cars, and mechanical reliability remain confounding factors.
-- Reports must frame findings as descriptive likelihoods (e.g., "Historical pole-to-win rate at Monaco is 72%") rather than causal claims.
+- `practice_results.csv`, `weather.csv`, and `tire_stints.csv` exist only for the 2025/2026 seasons (35 Grand Prix events).
+- `lap_times.csv` (632,937 rows) covers 1950–2024 only; the source has no records for 2025/2026.
+- `fastestLapSpeed` in `results.csv` is NULL for all 2025/2026 races due to an upstream source API limitation.
+- Do not interpret the lack of historical weather or tire data before 2025 as zero or clear weather.
+
+### 5.3 Track and grid attributes are not causal evidence
+
+A strong correlation between starting on pole (`grid = 1`) and winning at Monaco does not imply pole position alone guarantees victory; strategy, safety cars, and mechanical reliability are possible confounders. Reports must frame findings as descriptive likelihoods, not causal claims.
 
 ---
 
 ## 6. Dashboard Question Mapping and Visual Hierarchy
 
-### Dashboard 1: Overview (Descriptive Analytics)
-- **Top Summary Cards:** Total Race Entries, Championship Points, Total Wins, Total Podiums, Classified Entries, Non-Classified Rate (%). State selected period and non-classified numerator/denominator.
-- **Season Trajectory Line Chart:** Annual Points, Win %, and Reliability Trend over time with era selectors and scoring caveats.
-- **Constructor & Driver Leaderboards:** Points and Wins clustered bar chart with intra-team split within selected season.
-- **Circuit Geo / Distribution Map:** Global Grand Prix locations with bubble size proportional to races hosted, entries, and outcomes.
-- **Universal Slicers:** Season Range (1950–2026), Race/Round, Constructor, Driver, Circuit/Country, and Status Outcome Group.
+### Dashboard 1: Overview (descriptive analytics)
 
-### Dashboard 2: Detailed / Diagnostic (Driver & Reliability Deep Dive)
-- **Drill Hierarchy:** Drill from season to round/race, and from constructor to driver; drill-through to a result-row detail view keyed by source `resultId`.
-- **Grid vs. Finish Matrix (Scatter & Deviation Plot):** Starting Grid vs Finishing Position with net gain/loss heatmaps for the eligible population (`grid > 0`, classified), exposing excluded counts.
-- **Reliability Breakdown (Donut & Stacked Bar):** Outcome Group distributions (Mechanical Failure vs Accident vs Finished) filtered by Constructor and Circuit with exact row counts.
-- **Event-Level Decomposition (Matrix/Grid):** Race-by-race tabular drill-down with Round, Driver, Grid, Position, Points, Laps, Status, and Place Delta.
-- **Anomaly Inspection Callout:** Highlights extreme place gains with underlying row drill-through.
-- **Reconciliation View:** Inspection for a selected race/driver/constructor with source IDs, source measures, status label, and derived values (Phase 2 requirement).
+- **Summary cards:** Points, wins, podiums, result entries, classified entries, and non-classified rate. Put the selected season/period and non-classified numerator/denominator in visible context.
+- **Season trend:** Group points and wins by `DimRace` season → round → race. Offer `DimDate` calendar year → quarter → month → date as a calendar hierarchy where useful. Include scoring-era caveats for cross-era point comparisons.
+- **Contribution:** Group points, wins, and podiums by constructor, with drill-through to its drivers. Also support grouping by driver or constructor nationality within the selected season, race, or circuit.
+- **Distribution:** Group result entries, points, and outcomes by circuit country → circuit and status outcome group → exact source status label.
+- **Filters:** Season, race/round, driver, constructor, circuit/country, and source status/outcome group.
+
+### Dashboard 2: Detailed / Diagnostic
+
+- **Drill paths:** Drill through `DimRace` season → round → race, `DimConstructor` nationality → constructor, `DimDriver` nationality → driver, `DimCircuit` country → circuit, and `DimStatus` outcome group → source label. From a constructor selection, filter or drill through to its drivers.
+- **Status composition:** Show `OutcomeGroup` and exact source label, with breakdown by season/race, circuit, constructor, or driver. Include row counts and the share denominator.
+- **Grid-to-finish analysis:** Compare measures by race, circuit, constructor, or driver using only the eligible population. Display eligible `n` and excluded NULL/zero-grid counts.
+- **Change explanation:** Explain points or podium changes with event-level contributions grouped by constructor/driver, circuit, and optionally status. Make the comparison baseline explicit: prior event, prior season, or user-selected period.
+- **Result detail:** Provide a result-row detail view keyed by source `resultId`.
+- **Reconciliation:** For a selected race/driver/constructor, show source IDs, source measures, status label, and derived values. This is a Phase 2 dashboard requirement; no dashboard is claimed to exist in Phase 1.
+- **Anomaly inspection:** Highlight extreme place gains only with the underlying row available for drill-through and a defined threshold.
 
 ### AI Analytics Module: Verified Generative Explanations
-- Generates natural language summaries based strictly on computed DAX measures and visible filter contexts.
-- Explicitly states sample sizes, reference baselines, and data limitations (e.g., scoring system changes).
-- Declines to generate speculative root-cause explanations if the data shows only unclassified status without telemetry evidence.
+
+- Generate natural-language summaries strictly from computed measures and visible filter context.
+- State sample sizes, reference baselines, and data limitations such as scoring-system changes.
+- Use only measures and breakdowns present in the selected dashboard context; name the period and baseline and cite quantitative evidence visible to the user.
+- Decline speculative root-cause explanations when the selected data cannot support them, such as when only an unclassified status is available without telemetry evidence.
+- Natural-language querying is optional unless the course team gives a different instruction.
 
 ---
 
 ## 7. Quantitative Evidence for Acceptance and Report
 
 For the diagnostic page/report, retain evidence for:
-1. Source and Stage counts for all seven core tables, plus the selected result count;
-2. One sampled race and driver/constructor traced from `results.csv` through `stg.results`, including source IDs, optional NULL fields, and ETL run/batch log;
-3. Points and result-entry contribution by status group, constructor, and circuit for a stated season/race selection;
-4. Grid-to-finish sample size, the exact eligibility predicate, and a small set of row-level examples;
-5. Numerator/denominator for every displayed rate, and the comparison period used for every change explanation.
 
-Phase 1 defines these evidence needs and SQL acceptance checks. Actual pipeline evidence remains pending until the Stage loader is integrated and run.
+1. Source and Stage counts for all seven core tables, plus the selected result count.
+2. One sampled race and driver/constructor traced from `results.csv` through `stg.results`, including source IDs, optional NULL fields, and ETL run/batch log.
+3. Points and result-entry contribution by status group, constructor, and circuit for a stated season/race selection.
+4. Grid-to-finish sample size, the exact eligibility predicate, and row-level examples.
+5. Numerator/denominator for every displayed rate and the comparison period used for every change explanation.
+
+Phase 1 defines these evidence needs and SQL acceptance checks. Actual pipeline evidence remains pending until the Stage loader is integrated and run. Record evidence file paths, run IDs, counts, and discrepancies in the evidence/runbook location selected by the team.
 
 ---
 
 ## 8. Traceability to Course Project Requirements
 
-| Requirement | Contract Contribution | Delivery Phase |
+| Requirement | Contract contribution | Delivery phase |
 |---|---|---|
-| **3.1 Mage Ingestion into Staging**; validation, full/incremental load, status/count/error logging, rerun | Operational ETL requirement; mapping and null-token rules defined in [source-to-stage mapping](source_to_stage_mapping.md) | Phase 1 |
-| **3.2 dbt transformations**; cleaning, standardization, integration, tests, dependencies, docs | Lineage, natural-key, and relationship tests defined in [dimensional model](dimensional_model.md) | Phase 2 |
-| **3.3 SQL Server DW**; business process/grain, fact/dimensions/measures, star schema | One-fact star-schema contract (`FactRaceResult` at grain `resultId`) | Design Phase 1; Implementation Phase 2 |
-| **3.4 Semantic Model & Dashboards**; relationships, DAX, hierarchies, 2 dashboards | KPI definitions, status grouping taxonomy, drill/filter behavior, and diagnostic evidence above | Phase 2 |
-| **3.5 AI Summary & Explanation**; grounded in measures and verifiable | Explicit requirement to cite active filters, period, baseline, visible KPIs, and state when evidence is insufficient | Phase 3 / Final Delivery |
+| **3.1 Mage ingestion into SQL Server Staging**; validation, full/incremental load, status/count/error logging, rerun | Operational ETL requirement; mapping and null-token rules are defined in [source-to-stage mapping](source_to_stage_mapping.md). This business/KPI contract does not claim the implementation is complete. | Phase 1 |
+| **3.2 dbt transformations**; cleaning, standardization, integration, tests, dependencies, documentation | Lineage, natural-key, and relationship tests are defined in [dimensional model](dimensional_model.md). | Phase 2 |
+| **3.3 SQL Server DW**; business process/grain, fact/dimensions/measures, star schema | One-fact star-schema contract at `FactRaceResult` grain `resultId`. | Design Phase 1; implementation Phase 2 |
+| **3.4 Semantic model and dashboards**; relationships, DAX, hierarchies, two dashboards | KPI definitions, status grouping taxonomy, drill/filter behavior, and diagnostic evidence above. | Phase 2 |
+| **3.5 AI summary/explanation** grounded in measures and verifiable | Use active filters, period, baseline, KPIs, and supporting breakdowns; state when evidence is insufficient. | Phase 3 / final delivery |
 
 ---
 
 ## 9. Sign-off and Hand-off Alignment
 
 - **Phúc (Author):** Confirms business requirements map 1:1 to validated columns in `docs/source_to_stage_mapping.md`.
-- **Trực (Dimensional Model & QA):** Confirms `dw.FactRaceResult` and dimensions satisfy all 5 BQs and KPI DAX requirements without snowflake complexity.
-- **Dũng (SQL Server Staging):** Confirms status categories and numeric data types preserve all calculation fidelity.
-- **Lộc (Mage ETL):** Confirms null values in position and time measures are properly preserved without zero-padding.
+- **Trực (Dimensional Model & QA):** Confirms `dw.FactRaceResult` and dimensions satisfy all five business questions and KPI requirements without snowflake complexity.
+- **Dũng (SQL Server Staging):** Confirms status categories and numeric data types preserve calculation fidelity.
+- **Lộc (Mage ETL):** Confirms NULL values in position and time measures are preserved without zero-padding.
