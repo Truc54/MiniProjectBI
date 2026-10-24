@@ -4,7 +4,9 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.venv/
 .mage_data/
+.ssh_tunnel/
 mage_data/
 dbt/target/
 dbt/logs/
@@ -16,3 +18,5 @@ knowledge/
 example/
 2627.Yêu cầu.pdf
 *2627*Yeucau*
+
+.DS_Store

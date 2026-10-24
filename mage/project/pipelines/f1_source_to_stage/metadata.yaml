@@ -17,11 +17,11 @@ blocks:
   upstream_blocks:
   - load_f1_csv
   downstream_blocks:
-  - export_sqlserver
+  - load_sqlserver
   configuration: {}
   retry_config: null
-- uuid: export_sqlserver
-  name: export_sqlserver
+- uuid: load_sqlserver
+  name: load_sqlserver
   type: data_exporter
   executor_type: local_python
   language: python

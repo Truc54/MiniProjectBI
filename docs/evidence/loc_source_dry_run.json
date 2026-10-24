@@ -1,0 +1,110 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-10-23T16:42:12.556236+00:00",
+  "backend": "source_only",
+  "runs": [],
+  "source": [
+    {
+      "table": "circuits",
+      "source_rows": 78,
+      "batch_rows": 78,
+      "key_min": 1,
+      "key_max": 81,
+      "key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16",
+      "null_cells": 0,
+      "empty_cells": 0
+    },
+    {
+      "table": "constructors",
+      "source_rows": 214,
+      "batch_rows": 214,
+      "key_min": 1,
+      "key_max": 217,
+      "key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227",
+      "null_cells": 0,
+      "empty_cells": 0
+    },
+    {
+      "table": "drivers",
+      "source_rows": 879,
+      "batch_rows": 879,
+      "key_min": 1,
+      "key_max": 880,
+      "key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499",
+      "null_cells": 1629,
+      "empty_cells": 0
+    },
+    {
+      "table": "status",
+      "source_rows": 141,
+      "batch_rows": 141,
+      "key_min": 1,
+      "key_max": 143,
+      "key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130",
+      "null_cells": 0,
+      "empty_cells": 0
+    },
+    {
+      "table": "seasons",
+      "source_rows": 77,
+      "batch_rows": 77,
+      "key_min": 1950,
+      "key_max": 2026,
+      "key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212",
+      "null_cells": 0,
+      "empty_cells": 0
+    },
+    {
+      "table": "races",
+      "source_rows": 1164,
+      "batch_rows": 1164,
+      "key_min": 1,
+      "key_max": 1183,
+      "key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556",
+      "null_cells": 11449,
+      "empty_cells": 0
+    },
+    {
+      "table": "results",
+      "source_rows": 27568,
+      "batch_rows": 27568,
+      "key_min": 1,
+      "key_max": 27573,
+      "key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296",
+      "null_cells": 124176,
+      "empty_cells": 0
+    }
+  ],
+  "relationships": [
+    {
+      "relationship": "races.circuitId->circuits.circuitId",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "races.year->seasons.year",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "results.raceId->races.raceId",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "results.driverId->drivers.driverId",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "results.constructorId->constructors.constructorId",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "results.statusId->status.statusId",
+      "orphan_count": 0,
+      "sample": []
+    }
+  ]
+}
