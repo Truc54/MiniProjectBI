@@ -47,8 +47,8 @@ Grain: Một dòng cho mỗi trường đua.
 * `name` (`NVARCHAR(200)`, NOT NULL)
 * `location` (`NVARCHAR(100)`, NULL)
 * `country` (`NVARCHAR(100)`, NULL)
-* `lat` (`FLOAT`, NOT NULL) - Vĩ độ địa lý
-* `lng` (`FLOAT`, NOT NULL) - Kinh độ địa lý
+* `lat` (`DECIMAL(9, 6)`, NULL) - Vĩ độ địa lý
+* `lng` (`DECIMAL(9, 6)`, NULL) - Kinh độ địa lý
 * `alt` (`INT`, NOT NULL) - Độ cao so với mực nước biển (mét, 0 là placeholder hợp lệ)
 * `url` (`NVARCHAR(500)`, NOT NULL)
 * Các cột lineage: `_source_file`, `_batch_key`, `_load_mode`, `_ingested_at_utc`
