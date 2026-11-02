@@ -12,7 +12,6 @@ Create one source-aligned table per selected CSV in schema `stg`. Keep source ke
 - `stg.results` (results.csv)
 
 ## DDL & Documentation
-- **DDL Script:** [sqlserver/ddl/03_create_staging_tables.sql](file:///d:/MiniProjectBI/sqlserver/ddl/03_create_staging_tables.sql)
-- **Detailed Schema Specification:** [docs/stage_schema.md](file:///d:/MiniProjectBI/docs/stage_schema.md)
-- **Connection & Setup Guide:** [docs/sql_server_setup.md](file:///d:/MiniProjectBI/docs/sql_server_setup.md)
-
+- **DDL Script:** [sqlserver/ddl/03_create_staging_tables.sql](../ddl/03_create_staging_tables.sql)
+- **Detailed Schema Specification:** [docs/02_data_dictionary_and_mapping/stage_schema.md](../../docs/02_data_dictionary_and_mapping/stage_schema.md)
+- **Connection & Setup Guide:** [docs/04_operations_and_guides/sql_server_setup.md](../../docs/04_operations_and_guides/sql_server_setup.md)

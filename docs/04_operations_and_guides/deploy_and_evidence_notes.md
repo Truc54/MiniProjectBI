@@ -9,7 +9,7 @@
 ## 1. Trình tự Triển khai từ Đầu (Zero-to-Hero Deployment)
 
 ### Bước 1: Khởi động SQL Server & Cấu hình môi trường
-1. Khởi động instance SQL Server trên máy (hoặc Docker). Đảm bảo cổng `1433` và TCP/IP đã bật theo [docs/sql_server_setup.md](file:///d:/MiniProjectBI/docs/sql_server_setup.md).
+1. Khởi động instance SQL Server trên máy (hoặc Docker). Đảm bảo cổng `1433` và TCP/IP đã bật theo [sql_server_setup.md](sql_server_setup.md).
 2. Tạo file `.env` từ file mẫu:
    ```bash
    cp .env.example .env

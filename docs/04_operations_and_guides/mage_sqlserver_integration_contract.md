@@ -3,7 +3,7 @@
 **Người bàn giao:** Dũng (SQL Server & Staging)  
 **Người nhận bàn giao:** Lộc (Mage ETL)  
 **Phiên bản:** 1.0 (Hoàn tất ngày 20/10/2026)  
-**Tài liệu liên quan:** [stage_schema.md](file:///d:/MiniProjectBI/docs/stage_schema.md), [sql_server_setup.md](file:///d:/MiniProjectBI/docs/sql_server_setup.md)
+**Tài liệu liên quan:** [stage_schema.md](../02_data_dictionary_and_mapping/stage_schema.md), [sql_server_setup.md](sql_server_setup.md)
 
 ---
 
