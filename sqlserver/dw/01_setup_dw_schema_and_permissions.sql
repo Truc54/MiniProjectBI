@@ -5,17 +5,21 @@
 -- Phase: 2 - Data Transformation & Data Warehouse
 -- ============================================================================
 
-USE master;
-GO
-
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'F1_BI')
+-- Neu database F1_BI da ton tai, su dung F1_BI
+IF DB_ID(N'F1_BI') IS NOT NULL
 BEGIN
-    CREATE DATABASE F1_BI;
-    PRINT N'[INFO] Da tao Database F1_BI.';
+    USE F1_BI;
 END
-GO
-
-USE F1_BI;
+ELSE
+BEGIN
+    USE master;
+    IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'F1_BI')
+    BEGIN
+        CREATE DATABASE F1_BI;
+        PRINT N'[INFO] Da tao Database F1_BI.';
+    END
+    USE F1_BI;
+END
 GO
 
 PRINT N'====================================================================';

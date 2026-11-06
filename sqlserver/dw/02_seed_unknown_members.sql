@@ -36,6 +36,9 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM dw.DimDate WHERE DateSK = -1)
 BEGIN
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimDate'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimDate ON;
+
     INSERT INTO dw.DimDate (
         DateSK, FullDate, DayNumber, MonthNumber, MonthName,
         QuarterNumber, CalendarYear, WeekdayName
@@ -43,6 +46,10 @@ BEGIN
     VALUES (
         -1, '1900-01-01', 1, 1, N'Unknown', 1, 1900, N'Unknown'
     );
+
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimDate'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimDate OFF;
+
     PRINT N'[SUCCESS] Da seed ban ghi Unknown Member (DateSK = -1) cho dw.DimDate.';
 END
 ELSE
@@ -73,6 +80,9 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM dw.DimRace WHERE RaceSK = -1)
 BEGIN
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimRace'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimRace ON;
+
     INSERT INTO dw.DimRace (
         RaceSK, SourceRaceId, SeasonYear, RoundNumber,
         RaceName, RaceDate, CircuitId, Url
@@ -80,6 +90,10 @@ BEGIN
     VALUES (
         -1, -1, 1900, 0, N'Unknown Grand Prix', '1900-01-01', -1, NULL
     );
+
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimRace'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimRace OFF;
+
     PRINT N'[SUCCESS] Da seed ban ghi Unknown Member (RaceSK = -1) cho dw.DimRace.';
 END
 ELSE
@@ -112,6 +126,9 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM dw.DimCircuit WHERE CircuitSK = -1)
 BEGIN
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimCircuit'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimCircuit ON;
+
     INSERT INTO dw.DimCircuit (
         CircuitSK, SourceCircuitId, CircuitRef, CircuitName,
         Locality, Country, Latitude, Longitude, Altitude, Url
@@ -119,6 +136,10 @@ BEGIN
     VALUES (
         -1, -1, N'unknown', N'Unknown Circuit', N'Unknown', N'Unknown', NULL, NULL, NULL, NULL
     );
+
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimCircuit'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimCircuit OFF;
+
     PRINT N'[SUCCESS] Da seed ban ghi Unknown Member (CircuitSK = -1) cho dw.DimCircuit.';
 END
 ELSE
@@ -152,6 +173,9 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM dw.DimDriver WHERE DriverSK = -1)
 BEGIN
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimDriver'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimDriver ON;
+
     INSERT INTO dw.DimDriver (
         DriverSK, SourceDriverId, DriverRef, DriverNumber, DriverCode,
         Forename, Surname, FullName, DateOfBirth, Nationality, Url
@@ -160,6 +184,10 @@ BEGIN
         -1, -1, N'unknown', NULL, N'UNK',
         N'Unknown', N'Driver', N'Unknown Driver', '1900-01-01', N'Unknown', NULL
     );
+
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimDriver'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimDriver OFF;
+
     PRINT N'[SUCCESS] Da seed ban ghi Unknown Member (DriverSK = -1) cho dw.DimDriver.';
 END
 ELSE
@@ -188,6 +216,9 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM dw.DimConstructor WHERE ConstructorSK = -1)
 BEGIN
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimConstructor'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimConstructor ON;
+
     INSERT INTO dw.DimConstructor (
         ConstructorSK, SourceConstructorId, ConstructorRef,
         ConstructorName, Nationality, Url
@@ -195,6 +226,10 @@ BEGIN
     VALUES (
         -1, -1, N'unknown', N'Unknown Constructor', N'Unknown', NULL
     );
+
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimConstructor'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimConstructor OFF;
+
     PRINT N'[SUCCESS] Da seed ban ghi Unknown Member (ConstructorSK = -1) cho dw.DimConstructor.';
 END
 ELSE
@@ -221,12 +256,19 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM dw.DimStatus WHERE StatusSK = -1)
 BEGIN
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimStatus'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimStatus ON;
+
     INSERT INTO dw.DimStatus (
         StatusSK, SourceStatusId, SourceStatusLabel, OutcomeGroup
     )
     VALUES (
         -1, -1, N'Unknown Status', N'OTHER'
     );
+
+    IF OBJECTPROPERTY(OBJECT_ID(N'dw.DimStatus'), 'TableHasIdentity') = 1
+        SET IDENTITY_INSERT dw.DimStatus OFF;
+
     PRINT N'[SUCCESS] Da seed ban ghi Unknown Member (StatusSK = -1) cho dw.DimStatus.';
 END
 ELSE

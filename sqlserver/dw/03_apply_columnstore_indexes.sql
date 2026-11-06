@@ -201,3 +201,4 @@ PRINT N'====================================================================';
 PRINT N'[HOAN TAT] Script 03_apply_columnstore_indexes.sql da thuc thi thanh cong!';
 PRINT N'====================================================================';
 GO
+

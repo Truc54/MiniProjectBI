@@ -195,42 +195,42 @@ SELECT
     'DateSK = -1' AS Dimension_FK,
     SUM(CASE WHEN DateSK = -1 THEN 1 ELSE 0 END) AS Unknown_Rows,
     COUNT(*) AS Total_Fact_Rows,
-    CAST(100.0 * SUM(CASE WHEN DateSK = -1 THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5, 2)) AS Unknown_Pct
+    CAST(100.0 * SUM(CASE WHEN DateSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2)) AS Unknown_Pct
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
     'RaceSK = -1',
     SUM(CASE WHEN RaceSK = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN RaceSK = -1 THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN RaceSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
     'CircuitSK = -1',
     SUM(CASE WHEN CircuitSK = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN CircuitSK = -1 THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN CircuitSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
     'DriverSK = -1',
     SUM(CASE WHEN DriverSK = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN DriverSK = -1 THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN DriverSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
     'ConstructorSK = -1',
     SUM(CASE WHEN ConstructorSK = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN ConstructorSK = -1 THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN ConstructorSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
     'StatusSK = -1',
     SUM(CASE WHEN StatusSK = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN StatusSK = -1 THEN 1 ELSE 0 END) / COUNT(*) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN StatusSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult;
 GO
 
@@ -243,7 +243,7 @@ SELECT
     s.OutcomeGroup,
     COUNT(DISTINCT s.SourceStatusId) AS Distinct_Status_Codes,
     COUNT(f.RaceResultSK) AS Total_Fact_Results,
-    CAST(100.0 * COUNT(f.RaceResultSK) / (SELECT COUNT(*) FROM dw.FactRaceResult) AS DECIMAL(5, 2)) AS Pct_Of_All_Results
+    CAST(100.0 * COUNT(f.RaceResultSK) / NULLIF((SELECT COUNT(*) FROM dw.FactRaceResult), 0) AS DECIMAL(5, 2)) AS Pct_Of_All_Results
 FROM dw.DimStatus s
 LEFT JOIN dw.FactRaceResult f ON s.StatusSK = f.StatusSK
 GROUP BY s.OutcomeGroup
@@ -274,3 +274,4 @@ PRINT N'====================================================================';
 PRINT N'[HOAN TAT] Bo truy van doi soat dw_reconciliation_queries.sql hoan thanh!';
 PRINT N'====================================================================';
 GO
+

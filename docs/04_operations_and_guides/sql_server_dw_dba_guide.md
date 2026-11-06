@@ -103,3 +103,4 @@ python sqlserver/dw/run_dw_scripts.py --all
    - `sqlserver/dw/02_seed_unknown_members.sql`
    - `sqlserver/dw/03_apply_columnstore_indexes.sql`
 3. Mở tệp `sqlserver/dw/dw_reconciliation_queries.sql` và bấm **Execute (F5)** để chụp ảnh bảng kết quả đối soát làm bằng chứng (Evidence) nộp báo cáo.
+
