@@ -41,4 +41,4 @@ pin digest để tái lập runtime.
 
 Theo lựa chọn của người dùng, UI đang ở trang sign-in và kiểm thử tiếp tục bằng
 Mage engine. Chưa có bằng chứng đăng nhập/chạy bằng UI; phần này làm sau khi người
-dùng đăng nhập. Xem [runbook](../etl_runbook.md) để chạy lại suite thật và review nhóm.
+dùng đăng nhập. Xem [runbook](../04_operations_and_guides/etl_runbook.md) để chạy lại suite thật và review nhóm.
