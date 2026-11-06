@@ -1,0 +1,106 @@
+{
+  "source": "dataset/*.csv (Kaggle snapshot in repo); \\N -> NULL",
+  "generated_by": "tests/phase2_expected_baseline.py",
+  "row_counts": {
+    "fact_race_result": 27568,
+    "dim_race": 1164,
+    "dim_circuit": 78,
+    "dim_driver": 879,
+    "dim_constructor": 214,
+    "dim_status": 141,
+    "note": "Dimension counts exclude the Unknown member (-1); add 1 when it is included."
+  },
+  "dim_date": {
+    "min_race_date": "1950-05-13",
+    "max_race_date": "2026-09-26",
+    "distinct_race_dates": 1164
+  },
+  "measures": {
+    "sum_points": 57126.05,
+    "sum_laps": 1282619,
+    "win_rows_position_order_1": 1167,
+    "races_with_winner": 1164,
+    "podium_rows_position_1_to_3": 3513,
+    "classified_rows_position_not_null": 16494,
+    "non_classified_rows_position_null": 11074,
+    "grid_zero_rows": 1638,
+    "places_gained_eligible_rows": 16434,
+    "places_gained_sum": 48282,
+    "places_gained_avg": 2.937934,
+    "milliseconds_null_rows": 19200,
+    "fastest_lap_speed_null_rows": 19316
+  },
+  "points_eras": {
+    "rule": "max winner points per season = expected_max_winner_points(year)",
+    "seasons_checked": 77,
+    "seasons_violating": []
+  },
+  "outcome_group": {
+    "status_codes": {
+      "CLASSIFIED": 35,
+      "DNS": 2,
+      "DSQ": 3,
+      "OTHER": 5,
+      "RETIREMENT_DNF": 96
+    },
+    "result_rows": {
+      "CLASSIFIED": 15839,
+      "DNS": 258,
+      "DSQ": 162,
+      "OTHER": 1538,
+      "RETIREMENT_DNF": 9771
+    },
+    "result_rows_retirement_category": {
+      "ACCIDENT_DAMAGE": 2793,
+      "DRIVER_MEDICAL": 65,
+      "MECHANICAL": 6584,
+      "OTHER_RETIREMENT": 329
+    }
+  },
+  "position_text_rows": {
+    "D": 157,
+    "E": 9,
+    "F": 1368,
+    "N": 190,
+    "R": 9002,
+    "W": 346,
+    "numeric": 16496
+  },
+  "known_discrepancies": {
+    "classified_group_but_position_null": 28,
+    "retirement_group_but_position_not_null": 679,
+    "position_differs_from_position_order": 13,
+    "races_with_multiple_position_order_1": [
+      780,
+      784,
+      828
+    ],
+    "status_codes_unused_in_results": [
+      133,
+      134
+    ],
+    "drivers_nationality_trailing_space": [
+      861
+    ],
+    "drivers_nationality_empty_string": [
+      864,
+      865,
+      867,
+      868,
+      869,
+      870,
+      871,
+      873,
+      874,
+      875,
+      877,
+      878,
+      879,
+      880
+    ],
+    "numeric_position_text_but_position_null": [
+      1149,
+      1152
+    ]
+  }
+}

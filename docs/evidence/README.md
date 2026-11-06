@@ -42,3 +42,12 @@ pin digest để tái lập runtime.
 Theo lựa chọn của người dùng, UI đang ở trang sign-in và kiểm thử tiếp tục bằng
 Mage engine. Chưa có bằng chứng đăng nhập/chạy bằng UI; phần này làm sau khi người
 dùng đăng nhập. Xem [runbook](../04_operations_and_guides/etl_runbook.md) để chạy lại suite thật và review nhóm.
+
+## Evidence Phase 2 của Lộc (06/11/2026)
+
+| File | Kết quả |
+|---|---|
+| `loc_phase2_expected_baseline.json` | Số liệu kỳ vọng của DW, tính từ CSV: số dòng, measure, `OutcomeGroup`, thang điểm kỷ nguyên, phát hiện chất lượng |
+| `loc_phase2_unit_tests.txt` | 17/17 test nhất quán mapping pass (`tests/test_phase2_mapping.py`) |
+| `loc_phase2_semantic_validation.txt` | `sqlserver/dw/loc_semantic_validation.sql` 43/43 PASS trên SQL Server 2022 (bản dựng tạm theo đặc tả) |
+| `loc_phase2_validation_run.md` | Mô tả các lần chạy, kiểm thử âm 8/8 lỗi bị phát hiện, và những phần còn chờ dbt của Trực |
