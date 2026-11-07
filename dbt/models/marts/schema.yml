@@ -1,0 +1,143 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Daily calendar dimension (1950 to 2026) with F1 Grand Prix flags and Unknown member (-1)."
+    columns:
+      - name: date_sk
+        description: "Surrogate key formatted as YYYYMMDD, or -1 for unknown."
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_race
+    description: "Grand Prix race dimension including season, round, and display labels."
+    columns:
+      - name: race_sk
+        description: "Deterministic surrogate key equal to source raceId, or -1 for unknown."
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_circuit
+    description: "Circuit dimension with geo-coordinates, altitude, and city/country info."
+    columns:
+      - name: circuit_sk
+        description: "Deterministic surrogate key equal to source circuitId, or -1 for unknown."
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_driver
+    description: "Driver dimension with full names, nationality, and birth dates."
+    columns:
+      - name: driver_sk
+        description: "Deterministic surrogate key equal to source driverId, or -1 for unknown."
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_constructor
+    description: "Constructor/team dimension with nationality."
+    columns:
+      - name: constructor_sk
+        description: "Deterministic surrogate key equal to source constructorId, or -1 for unknown."
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_status
+    description: "Status classification dimension mapping 141 statuses into 5 strategic groups."
+    columns:
+      - name: status_sk
+        description: "Deterministic surrogate key equal to source statusId, or -1 for unknown."
+        data_tests:
+          - not_null
+          - unique
+      - name: outcome_group
+        description: "Standardized 5 strategic F1 outcome groups."
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['CLASSIFIED', 'DNS', 'DSQ', 'RETIREMENT_DNF', 'OTHER']
+      - name: outcome_category
+        description: "Detailed breakdown category for mechanical, accident, and operational outcomes."
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - 'FINISHED_OR_LAPPED'
+                - 'DID_NOT_START'
+                - 'DISQUALIFIED'
+                - 'NOT_QUALIFIED_OR_NOT_CLASSIFIED'
+                - 'MECHANICAL'
+                - 'ACCIDENT_DAMAGE'
+                - 'DRIVER_MEDICAL'
+                - 'OTHER_RETIREMENT'
+                - 'UNREVIEWED'
+
+  - name: fact_race_result
+    description: "Accumulated race results fact table with surrogate keys, measures, and outcome classifications."
+    columns:
+      - name: source_result_id
+        description: "Natural result ID (grain key)."
+        data_tests:
+          - not_null
+          - unique
+      - name: date_sk
+        description: "Foreign key to DimDate."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_sk
+      - name: race_sk
+        description: "Foreign key to DimRace."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_race')
+              field: race_sk
+      - name: circuit_sk
+        description: "Foreign key to DimCircuit."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_circuit')
+              field: circuit_sk
+      - name: driver_sk
+        description: "Foreign key to DimDriver."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_driver')
+              field: driver_sk
+      - name: constructor_sk
+        description: "Foreign key to DimConstructor."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_constructor')
+              field: constructor_sk
+      - name: status_sk
+        description: "Foreign key to DimStatus."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_status')
+              field: status_sk
+      - name: result_outcome_code
+        description: "Line-level official race result outcome code derived from positionText."
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - 'CLASSIFIED'
+                - 'RETIRED'
+                - 'DISQUALIFIED'
+                - 'EXCLUDED'
+                - 'WITHDRAWN'
+                - 'FAILED_TO_QUALIFY'
+                - 'NOT_CLASSIFIED'
+                - 'UNKNOWN'
+
