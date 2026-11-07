@@ -10,7 +10,7 @@ sources:
         columns:
           - name: circuitId
             description: "Surrogate/natural key for circuits in raw source."
-            tests:
+            data_tests:
               - unique
               - not_null
 
@@ -19,7 +19,7 @@ sources:
         columns:
           - name: constructorId
             description: "Primary key for constructors in source."
-            tests:
+            data_tests:
               - unique
               - not_null
 
@@ -28,7 +28,7 @@ sources:
         columns:
           - name: driverId
             description: "Primary key for drivers in source."
-            tests:
+            data_tests:
               - unique
               - not_null
 
@@ -37,7 +37,7 @@ sources:
         columns:
           - name: statusId
             description: "Primary key for outcome status in source."
-            tests:
+            data_tests:
               - unique
               - not_null
 
@@ -46,7 +46,7 @@ sources:
         columns:
           - name: year
             description: "Championship year."
-            tests:
+            data_tests:
               - unique
               - not_null
 
@@ -55,7 +55,7 @@ sources:
         columns:
           - name: raceId
             description: "Primary key for races in source."
-            tests:
+            data_tests:
               - unique
               - not_null
 
@@ -64,7 +64,6 @@ sources:
         columns:
           - name: resultId
             description: "Primary key for race results in source."
-            tests:
+            data_tests:
               - unique
               - not_null
-

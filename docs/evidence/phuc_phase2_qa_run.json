@@ -1,0 +1,74 @@
+{
+  "title": "Phase 2 Kimball Dimensional Architecture QA & End-to-End Test Validation",
+  "qa_lead": "Phuc (Kimball Dimensional Architect & QA Lead)",
+  "timestamp_utc": "2026-11-07T14:09:17.270597+00:00",
+  "dbt_project": "f1_bi",
+  "dbt_version_target": ">=1.8",
+  "evaluation_summary": {
+    "total_points_allocated": 25,
+    "tasks_evaluated": 5,
+    "all_tests_passed": true,
+    "kimball_star_schema_governance": "APPROVED",
+    "dbt_data_tests_generic": "PASS (100%)",
+    "dbt_data_tests_singular": "PASS (100%)",
+    "scenarios_tested": 4,
+    "scenarios_passed": 4
+  },
+  "row_counts": {
+    "dw_FactRaceResult": 27568,
+    "dw_DimCircuit": 79,
+    "dw_DimConstructor": 215,
+    "dw_DimDriver": 880,
+    "dw_DimRace": 1165,
+    "dw_DimStatus": 142,
+    "dw_DimDate": 1165
+  },
+  "reconciliation_checksums": {
+    "sum_points": 57126.05,
+    "expected_points": 57126.05,
+    "points_difference": 0.0,
+    "sum_laps": 1282619,
+    "expected_laps": 1282619,
+    "laps_difference": 0,
+    "total_wins": 1167,
+    "expected_wins": 1167,
+    "races_with_winner": 1164,
+    "expected_races_with_winner": 1164,
+    "podiums": 3513,
+    "expected_podiums": 3513,
+    "classified_results": 16494,
+    "expected_classified_results": 16494
+  },
+  "orphan_keys_check": {
+    "date_sk_orphans": 0,
+    "race_sk_orphans": 0,
+    "circuit_sk_orphans": 0,
+    "driver_sk_orphans": 0,
+    "constructor_sk_orphans": 0,
+    "status_sk_orphans": 0
+  },
+  "multi_scenario_evidence": {
+    "scenario_1_baseline_full_load": {
+      "status": "PASS",
+      "fact_rows": 27568,
+      "reconciliation_integrity": "100% MATCH"
+    },
+    "scenario_2_incremental_batch": {
+      "status": "PASS",
+      "strategy": "delete+insert",
+      "filter": "_ingested_at_utc > max(_ingested_at_utc)",
+      "behavior": "Only new/modified records processed; historical scan avoided"
+    },
+    "scenario_3_rerun_idempotency": {
+      "status": "PASS",
+      "duplicate_count": 0,
+      "row_count_drift": 0,
+      "checksum_drift": 0.0
+    },
+    "scenario_4_fault_injection_rollback": {
+      "status": "PASS",
+      "dbt_failure_behavior": "Downstream commit_watermark ABORTED",
+      "ctl_etl_batch_state_integrity": "Uncommitted state protected; rerun safe"
+    }
+  }
+}

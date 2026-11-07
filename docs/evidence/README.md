@@ -51,3 +51,11 @@ dùng đăng nhập. Xem [runbook](../04_operations_and_guides/etl_runbook.md) �
 | `loc_phase2_unit_tests.txt` | 17/17 test nhất quán mapping pass (`tests/test_phase2_mapping.py`) |
 | `loc_phase2_semantic_validation.txt` | `sqlserver/dw/loc_semantic_validation.sql` 43/43 PASS trên SQL Server 2022 (bản dựng tạm theo đặc tả) |
 | `loc_phase2_validation_run.md` | Mô tả các lần chạy, kiểm thử âm 8/8 lỗi bị phát hiện, và những phần còn chờ dbt của Trực |
+
+
+## Evidence Phase 2 của Phúc (07/11/2026)
+
+| File | Kết quả |
+|---|---|
+| `phuc_phase2_qa_run.json` | Kết quả nghiệm thu tự động: 27.568 dòng Fact, 0 orphan FK, checksum điểm 57.126,05 / số vòng 1.282.619 khớp 100%, 4/4 scenario PASS |
+| `phuc_phase2_qa_validation.md` | Báo cáo chi tiết kiểm định mô hình chiều Kimball, 24 generic data tests, 4 singular SQL tests và 4 kịch bản vận hành thực tế |

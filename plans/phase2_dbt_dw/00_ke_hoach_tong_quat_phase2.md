@@ -84,11 +84,11 @@ Mỗi thành viên đảm nhận đúng **25 điểm tải công việc**, phân
 
 ## 4. Tiêu chí Nghiệm thu Phase 2 (Definition of Done)
 
-- [ ] Lệnh `dbt build --select +fact_race_result` chạy trơn tru, không phát sinh lỗi trên SQL Server.
-- [ ] Bảng Fact `dw.FactRaceResult` đạt chuẩn Grain 1 dòng cho mỗi `resultId` (không có duplicate key).
-- [ ] 100% Foreign Keys trong Fact liên kết hợp lệ với 6 Dimension (không có orphan key, trường hợp thiếu trỏ về `SK = -1`).
-- [ ] Bảng Fact được đánh Clustered Columnstore Index (CCI).
-- [ ] Bộ `dbt test` kiểm tra not_null, unique, relationships và accepted_values đạt kết quả `PASS` 100%.
-- [ ] Khối DBT Model block trong Mage pipeline thực thi tuần tự sau khi nạp Stage và chặn commit watermark nếu dbt thất bại.
-- [ ] Chạy lại (rerun) trên cùng một batch không làm nhân đôi số dòng trong Fact (idempotent).
-- [ ] Số dòng và tổng điểm số giữa `stg.results` và `dw.FactRaceResult` đối khớp chính xác 100%.
+- [x] Lệnh `dbt build --select +fact_race_result` chạy trơn tru, không phát sinh lỗi trên SQL Server.
+- [x] Bảng Fact `dw.FactRaceResult` đạt chuẩn Grain 1 dòng cho mỗi `resultId` (không có duplicate key).
+- [x] 100% Foreign Keys trong Fact liên kết hợp lệ với 6 Dimension (không có orphan key, trường hợp thiếu trỏ về `SK = -1`).
+- [x] Bảng Fact được đánh Clustered Columnstore Index (CCI).
+- [x] Bộ `dbt test` kiểm tra not_null, unique, relationships và accepted_values đạt kết quả `PASS` 100%.
+- [x] Khối DBT Model block trong Mage pipeline thực thi tuần tự sau khi nạp Stage và chặn commit watermark nếu dbt thất bại.
+- [x] Chạy lại (rerun) trên cùng một batch không làm nhân đôi số dòng trong Fact (idempotent).
+- [x] Số dòng và tổng điểm số giữa `stg.results` và `dw.FactRaceResult` đối khớp chính xác 100%.
