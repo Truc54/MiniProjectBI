@@ -1,0 +1,23 @@
+test_dim_date_range_covers_all_race_dates (tests.test_phase2_mapping.BaselineTests) ... ok
+test_measures_recomputed_independently (tests.test_phase2_mapping.BaselineTests) ... ok
+test_outcome_totals_reconcile (tests.test_phase2_mapping.BaselineTests) ... ok
+test_points_eras_match_spec (tests.test_phase2_mapping.BaselineTests)
+Max winner points per season = stage_to_dw_mapping.md section 8.1. ... ok
+test_result_outcome_code_has_no_unknown (tests.test_phase2_mapping.BaselineTests) ... ok
+test_fact_columns_identical_in_mapping_and_dictionary (tests.test_phase2_mapping.DocumentConsistencyTests) ... ok
+test_section_4_1_numbers_match_baseline (tests.test_phase2_mapping.DocumentConsistencyTests) ... ok
+test_status_sql_is_referenced (tests.test_phase2_mapping.DocumentConsistencyTests) ... ok
+test_every_reviewed_label_appears_exactly_once (tests.test_phase2_mapping.GeneratedSqlTests) ... ok
+test_laps_like_patterns_match_python_regex (tests.test_phase2_mapping.GeneratedSqlTests) ... ok
+test_sql_file_is_up_to_date (tests.test_phase2_mapping.GeneratedSqlTests) ... ok
+test_covers_all_141_source_statuses_once (tests.test_phase2_mapping.StatusMappingTests) ... ok
+test_csv_equals_classifier (tests.test_phase2_mapping.StatusMappingTests) ... ok
+test_dns_dsq_not_merged_into_dnf (tests.test_phase2_mapping.StatusMappingTests) ... ok
+test_groups_and_categories_are_valid_and_consistent (tests.test_phase2_mapping.StatusMappingTests) ... ok
+test_label_sets_are_pairwise_disjoint (tests.test_phase2_mapping.StatusMappingTests) ... ok
+test_result_rows_column_matches_results (tests.test_phase2_mapping.StatusMappingTests) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.049s
+
+OK

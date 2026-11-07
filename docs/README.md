@@ -42,7 +42,11 @@ docs/
 ├── 02_data_dictionary_and_mapping/        # Từ điển dữ liệu và ánh xạ chuyển đổi
 │   ├── source_profile.md                  # Khảo sát dữ liệu nguồn 17 CSV Kaggle, thống kê missing & quyết định phạm vi
 │   ├── source_to_stage_mapping.md         # Quy tắc ánh xạ 1:1 từ CSV sang các bảng SQL Server Staging
-│   └── stage_schema.md                    # Chi tiết đặc tả schema Staging ([stg]), kiểu dữ liệu và ràng buộc
+│   ├── stage_schema.md                    # Chi tiết đặc tả schema Staging ([stg]), kiểu dữ liệu và ràng buộc
+│   ├── stage_to_dw_mapping.md             # Phase 2: ánh xạ stg -> dw, OutcomeGroup, quy tắc measure F1
+│   ├── status_outcome_mapping.csv         # Phase 2: phân nhóm 141 status (sinh bởi tests/phase2_expected_baseline.py)
+│   ├── stg_status_outcome.sql             # Phase 2: SQL stg_status đầy đủ cho dbt (sinh tự động, đã test 141/141)
+│   └── dw_data_dictionary.md              # Phase 2: từ điển dữ liệu schema dw (1 fact + 6 dim)
 │
 ├── 03_data_quality_and_governance/        # Quản trị chất lượng dữ liệu và kiểm thử
 │   ├── data_quality_rules.md              # Bộ quy tắc kiểm soát chất lượng (Completeness, Uniqueness, Validity)
@@ -53,6 +57,9 @@ docs/
 │   ├── etl_runbook.md                     # Hướng dẫn chi tiết vận hành pipeline Mage ETL (Full/Incremental/Rerun)
 │   ├── mage_sqlserver_integration_contract.md # Giao ước kỹ thuật kết nối giữa Mage container và SQL Server
 │   └── deploy_and_evidence_notes.md       # Ghi chú môi trường triển khai thực tế và tái lập kiểm thử
+│
+├── 05_reports/                           # Các phần báo cáo kỹ thuật theo phase
+│   └── phase2_data_transformation_and_modeling.md  # Phase 2 (Lộc): bối cảnh, quy tắc chuyển đổi, đánh giá chất lượng
 │
 └── evidence/                              # Kho lưu trữ bằng chứng thực nghiệm (Logs, JSON test results)
     ├── README.md                          # Mục lục giải thích các file bằng chứng
