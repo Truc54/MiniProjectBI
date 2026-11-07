@@ -8,6 +8,8 @@ services:
       USER_CODE_PATH: /home/src/project
       PYTHONPATH: /home/src/project
       F1_DATA_DIR: /home/src/dataset
+      DBT_PROFILES_DIR: /home/src/project/dbt
+      REQUIRE_USER_AUTHENTICATION: "0"
       # Set MSSQL_HOST to Dung's reachable host/IP for a remote instance.
       MSSQL_HOST: ${MSSQL_HOST:-host.docker.internal}
     ports:
@@ -18,6 +20,7 @@ services:
       - ./docs/evidence:/home/src/evidence
       - mage_data:/home/src/mage_data
       - ./dataset:/home/src/dataset:ro
+      - ./dbt:/home/src/project/dbt
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: /app/run_app.sh mage start project

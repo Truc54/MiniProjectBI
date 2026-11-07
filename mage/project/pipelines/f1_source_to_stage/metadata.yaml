@@ -27,6 +27,34 @@ blocks:
   language: python
   upstream_blocks:
   - validate_f1_table
+  downstream_blocks:
+  - dbt_transformation
+  configuration: {}
+  retry_config: null
+- uuid: dbt_transformation
+  name: dbt_transformation
+  type: dbt
+  executor_type: local_python
+  language: yaml
+  upstream_blocks:
+  - load_sqlserver
+  downstream_blocks:
+  - commit_watermark
+  configuration:
+    dbt_project_name: dbt
+    dbt_profile_target: dev
+    dbt:
+      command: run
+    flags:
+      --select: "+fact_race_result"
+  retry_config: null
+- uuid: commit_watermark
+  name: commit_watermark
+  type: custom
+  executor_type: local_python
+  language: python
+  upstream_blocks:
+  - dbt_transformation
   downstream_blocks: []
   configuration: {}
   retry_config: null
@@ -36,7 +64,7 @@ concurrency_config: {}
 conditionals: []
 created_at: null
 data_integration: null
-description: Load selected Formula 1 CSV files into SQL Server staging.
+description: Load Formula 1 CSV into staging, transform with dbt into dimensional DW, and commit watermark.
 executor_config: {}
 executor_count: 1
 executor_type: null
@@ -51,7 +79,9 @@ spark_config: {}
 tags:
 - f1
 - source-to-stage
+- dbt
+- dw
 type: python
 uuid: f1_source_to_stage
 variables_dir: /home/src/mage_data/project
-version: 0.1.1
+version: 0.2.0

@@ -55,6 +55,7 @@ docs/
 ├── 04_operations_and_guides/              # Hướng dẫn vận hành, triển khai và Runbook
 │   ├── sql_server_setup.md                # Cấu hình SQL Server, mạng TCP/IP, user và phân quyền
 │   ├── etl_runbook.md                     # Hướng dẫn chi tiết vận hành pipeline Mage ETL (Full/Incremental/Rerun)
+│   ├── dbt_mage_orchestration_runbook.md  # Phase 2 (Trực): runbook điều phối dbt Core & Mage pipeline lên DW
 │   ├── mage_sqlserver_integration_contract.md # Giao ước kỹ thuật kết nối giữa Mage container và SQL Server
 │   └── deploy_and_evidence_notes.md       # Ghi chú môi trường triển khai thực tế và tái lập kiểm thử
 │

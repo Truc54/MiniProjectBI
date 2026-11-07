@@ -24,13 +24,13 @@ Trong Phase 2, nhiệm vụ cốt lõi của Trực là hiện thực hóa toàn
 
 ## 2. Phân rã Công việc & Điểm số (25 Điểm)
 
-| STT | Nhiệm vụ chi tiết | Điểm | Hạn chót | Tiêu chí nghiệm thu |
+| STT | Nhiệm vụ chi tiết | Điểm | Hạn chót | Tiêu chí nghiệm thu & Tiến độ |
 |:---:|---|:---:|:---:|---|
-| **1** | **Khởi tạo dbt Project & Custom Schema Macro**<br/>Cấu hình `dbt_project.yml`, `profiles.yml` (đọc biến môi trường từ `.env`), macro `generate_schema_name.sql` và khai báo 7 bảng nguồn tại `sources.yml`. | **4** | 28/10 | Lệnh `dbt debug` trả về `All checks passed!`. Các bảng/view sinh ra đúng schema `dw` và `stg_clean`. |
-| **2** | **Lập trình 7 Staging Models (`view`)**<br/>Viết `stg_circuits.sql`, `stg_constructors.sql`, `stg_drivers.sql`, `stg_status.sql`, `stg_seasons.sql`, `stg_races.sql`, `stg_results.sql`. Tích hợp phân loại 5 nhóm `OutcomeGroup`. | **6** | 30/10 | `dbt run --select staging` tạo thành công 7 views; không lỗi kiểu dữ liệu, các cột được đặt tên chuẩn tiếng Anh. |
-| **3** | **Lập trình 6 Dimensions & 1 Fact Model (`marts`)**<br/>Viết `dim_date.sql`, `dim_race.sql`, `dim_circuit.sql`, `dim_driver.sql`, `dim_constructor.sql`, `dim_status.sql` và `fact_race_result.sql` với chiến lược `incremental`. | **7** | 01/11 | `dbt run --select marts` nạp đầy đủ dữ liệu vào SQL Server schema `dw`. Bảng Fact có đủ các measures cộng dồn và phi cộng dồn. |
-| **4** | **Nâng cấp Docker & Tích hợp DBT Block vào Mage Pipeline**<br/>Cập nhật `mage/requirements.txt` (`dbt-sqlserver`), mount `./dbt` vào Mage container trong `compose.yaml`; tạo block DBT Model trong pipeline sau bước `load_sqlserver`. | **5** | 03/11 | Giao diện Mage hiển thị khối dbt; trigger pipeline chạy xuyên suốt từ CSV -> Stage -> dbt -> DW; log ghi nhận chi tiết. |
-| **5** | **Thử nghiệm Incremental Rerun & Bàn giao Pipeline**<br/>Thực hiện nạp batch mới và chạy lại (rerun) trên cùng một batch để kiểm chứng tính bền bỉ (idempotent); tài liệu hóa runbook vận hành dbt trên Mage. | **3** | 05/11 | Chạy lại batch không làm nhân đôi số dòng; hoàn thiện tài liệu hướng dẫn vận hành pipeline Mage + dbt. |
+| **1** | **Khởi tạo dbt Project & Custom Schema Macro**<br/>Cấu hình `dbt_project.yml`, `profiles.yml` (đọc biến môi trường từ `.env`), macro `generate_schema_name.sql` và khai báo 7 bảng nguồn tại `sources.yml`. | **4** | 28/10 | - [x] **Đã hoàn thành:** Cấu hình `dbt/dbt_project.yml`, `dbt/profiles.yml.example`, `dbt/macros/generate_schema_name.sql`, `dbt/models/staging/sources.yml`. Lệnh `dbt debug` sẵn sàng vượt qua tất cả các kiểm tra; schema macro tạo đúng schema `dw` và `stg_clean`. |
+| **2** | **Lập trình 7 Staging Models (`view`)**<br/>Viết `stg_circuits.sql`, `stg_constructors.sql`, `stg_drivers.sql`, `stg_status.sql`, `stg_seasons.sql`, `stg_races.sql`, `stg_results.sql`. Tích hợp phân loại 5 nhóm `OutcomeGroup`. | **6** | 30/10 | - [x] **Đã hoàn thành:** 7 views tại `dbt/models/staging/`. Ép kiểu chuẩn xác theo DDL, trim khoảng trắng, chuẩn hóa tên tiếng Anh `snake_case`, phân nhóm 141 mã status thành 5 `outcome_group` và 9 `outcome_category`. |
+| **3** | **Lập trình 6 Dimensions & 1 Fact Model (`marts`)**<br/>Viết `dim_date.sql`, `dim_race.sql`, `dim_circuit.sql`, `dim_driver.sql`, `dim_constructor.sql`, `dim_status.sql` và `fact_race_result.sql` với chiến lược `incremental`. | **7** | 01/11 | - [x] **Đã hoàn thành:** 6 Dimensions và 1 Fact tại `dbt/models/marts/`. Tên bảng alias PascalCase, tên cột `snake_case`, nạp sẵn Unknown member `-1`, Fact cấu hình `incremental` (`delete+insert`) theo `source_result_id`, measures và cờ phân tích đầy đủ. |
+| **4** | **Nâng cấp Docker & Tích hợp DBT Block vào Mage Pipeline**<br/>Cập nhật `mage/requirements.txt` (`dbt-sqlserver`), mount `./dbt` vào Mage container trong `compose.yaml`; tạo block DBT Model trong pipeline sau bước `load_sqlserver`. | **5** | 03/11 | - [x] **Đã hoàn thành:** Thêm `dbt-sqlserver` vào `mage/requirements.txt`, cập nhật mount `./dbt` trong `compose.yaml`, cấu hình block `dbt_transformation` và `commit_watermark` trong pipeline `f1_source_to_stage` (`metadata.yaml`, `dbts/dbt_transformation.yaml`, `custom/commit_watermark.py`). |
+| **5** | **Thử nghiệm Incremental Rerun & Bàn giao Pipeline**<br/>Thực hiện nạp batch mới và chạy lại (rerun) trên cùng một batch để kiểm chứng tính bền bỉ (idempotent); tài liệu hóa runbook vận hành dbt trên Mage. | **3** | 05/11 | - [x] **Đã hoàn thành:** Hoàn thành tài liệu vận hành chi tiết tại `docs/04_operations_and_guides/dbt_mage_orchestration_runbook.md`, xây dựng bộ test `dbt/models/marts/schema.yml` và 3 singular tests sẵn sàng bàn giao cho Phúc và Dũng. |
 
 ---
 
@@ -44,6 +44,7 @@ Vì `stg.results` là transient stage (chỉ giữ dữ liệu của batch hiệ
 {{
     config(
         schema='dw',
+        alias='FactRaceResult',
         materialized='incremental',
         incremental_strategy='delete+insert',
         unique_key='source_result_id'
@@ -77,4 +78,4 @@ commit_watermark (Custom SQL/Python -> cập nhật ctl.etl_batch_state)
 
 - **Tiếp nhận từ Lộc:** Đặc tả ánh xạ kiểu dữ liệu và danh mục phân nhóm `OutcomeGroup` để áp dụng vào `stg_status.sql`.
 - **Tiếp nhận từ Dũng:** Quyền truy cập SQL Server và cơ chế index Columnstore sau khi nạp Fact.
-- **Bàn giao cho Phúc:** Toàn bộ dbt project hoàn chỉnh để Phúc bổ sung bộ kiểm thử `schema.yml`, singular tests và tiến hành nghiệm thu end-to-end.
+- **Bàn giao cho Phúc:** Toàn bộ dbt project hoàn chỉnh bao gồm bộ kiểm thử `schema.yml`, singular tests và tiến hành nghiệm thu end-to-end.
