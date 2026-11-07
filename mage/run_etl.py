@@ -5,12 +5,66 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import shutil
+import subprocess
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / 'project'))
 
 from f1_etl.contract import QualityError, TABLES
 from f1_etl.source import check_source_relationships, load_payload, safe_error, validate_payload
+
+
+def run_dbt_cli(command='run', select='+fact_race_result', dbt_project_dir=None):
+    candidate_dirs = [
+        dbt_project_dir,
+        Path(__file__).resolve().parents[1] / 'dbt',
+        Path('/home/src/project/dbt'),
+        Path('/home/src/dbt'),
+    ]
+    resolved_dir = None
+    for d in candidate_dirs:
+        if d and Path(d).exists() and (Path(d) / 'dbt_project.yml').exists():
+            resolved_dir = Path(d)
+            break
+    if not resolved_dir:
+        raise QualityError('dbt project directory containing dbt_project.yml not found')
+
+    dbt_bin = shutil.which('dbt') or 'dbt'
+    cmd = [dbt_bin, command, '--project-dir', str(resolved_dir), '--profiles-dir', str(resolved_dir)]
+    if select:
+        cmd.extend(['--select', select])
+
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    out = {
+        'command': ' '.join(cmd),
+        'exit_code': proc.returncode,
+        'stdout': proc.stdout,
+        'stderr': proc.stderr,
+    }
+    if proc.returncode != 0:
+        raise QualityError(f"dbt {command} failed (code {proc.returncode}):\n{proc.stdout}\n{proc.stderr}")
+    return out
+
+
+def commit_watermark_state(engine, batch_key, table_name='results'):
+    from sqlalchemy import text
+    with engine.begin() as conn:
+        conn.execute(text("""
+            MERGE INTO ctl.etl_batch_state AS target
+            USING (SELECT :source_name AS source_name, :source_table AS source_table, :batch_key AS batch_key) AS src
+            ON (target.source_name = src.source_name AND target.source_table = src.source_table AND target.batch_key = src.batch_key)
+            WHEN MATCHED THEN
+                UPDATE SET batch_status = 'success', loaded_at_utc = :loaded_at
+            WHEN NOT MATCHED THEN
+                INSERT (source_name, source_table, batch_key, batch_status, loaded_at_utc)
+                VALUES (src.source_name, src.source_table, src.batch_key, 'success', :loaded_at);
+        """), {
+            'source_name': f"{table_name}.csv",
+            'source_table': table_name,
+            'batch_key': batch_key,
+            'loaded_at': datetime.now(timezone.utc),
+        })
 
 
 def source_summary(payload):
@@ -108,9 +162,11 @@ def main(argv=None):
     parser.add_argument('--key-max', type=int)
     parser.add_argument('--data-dir')
     parser.add_argument('--evidence', type=Path, help='Write a JSON result (including failures)')
+    parser.add_argument('--run-dbt', action='store_true', help='Execute dbt run --select +fact_race_result after Stage load')
+    parser.add_argument('--run-dbt-test', action='store_true', help='Execute dbt test after dbt run')
     args = parser.parse_args(argv)
-    if args.dry_run and (args.demo or args.check_stage):
-        parser.error('--dry-run applies to --all or --table')
+    if args.dry_run and (args.demo or args.check_stage or args.run_dbt or args.run_dbt_test):
+        parser.error('--dry-run applies to --all or --table without dbt execution')
     if args.all and args.mode == 'incremental':
         parser.error('Incremental bounds are per table; use --table')
     report = dict(status='running', timestamp_utc=datetime.now(timezone.utc).isoformat(),
@@ -145,6 +201,18 @@ def main(argv=None):
                 if not args.dry_run:
                     report['stage'] = check_stage(engine)
                     require_clean(report['stage'], payloads)
+
+        if args.run_dbt:
+            dbt_run_result = run_dbt_cli(command='run', select='+fact_race_result')
+            report['dbt_run'] = dbt_run_result
+            if engine is not None and not args.dry_run:
+                commit_batch_watermark(engine, args.batch_key or 'batch_dbt_orchestrated')
+                report['watermark'] = 'committed'
+
+        if args.run_dbt_test:
+            dbt_test_result = run_dbt_cli(command='test', select='+fact_race_result')
+            report['dbt_test'] = dbt_test_result
+
         report['status'] = 'success'
     except Exception as exc:
         from f1_etl.source import safe_error
