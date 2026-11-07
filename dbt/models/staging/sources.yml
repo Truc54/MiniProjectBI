@@ -1,0 +1,70 @@
+version: 2
+
+sources:
+  - name: stg
+    schema: "{{ env_var('MSSQL_STAGE_SCHEMA', 'stg') }}"
+    description: "Raw staged Formula 1 tables loaded by Mage from Ergast CSV files into SQL Server."
+    tables:
+      - name: circuits
+        description: "F1 Grand Prix circuits metadata."
+        columns:
+          - name: circuitId
+            description: "Surrogate/natural key for circuits in raw source."
+            tests:
+              - unique
+              - not_null
+
+      - name: constructors
+        description: "F1 racing teams and constructors."
+        columns:
+          - name: constructorId
+            description: "Primary key for constructors in source."
+            tests:
+              - unique
+              - not_null
+
+      - name: drivers
+        description: "F1 race drivers historical information."
+        columns:
+          - name: driverId
+            description: "Primary key for drivers in source."
+            tests:
+              - unique
+              - not_null
+
+      - name: status
+        description: "141 outcome status codes and finishing explanations."
+        columns:
+          - name: statusId
+            description: "Primary key for outcome status in source."
+            tests:
+              - unique
+              - not_null
+
+      - name: seasons
+        description: "F1 championship seasons coverage (1950-2026)."
+        columns:
+          - name: year
+            description: "Championship year."
+            tests:
+              - unique
+              - not_null
+
+      - name: races
+        description: "F1 Grand Prix calendar events and schedules."
+        columns:
+          - name: raceId
+            description: "Primary key for races in source."
+            tests:
+              - unique
+              - not_null
+
+      - name: results
+        description: "F1 race classification results and performances."
+        columns:
+          - name: resultId
+            description: "Primary key for race results in source."
+            tests:
+              - unique
+              - not_null
+
