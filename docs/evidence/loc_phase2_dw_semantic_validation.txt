@@ -1,0 +1,59 @@
+# loc_semantic_validation.sql on SQL Server 2022 16.0.4305.5 (local Docker), 2026-11-08
+# target: dw built by Truc's dbt models (dbt build --select +fact_race_result --full-refresh, PASS=61)
+Warning: Null value is eliminated by an aggregate or other SET operation.
+check_id|check_name|expected|stage_value|dw_value|result|note
+--------|----------|--------|-----------|--------|------|----
+1|fact rows = stg.results rows|27568.00|27568.00|27568.00|PASS|NULL
+2|distinct source_result_id|27568.00|27568.00|27568.00|PASS|NULL
+3|SUM(points)|57126.05|57126.05|57126.05|PASS|NULL
+4|SUM(laps)|1282619.00|1282619.00|1282619.00|PASS|NULL
+5|wins (positionOrder = 1, gom 3 shared drive)|1167.00|1167.00|1167.00|PASS|NULL
+6|races co nguoi thang|1164.00|1164.00|1164.00|PASS|NULL
+7|podiums (position 1-3)|3513.00|3513.00|3513.00|PASS|NULL
+8|classified (position NOT NULL)|16494.00|16494.00|16494.00|PASS|NULL
+9|grid = 0 rows|1638.00|1638.00|1638.00|PASS|NULL
+10|places_gained eligible rows|16434.00|16434.00|16434.00|PASS|NULL
+11|SUM(places_gained)|48282.00|48282.00|48282.00|PASS|NULL
+12|finish_time_ms NULL rows|19200.00|19200.00|19200.00|PASS|NULL
+13|fastest_lap_speed NULL rows|19316.00|19316.00|19316.00|PASS|NULL
+14|outcome CLASSIFIED rows|15839.00|15839.00|15839.00|PASS|NULL
+15|outcome RETIREMENT_DNF rows|9771.00|9771.00|9771.00|PASS|NULL
+16|outcome OTHER rows|1538.00|1538.00|1538.00|PASS|NULL
+17|outcome DNS rows|258.00|258.00|258.00|PASS|NULL
+18|outcome DSQ rows|162.00|162.00|162.00|PASS|NULL
+19|status codes UNREVIEWED (khong tinh -1)|.00|NULL|.00|PASS|NULL
+20|result_outcome_code WITHDRAWN rows|346.00|346.00|346.00|PASS|NULL
+21|DimRace rows (+1 unknown)|1165.00|1165.00|1165.00|PASS|NULL
+22|DimCircuit rows (+1 unknown)|79.00|79.00|79.00|PASS|NULL
+23|DimDriver rows (+1 unknown)|880.00|880.00|880.00|PASS|NULL
+24|DimConstructor rows (+1 unknown)|215.00|215.00|215.00|PASS|NULL
+25|DimStatus rows (+1 unknown)|142.00|142.00|142.00|PASS|NULL
+26|DimDate rows nam min..max cua races (+1)|28125.00|28125.00|28125.00|PASS|NULL
+27|DimDate race days|1164.00|1164.00|1164.00|PASS|NULL
+28|fact rows tro ve Unknown (-1)|.00|NULL|.00|PASS|NULL
+29|driver_nationality con khoang trang thua|.00|NULL|.00|PASS|NULL
+30|DimDate day_name 2008-03-16 = Sunday (1 = dung)|1.00|NULL|1.00|PASS|NULL
+31|resultId co o stage nhung thieu trong fact|.00|NULL|.00|PASS|NULL
+32|source_result_id co trong fact nhung khong co o stage|.00|NULL|.00|PASS|NULL
+33|dong fact lech gia tri voi stage (measure, khoa, SK, date_sk)|.00|NULL|.00|PASS|NULL
+34|dong fact sai cot dan xuat (flag, places_gained, outcome code)|.00|NULL|.00|PASS|NULL
+35|result_outcome_code UNKNOWN rows|.00|NULL|.00|PASS|NULL
+36|DimStatus ma RETIREMENT_DNF|96.00|NULL|96.00|PASS|NULL
+37|DimStatus ma CLASSIFIED|35.00|NULL|35.00|PASS|NULL
+38|DimStatus cap outcome_group/outcome_category sai|.00|NULL|.00|PASS|NULL
+39|DimStatus status_label khac stage|.00|NULL|.00|PASS|NULL
+40|so dong SK = -1 tren 6 dim (moi dim dung 1)|6.00|NULL|6.00|PASS|NULL
+41|dim co SK <> natural key (SK phai deterministic)|.00|NULL|.00|PASS|NULL
+42|DimDriver driver_nationality NULL (khong tinh -1)|14.00|14.00|14.00|PASS|NULL
+43|mua sai thang diem ky nguyen (max diem nguoi thang)|.00|NULL|.00|PASS|NULL
+total_checks|passed|failed
+------------|------|------
+43|43|0
+source_result_id|full_name|constructor_name|race_label|circuit_name|full_date|status_label|outcome_group|result_outcome_code|grid_position|finish_position|places_gained|points|is_win|is_podium|stage_points|stage_position
+----------------|---------|----------------|----------|------------|---------|------------|-------------|-------------------|-------------|---------------|-------------|------|------|---------|------------|--------------
+1|Lewis Hamilton|McLaren|2008 R01 Australian Grand Prix|Albert Park Grand Prix Circuit|2008-03-16|Finished|CLASSIFIED|CLASSIFIED|1|1|0|10.00|1|1|10.00|1
+
+# rerun after incremental dbt build (no --full-refresh, PASS=61)
+total_checks|passed|failed
+------------|------|------
+43|43|0
