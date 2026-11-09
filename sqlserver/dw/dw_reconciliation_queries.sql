@@ -1,9 +1,6 @@
 -- ============================================================================
 -- Script: dw_reconciliation_queries.sql
--- Description: Bo truy van SQL doi soat chat luong toan dien giua Staging (stg) 
---              va Data Warehouse (dw) cho Phase 2 (dbt Transformation & DW)
--- Tac gia: Dung (Database Administrator & Physical DW Optimization Specialist)
--- Phuc vu: Nghiem thu Phase 2, bao cao Seminar va Evidence cho Phuc/Truc
+-- Description: Bo truy van doi soat chat luong du lieu giua Staging (stg) va Data Warehouse (dw)
 -- ============================================================================
 
 USE F1_BI;

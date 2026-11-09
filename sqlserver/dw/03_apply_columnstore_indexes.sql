@@ -2,8 +2,6 @@
 -- Script: 03_apply_columnstore_indexes.sql
 -- Description: Ap dung Clustered Columnstore Index (CCI) cho FactRaceResult
 --              va toi uu hoa chi muc B-Tree cho cac bang Dimensions
--- Tac gia: Dung (Database Administrator & Physical DW Optimization Specialist)
--- Phase: 2 - Data Transformation & Data Warehouse
 -- ============================================================================
 
 USE F1_BI;

@@ -1,8 +1,6 @@
 -- ============================================================================
 -- Script: 01_setup_dw_schema_and_permissions.sql
--- Description: Khoi tao Schema dw, stg_clean va phan quyen truy cap cho dbt & BI
--- Tac gia: Dung (Database Administrator & Physical DW Optimization Specialist)
--- Phase: 2 - Data Transformation & Data Warehouse
+-- Description: Khoi tao Schema dw, stg_clean va phan quyen truy cap
 -- ============================================================================
 
 -- Neu database F1_BI da ton tai, su dung F1_BI
