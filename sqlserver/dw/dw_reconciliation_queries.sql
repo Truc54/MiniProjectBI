@@ -61,32 +61,20 @@ GO
 
 PRINT N'====================================================================';
 PRINT N'2. KIEM TRA CHECKSUM DO DO TONG HOP (MEASURE CHECKSUM VERIFICATION)';
-PRINT N'Expected: Do lech SUM(points) va SUM(laps) phai bang dung 0.00';
+PRINT N'Expected: Do lech SUM(points) phai bang dung 0.00';
 PRINT N'====================================================================';
 
 SELECT 
     'Points Checksum' AS Measure_Name,
     CAST(SUM(s.points) AS DECIMAL(12, 2)) AS Staging_Total,
-    CAST(SUM(f.Points) AS DECIMAL(12, 2)) AS DW_Total,
-    CAST(SUM(f.Points) - SUM(s.points) AS DECIMAL(12, 2)) AS Difference,
+    CAST(SUM(f.points) AS DECIMAL(12, 2)) AS DW_Total,
+    CAST(SUM(f.points) - SUM(s.points) AS DECIMAL(12, 2)) AS Difference,
     CASE 
-        WHEN CAST(SUM(f.Points) - SUM(s.points) AS DECIMAL(12, 2)) = 0.00 THEN N'EXACT MATCH'
+        WHEN CAST(SUM(f.points) - SUM(s.points) AS DECIMAL(12, 2)) = 0.00 THEN N'EXACT MATCH'
         ELSE N'MISMATCH'
     END AS Integrity_Status
 FROM stg.results s
-FULL OUTER JOIN dw.FactRaceResult f ON s.resultId = f.SourceResultId
-UNION ALL
-SELECT 
-    'Laps Checksum',
-    CAST(SUM(s.laps) AS DECIMAL(12, 2)),
-    CAST(SUM(f.Laps) AS DECIMAL(12, 2)),
-    CAST(SUM(f.Laps) - SUM(s.laps) AS DECIMAL(12, 2)),
-    CASE 
-        WHEN SUM(f.Laps) - SUM(s.laps) = 0 THEN N'EXACT MATCH'
-        ELSE N'MISMATCH'
-    END
-FROM stg.results s
-FULL OUTER JOIN dw.FactRaceResult f ON s.resultId = f.SourceResultId;
+FULL OUTER JOIN dw.FactRaceResult f ON s.resultId = f.source_result_id;
 GO
 
 PRINT N'====================================================================';
@@ -96,51 +84,45 @@ PRINT N'====================================================================';
 
 SELECT 
     'FactRaceResult' AS Table_Name,
-    'RaceResultSK' AS Key_Column,
-    SUM(CASE WHEN RaceResultSK IS NULL THEN 1 ELSE 0 END) AS Null_Count,
-    COUNT(*) - COUNT(DISTINCT RaceResultSK) AS Duplicate_Count
+    'source_result_id' AS Key_Column,
+    SUM(CASE WHEN source_result_id IS NULL THEN 1 ELSE 0 END) AS Null_Count,
+    COUNT(*) - COUNT(DISTINCT source_result_id) AS Duplicate_Count
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
-    'FactRaceResult', 'SourceResultId',
-    SUM(CASE WHEN SourceResultId IS NULL THEN 1 ELSE 0 END),
-    COUNT(*) - COUNT(DISTINCT SourceResultId)
-FROM dw.FactRaceResult
-UNION ALL
-SELECT 
-    'DimDate', 'DateSK',
-    SUM(CASE WHEN DateSK IS NULL THEN 1 ELSE 0 END),
-    COUNT(*) - COUNT(DISTINCT DateSK)
+    'DimDate', 'date_sk',
+    SUM(CASE WHEN date_sk IS NULL THEN 1 ELSE 0 END),
+    COUNT(*) - COUNT(DISTINCT date_sk)
 FROM dw.DimDate
 UNION ALL
 SELECT 
-    'DimRace', 'RaceSK',
-    SUM(CASE WHEN RaceSK IS NULL THEN 1 ELSE 0 END),
-    COUNT(*) - COUNT(DISTINCT RaceSK)
+    'DimRace', 'race_sk',
+    SUM(CASE WHEN race_sk IS NULL THEN 1 ELSE 0 END),
+    COUNT(*) - COUNT(DISTINCT race_sk)
 FROM dw.DimRace
 UNION ALL
 SELECT 
-    'DimCircuit', 'CircuitSK',
-    SUM(CASE WHEN CircuitSK IS NULL THEN 1 ELSE 0 END),
-    COUNT(*) - COUNT(DISTINCT CircuitSK)
+    'DimCircuit', 'circuit_sk',
+    SUM(CASE WHEN circuit_sk IS NULL THEN 1 ELSE 0 END),
+    COUNT(*) - COUNT(DISTINCT circuit_sk)
 FROM dw.DimCircuit
 UNION ALL
 SELECT 
-    'DimDriver', 'DriverSK',
-    SUM(CASE WHEN DriverSK IS NULL THEN 1 ELSE 0 END),
-    COUNT(*) - COUNT(DISTINCT DriverSK)
+    'DimDriver', 'driver_sk',
+    SUM(CASE WHEN driver_sk IS NULL THEN 1 ELSE 0 END),
+    COUNT(*) - COUNT(DISTINCT driver_sk)
 FROM dw.DimDriver
 UNION ALL
 SELECT 
-    'DimConstructor', 'ConstructorSK',
-    SUM(CASE WHEN ConstructorSK IS NULL THEN 1 ELSE 0 END),
-    COUNT(*) - COUNT(DISTINCT ConstructorSK)
+    'DimConstructor', 'constructor_sk',
+    SUM(CASE WHEN constructor_sk IS NULL THEN 1 ELSE 0 END),
+    COUNT(*) - COUNT(DISTINCT constructor_sk)
 FROM dw.DimConstructor
 UNION ALL
 SELECT 
-    'DimStatus', 'StatusSK',
-    SUM(CASE WHEN StatusSK IS NULL THEN 1 ELSE 0 END),
-    COUNT(*) - COUNT(DISTINCT StatusSK)
+    'DimStatus', 'status_sk',
+    SUM(CASE WHEN status_sk IS NULL THEN 1 ELSE 0 END),
+    COUNT(*) - COUNT(DISTINCT status_sk)
 FROM dw.DimStatus;
 GO
 
@@ -153,37 +135,37 @@ SELECT
     'FactRaceResult -> DimDate' AS Relationship,
     COUNT(*) AS Orphan_Count
 FROM dw.FactRaceResult f
-WHERE NOT EXISTS (SELECT 1 FROM dw.DimDate d WHERE d.DateSK = f.DateSK)
+WHERE NOT EXISTS (SELECT 1 FROM dw.DimDate d WHERE d.date_sk = f.date_sk)
 UNION ALL
 SELECT 
     'FactRaceResult -> DimRace',
     COUNT(*)
 FROM dw.FactRaceResult f
-WHERE NOT EXISTS (SELECT 1 FROM dw.DimRace d WHERE d.RaceSK = f.RaceSK)
+WHERE NOT EXISTS (SELECT 1 FROM dw.DimRace d WHERE d.race_sk = f.race_sk)
 UNION ALL
 SELECT 
     'FactRaceResult -> DimCircuit',
     COUNT(*)
 FROM dw.FactRaceResult f
-WHERE NOT EXISTS (SELECT 1 FROM dw.DimCircuit d WHERE d.CircuitSK = f.CircuitSK)
+WHERE NOT EXISTS (SELECT 1 FROM dw.DimCircuit d WHERE d.circuit_sk = f.circuit_sk)
 UNION ALL
 SELECT 
     'FactRaceResult -> DimDriver',
     COUNT(*)
 FROM dw.FactRaceResult f
-WHERE NOT EXISTS (SELECT 1 FROM dw.DimDriver d WHERE d.DriverSK = f.DriverSK)
+WHERE NOT EXISTS (SELECT 1 FROM dw.DimDriver d WHERE d.driver_sk = f.driver_sk)
 UNION ALL
 SELECT 
     'FactRaceResult -> DimConstructor',
     COUNT(*)
 FROM dw.FactRaceResult f
-WHERE NOT EXISTS (SELECT 1 FROM dw.DimConstructor d WHERE d.ConstructorSK = f.ConstructorSK)
+WHERE NOT EXISTS (SELECT 1 FROM dw.DimConstructor d WHERE d.constructor_sk = f.constructor_sk)
 UNION ALL
 SELECT 
     'FactRaceResult -> DimStatus',
     COUNT(*)
 FROM dw.FactRaceResult f
-WHERE NOT EXISTS (SELECT 1 FROM dw.DimStatus d WHERE d.StatusSK = f.StatusSK);
+WHERE NOT EXISTS (SELECT 1 FROM dw.DimStatus d WHERE d.status_sk = f.status_sk);
 GO
 
 PRINT N'====================================================================';
@@ -192,45 +174,45 @@ PRINT N'Expected: Ty le Unknown phai < 0.1% tren moi chieu';
 PRINT N'====================================================================';
 
 SELECT 
-    'DateSK = -1' AS Dimension_FK,
-    SUM(CASE WHEN DateSK = -1 THEN 1 ELSE 0 END) AS Unknown_Rows,
+    'date_sk = -1' AS Dimension_FK,
+    SUM(CASE WHEN date_sk = -1 THEN 1 ELSE 0 END) AS Unknown_Rows,
     COUNT(*) AS Total_Fact_Rows,
-    CAST(100.0 * SUM(CASE WHEN DateSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2)) AS Unknown_Pct
+    CAST(100.0 * SUM(CASE WHEN date_sk = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2)) AS Unknown_Pct
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
-    'RaceSK = -1',
-    SUM(CASE WHEN RaceSK = -1 THEN 1 ELSE 0 END),
+    'race_sk = -1',
+    SUM(CASE WHEN race_sk = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN RaceSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN race_sk = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
-    'CircuitSK = -1',
-    SUM(CASE WHEN CircuitSK = -1 THEN 1 ELSE 0 END),
+    'circuit_sk = -1',
+    SUM(CASE WHEN circuit_sk = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN CircuitSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN circuit_sk = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
-    'DriverSK = -1',
-    SUM(CASE WHEN DriverSK = -1 THEN 1 ELSE 0 END),
+    'driver_sk = -1',
+    SUM(CASE WHEN driver_sk = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN DriverSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN driver_sk = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
-    'ConstructorSK = -1',
-    SUM(CASE WHEN ConstructorSK = -1 THEN 1 ELSE 0 END),
+    'constructor_sk = -1',
+    SUM(CASE WHEN constructor_sk = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN ConstructorSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN constructor_sk = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult
 UNION ALL
 SELECT 
-    'StatusSK = -1',
-    SUM(CASE WHEN StatusSK = -1 THEN 1 ELSE 0 END),
+    'status_sk = -1',
+    SUM(CASE WHEN status_sk = -1 THEN 1 ELSE 0 END),
     COUNT(*),
-    CAST(100.0 * SUM(CASE WHEN StatusSK = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
+    CAST(100.0 * SUM(CASE WHEN status_sk = -1 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0) AS DECIMAL(5, 2))
 FROM dw.FactRaceResult;
 GO
 
@@ -240,13 +222,13 @@ PRINT N'Expected: Day du 5 nhom: CLASSIFIED, RETIREMENT_DNF, DNS, DSQ, OTHER';
 PRINT N'====================================================================';
 
 SELECT 
-    s.OutcomeGroup,
-    COUNT(DISTINCT s.SourceStatusId) AS Distinct_Status_Codes,
-    COUNT(f.RaceResultSK) AS Total_Fact_Results,
-    CAST(100.0 * COUNT(f.RaceResultSK) / NULLIF((SELECT COUNT(*) FROM dw.FactRaceResult), 0) AS DECIMAL(5, 2)) AS Pct_Of_All_Results
+    s.outcome_group,
+    COUNT(DISTINCT s.source_status_id) AS Distinct_Status_Codes,
+    COUNT(f.source_result_id) AS Total_Fact_Results,
+    CAST(100.0 * COUNT(f.source_result_id) / NULLIF((SELECT COUNT(*) FROM dw.FactRaceResult), 0) AS DECIMAL(5, 2)) AS Pct_Of_All_Results
 FROM dw.DimStatus s
-LEFT JOIN dw.FactRaceResult f ON s.StatusSK = f.StatusSK
-GROUP BY s.OutcomeGroup
+LEFT JOIN dw.FactRaceResult f ON s.status_sk = f.status_sk
+GROUP BY s.outcome_group
 ORDER BY Total_Fact_Results DESC;
 GO
 
@@ -261,7 +243,7 @@ SELECT
     COUNT(rg.row_group_id) AS RowGroupsCount,
     SUM(rg.total_rows) AS TotalRowsIndexed,
     CAST(SUM(rg.size_in_bytes) / 1024.0 / 1024.0 AS DECIMAL(10, 2)) AS CompressedSizeMB,
-    SUM(CASE WHEN rg.state_description = 'COMPRESSED' THEN 1 ELSE 0 END) AS CompressedGroups
+    SUM(CASE WHEN rg.state_desc = 'COMPRESSED' THEN 1 ELSE 0 END) AS CompressedGroups
 FROM sys.tables t
 JOIN sys.indexes i ON t.object_id = i.object_id
 LEFT JOIN sys.dm_db_column_store_row_group_physical_stats rg 

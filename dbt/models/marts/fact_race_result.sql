@@ -68,11 +68,6 @@ select
     coalesce(dr.driver_sk, -1)                                                  as driver_sk,
     coalesce(co.constructor_sk, -1)                                             as constructor_sk,
     coalesce(st.status_sk, -1)                                                  as status_sk,
-    r.race_id                                                                   as source_race_id,
-    r.driver_id                                                                 as source_driver_id,
-    r.constructor_id                                                            as source_constructor_id,
-    r.status_id                                                                 as source_status_id,
-    r.car_number,
     r.position_text,
     case
         when r.position_text not like '%[^0-9]%' and r.position_text <> '' then 'CLASSIFIED'
@@ -84,10 +79,7 @@ select
         when r.position_text = 'N' then 'NOT_CLASSIFIED'
         else 'UNKNOWN'
     end                                                                         as result_outcome_code,
-    r.finish_time_text,
     r.points,
-    r.laps_completed,
-    cast(1 as int)                                                              as result_count,
     r.grid_position,
     r.finish_position,
     r.position_order,
@@ -101,11 +93,6 @@ select
     case when r.finish_position is not null then cast(1 as bit) else cast(0 as bit) end     as is_classified,
     case when r.points > 0 then cast(1 as bit) else cast(0 as bit) end          as is_points_finish,
     case when r.grid_position > 0 then cast(1 as bit) else cast(0 as bit) end   as is_valid_grid_start,
-    r.finish_time_ms,
-    r.fastest_lap_number,
-    r.fastest_lap_rank,
-    r.fastest_lap_time_text,
-    r.fastest_lap_speed_kph,
     r._batch_key,
     r._ingested_at_utc
 from results r
@@ -123,4 +110,3 @@ left join dim_constructors co
     on r.constructor_id = co.source_constructor_id
 left join dim_statuses st
     on r.status_id = st.source_status_id
-

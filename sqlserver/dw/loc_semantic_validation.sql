@@ -35,10 +35,6 @@ UNION ALL
 SELECT 3, N'SUM(points)', 57126.05,
        (SELECT SUM(points) FROM stg.results), (SELECT SUM(points) FROM dw.FactRaceResult)
 UNION ALL
-SELECT 4, N'SUM(laps)', 1282619,
-       (SELECT SUM(CAST(laps AS BIGINT)) FROM stg.results),
-       (SELECT SUM(CAST(laps_completed AS BIGINT)) FROM dw.FactRaceResult)
-UNION ALL
 -- ---------------------------------------------------------------------------
 -- 2. Co dan xuat (KPI contract business_requirements.md muc 3)
 -- ---------------------------------------------------------------------------
@@ -69,15 +65,6 @@ UNION ALL
 SELECT 11, N'SUM(places_gained)', 48282,
        (SELECT SUM(grid - position) FROM stg.results WHERE grid > 0 AND position IS NOT NULL),
        (SELECT SUM(places_gained) FROM dw.FactRaceResult)
-UNION ALL
--- NULL phai giu nguyen NULL (khong bi COALESCE thanh 0)
-SELECT 12, N'finish_time_ms NULL rows', 19200,
-       (SELECT COUNT(*) FROM stg.results WHERE milliseconds IS NULL),
-       (SELECT COUNT(*) FROM dw.FactRaceResult WHERE finish_time_ms IS NULL)
-UNION ALL
-SELECT 13, N'fastest_lap_speed NULL rows', 19316,
-       (SELECT COUNT(*) FROM stg.results WHERE fastestLapSpeed IS NULL),
-       (SELECT COUNT(*) FROM dw.FactRaceResult WHERE fastest_lap_speed_kph IS NULL)
 UNION ALL
 -- ---------------------------------------------------------------------------
 -- 3. OutcomeGroup (stage_to_dw_mapping.md muc 4.1) - dong ket qua theo nhom.
@@ -163,16 +150,12 @@ SELECT 33, N'dong fact lech gia tri voi stage (measure, khoa, SK, date_sk)', 0, 
         JOIN stg.results r ON r.resultId = f.source_result_id
         JOIN stg.races  ra ON ra.raceId  = r.raceId
         WHERE NOT EXISTS (
-            SELECT f.points, f.laps_completed, f.grid_position, f.finish_position, f.position_order,
-                   f.position_text, f.finish_time_ms, f.fastest_lap_speed_kph, f.fastest_lap_number,
-                   f.fastest_lap_rank, f.car_number,
-                   f.source_race_id, f.source_driver_id, f.source_constructor_id, f.source_status_id,
+            SELECT f.points, f.grid_position, f.finish_position, f.position_order,
+                   f.position_text,
                    f.race_sk, f.driver_sk, f.constructor_sk, f.status_sk, f.circuit_sk, f.date_sk
             INTERSECT
-            SELECT r.points, r.laps, r.grid, r.position, r.positionOrder,
-                   LTRIM(RTRIM(r.positionText)), r.milliseconds, r.fastestLapSpeed, r.fastestLap,
-                   r.[rank], r.number,
-                   r.raceId, r.driverId, r.constructorId, r.statusId,
+            SELECT r.points, r.grid, r.position, r.positionOrder,
+                   LTRIM(RTRIM(r.positionText)),
                    r.raceId, r.driverId, r.constructorId, r.statusId, ra.circuitId,
                    CAST(CONVERT(CHAR(8), ra.[date], 112) AS INT)))
 UNION ALL
@@ -184,7 +167,7 @@ SELECT 34, N'dong fact sai cot dan xuat (flag, places_gained, outcome code)', 0,
         WHERE NOT EXISTS (
             SELECT CAST(f.is_win AS INT), CAST(f.is_podium AS INT), CAST(f.is_classified AS INT),
                    CAST(f.is_points_finish AS INT), CAST(f.is_valid_grid_start AS INT),
-                   f.places_gained, f.result_count, f.result_outcome_code
+                   f.places_gained, f.result_outcome_code
             INTERSECT
             SELECT CASE WHEN r.positionOrder = 1 THEN 1 ELSE 0 END,
                    CASE WHEN r.position BETWEEN 1 AND 3 THEN 1 ELSE 0 END,
@@ -192,7 +175,6 @@ SELECT 34, N'dong fact sai cot dan xuat (flag, places_gained, outcome code)', 0,
                    CASE WHEN r.points > 0 THEN 1 ELSE 0 END,
                    CASE WHEN r.grid > 0 THEN 1 ELSE 0 END,
                    CASE WHEN r.grid > 0 AND r.position IS NOT NULL THEN r.grid - r.position END,
-                   1,
                    CASE
                        WHEN r.positionText NOT LIKE '%[^0-9]%' AND r.positionText <> '' THEN 'CLASSIFIED'
                        WHEN r.positionText = 'R' THEN 'RETIRED'

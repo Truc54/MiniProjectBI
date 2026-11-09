@@ -11,6 +11,7 @@ mage_data/
 dbt/target/
 dbt/logs/
 dbt/dbt_packages/
+dbt/.user.yml
 *.db
 
 # Specific folders & files
@@ -18,5 +19,7 @@ knowledge/
 example/
 2627.Yêu cầu.pdf
 *2627*Yeucau*
+*.pdf
+dbt/star_schema.png
 
 .DS_Store
