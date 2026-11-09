@@ -47,8 +47,21 @@
 1. Đảm bảo ứng dụng **Docker Desktop** đang chạy (biểu tượng cá voi màu xanh góc taskbar báo `Engine running`).
 2. Đảm bảo dịch vụ SQL Server đang chạy (mặc định đã chạy tự động trên cổng `1433`).
 
-### A2. Khởi tạo 3 lệnh tắt trong PowerShell (Terminal A)
-Mở cửa sổ PowerShell tại thư mục `D:\MiniProjectBI` và dán đoạn lệnh sau:
+### A2. Cách chạy nhanh nhất bằng Menu Tự động (Khuyên dùng)
+Nhóm đã tạo sẵn file chạy tự động **[`run_demo.bat`](file:///d:/MiniProjectBI/run_demo.bat)** và **[`run_demo_windows.ps1`](file:///d:/MiniProjectBI/run_demo_windows.ps1)** tại thư mục gốc:
+* Bạn chỉ cần **Double-click vào file `run_demo.bat`** (hoặc mở PowerShell gõ `.\run_demo_windows.ps1`).
+* Màn hình sẽ hiện menu chọn số từ **1 đến 9**:
+  * Bấm `1`: dbt debug.
+  * Bấm `3`: dbt build full-refresh (PASS=61).
+  * Bấm `4`, `5`, `6`: Phần kiểm tra SQL Server của Dũng.
+  * Bấm `7`, `8`: Bắt lỗi điểm âm và nạp tăng dần.
+  * Bấm `9`: Thẩm định 40/40 checks của Lộc.
+  * Bấm `D`: Bật server web dbt docs.
+  * Bấm `A`: Tự động chạy toàn bộ luồng demo.
+* Mỗi bước đều in sẵn **[Gợi ý lời thoại thuyết trình]** tương ứng ngay trên màn hình.
+
+### A3. Cách chạy thủ công từng lệnh (Nếu không dùng menu)
+Nếu muốn tự gõ từng lệnh trong PowerShell (Terminal A), mở PowerShell dán đoạn lệnh sau:
 
 ```powershell
 # Di chuyển vào repo
@@ -376,3 +389,4 @@ total_checks passed      failed
 | **Bảng `DimDate` tại sao có tới 28.125 dòng?** | Đây là bảng lịch chuẩn đủ mọi ngày từ 1950 đến 2026 (dù có đua hay không), giúp Power BI tính toán các hàm thời gian (Time Intelligence: YTD, MTD, YoY). | Dũng |
 | **Khi dbt test lỗi thì dòng sai đã vào Fact chưa?** | Dòng sai đã được chèn vào Fact vì dbt build chạy test sau khi dựng dữ liệu. Tuy nhiên pipeline dừng lại, không ghi watermark, và khi sửa dữ liệu nạp lại thì dòng sai sẽ bị ghi đè hoàn toàn. | Trực |
 | **Tại sao giữ điểm gốc thay vì quy đổi về thang điểm mới?** | Điểm gốc là sự thật lịch sử và dùng để đối soát 100% với nguồn. Việc quy đổi điểm có thể xử lý linh hoạt bằng các Measure trên Power BI ở Phase 3. | Lộc |
+
