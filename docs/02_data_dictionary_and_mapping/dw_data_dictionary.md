@@ -35,17 +35,9 @@
 | `driver_sk` | INT | N | FK | → `DimDriver` | `1` |
 | `constructor_sk` | INT | N | FK | → `DimConstructor` | `1` |
 | `status_sk` | INT | N | FK | → `DimStatus` | `1` |
-| `source_race_id` | INT | N | lineage | `raceId` nguồn | `18` |
-| `source_driver_id` | INT | N | lineage | `driverId` nguồn | `1` |
-| `source_constructor_id` | INT | N | lineage | `constructorId` nguồn | `1` |
-| `source_status_id` | INT | N | lineage | `statusId` nguồn | `1` |
-| `car_number` | INT | Y | thuộc tính | Số xe trong race | `22` |
 | `position_text` | NVARCHAR(10) | N | thuộc tính | Vị trí dạng text nguồn: số, `R`, `D`, `E`, `W`, `F`, `N` | `1` |
 | `result_outcome_code` | VARCHAR(20) | N | thuộc tính | Kết quả chính thức của dòng, suy ra từ `position_text` | `CLASSIFIED` |
-| `finish_time_text` | NVARCHAR(50) | Y | thuộc tính | Thời gian về đích hoặc khoảng cách dạng text | `1:34:50.616` |
 | `points` | DECIMAL(6,2) | N | A | Điểm Grand Prix (không gồm sprint) | `10.00` |
-| `laps_completed` | INT | N | A | Số vòng tay đua hoàn thành | `58` |
-| `result_count` | INT | N | A | Luôn bằng 1, dùng để đếm số lượt tham gia | `1` |
 | `grid_position` | INT | N | N | Vị trí xuất phát; `0` = pit lane hoặc không có | `1` |
 | `finish_position` | INT | Y | N | Vị trí xếp hạng; NULL = không được xếp hạng | `1` |
 | `position_order` | INT | N | N | Thứ tự nguồn dùng để xác định người thắng | `1` |
@@ -55,11 +47,6 @@
 | `is_classified` | BIT | N | F | `finish_position IS NOT NULL` | `1` |
 | `is_points_finish` | BIT | N | F | `points > 0` | `1` |
 | `is_valid_grid_start` | BIT | N | F | `grid_position > 0` | `1` |
-| `finish_time_ms` | INT | Y | N | Tổng thời gian race (ms), chỉ có với người về đích cùng vòng | `5690616` |
-| `fastest_lap_number` | INT | Y | thuộc tính | Vòng đạt fastest lap của tay đua | `39` |
-| `fastest_lap_rank` | INT | Y | thuộc tính | Hạng fastest lap trong race | `2` |
-| `fastest_lap_time_text` | NVARCHAR(50) | Y | thuộc tính | Thời gian fastest lap dạng text | `1:27.452` |
-| `fastest_lap_speed_kph` | DECIMAL(7,3) | Y | N | Tốc độ trung bình của fastest lap (km/h); NULL toàn bộ 2025/2026 | `218.300` |
 | `_batch_key` | NVARCHAR(100) | Y | lineage | Batch Mage đã nạp dòng Stage | — |
 | `_ingested_at_utc` | DATETIME2(3) | N | lineage | Thời điểm nạp Stage, dùng cho bộ lọc incremental | — |
 

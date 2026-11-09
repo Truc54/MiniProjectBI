@@ -234,14 +234,9 @@ Config: `materialized='incremental'`, `incremental_strategy='delete+insert'`, `u
 | `driver_sk` | INT NOT NULL | `COALESCE(dr.driver_sk, -1)` | FK |
 | `constructor_sk` | INT NOT NULL | `COALESCE(co.constructor_sk, -1)` | FK |
 | `status_sk` | INT NOT NULL | `COALESCE(st.status_sk, -1)` | FK |
-| `source_race_id`, `source_driver_id`, `source_constructor_id`, `source_status_id` | INT | giữ khóa nguồn | Lineage / đối soát |
-| `car_number` | INT NULL | `r.car_number` | Thuộc tính |
 | `position_text` | NVARCHAR(10) | `r.position_text` | Thuộc tính (D6) |
 | `result_outcome_code` | VARCHAR(20) | mục 5.3 | Thuộc tính (D6) |
-| `finish_time_text` | NVARCHAR(50) NULL | `r.finish_time_text` | Thuộc tính, không tổng hợp |
 | `points` | DECIMAL(6,2) | `r.points` | Additive |
-| `laps_completed` | INT | `r.laps_completed` | Additive (theo dòng) |
-| `result_count` | INT | `1` | Additive |
 | `grid_position` | INT | `r.grid_position` | Non-additive |
 | `finish_position` | INT NULL | `r.finish_position` | Non-additive |
 | `position_order` | INT | `r.position_order` | Non-additive |
@@ -251,11 +246,8 @@ Config: `materialized='incremental'`, `incremental_strategy='delete+insert'`, `u
 | `is_classified` | BIT | `CASE WHEN finish_position IS NOT NULL THEN 1 ELSE 0 END` | Flag additive |
 | `is_points_finish` | BIT | `CASE WHEN points > 0 THEN 1 ELSE 0 END` | Flag additive |
 | `is_valid_grid_start` | BIT | `CASE WHEN grid_position > 0 THEN 1 ELSE 0 END` | Flag (mẫu số cho places gained) |
-| `finish_time_ms` | INT NULL | `r.finish_time_ms` | Non-additive, không bao giờ SUM |
-| `fastest_lap_number`, `fastest_lap_rank` | INT NULL | giữ | Thuộc tính |
-| `fastest_lap_time_text` | NVARCHAR(50) NULL | giữ | Thuộc tính |
-| `fastest_lap_speed_kph` | DECIMAL(7,3) NULL | giữ | Non-additive |
-| `_batch_key`, `_ingested_at_utc` | — | từ `stg_results` | Lineage / incremental |
+| `_batch_key` | NVARCHAR(100) NULL | từ `stg_results` | Lineage / incremental |
+| `_ingested_at_utc` | DATETIME2(3) NOT NULL | từ `stg_results` | Lineage / incremental |
 
 Bộ lọc incremental:
 
