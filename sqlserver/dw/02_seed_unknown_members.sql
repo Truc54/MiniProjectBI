@@ -1,10 +1,7 @@
 -- ============================================================================
 -- Script: 02_seed_unknown_members.sql
--- Description: Khoi tao cau truc & Seed ban ghi mac dinh Unknown Member (SK = -1)
---              cho 6 bang Dimension trong Schema dw
--- Tac gia: Dung (Database Administrator & Physical DW Optimization Specialist)
--- Phase: 2 - Data Transformation & Data Warehouse
--- Muc tieu: Triet tieu hoan toan rui ro vi pham toan ven khoa ngoai (FK Orphan)
+-- Description: Khoi tao cau truc va seed ban ghi mac dinh Unknown Member (SK = -1)
+--              cho cac bang Dimension trong Schema dw
 -- ============================================================================
 
 USE F1_BI;

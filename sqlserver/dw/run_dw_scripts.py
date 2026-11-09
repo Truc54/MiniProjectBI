@@ -2,8 +2,6 @@
 Script: run_dw_scripts.py
 Description: Cong cu tu dong hoa trien khai ha tang Schema dw tren SQL Server,
              seed ban ghi Unknown Member, ap dung Columnstore Index va doi soat du lieu.
-Tac gia: Dung (Database Administrator & Physical DW Optimization Specialist)
-Phase: 2 - Data Transformation & Data Warehouse
 
 Cach dung:
     python sqlserver/dw/run_dw_scripts.py            # Chay 01, 02, 03 (Setup, Seed, Indexes)
