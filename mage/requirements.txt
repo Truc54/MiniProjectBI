@@ -2,4 +2,5 @@ pyodbc>=5,<5.2
 # Mage 0.9.79 orchestration requires SQLAlchemy 1.4.
 SQLAlchemy>=1.4.54,<2
 python-dotenv>=1,<2
+dbt-fabric==1.8.4
 dbt-sqlserver>=1.8.0,<1.9.0
