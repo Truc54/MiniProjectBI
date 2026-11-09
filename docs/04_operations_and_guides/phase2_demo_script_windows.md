@@ -47,21 +47,8 @@
 1. Đảm bảo ứng dụng **Docker Desktop** đang chạy (biểu tượng cá voi màu xanh góc taskbar báo `Engine running`).
 2. Đảm bảo dịch vụ SQL Server đang chạy (mặc định đã chạy tự động trên cổng `1433`).
 
-### A2. Cách chạy nhanh nhất bằng Menu Tự động (Khuyên dùng)
-Nhóm đã tạo sẵn file chạy tự động **[`run_demo.bat`](file:///d:/MiniProjectBI/run_demo.bat)** và **[`run_demo_windows.ps1`](file:///d:/MiniProjectBI/run_demo_windows.ps1)** tại thư mục gốc:
-* Bạn chỉ cần **Double-click vào file `run_demo.bat`** (hoặc mở PowerShell gõ `.\run_demo_windows.ps1`).
-* Màn hình sẽ hiện menu chọn số từ **1 đến 9**:
-  * Bấm `1`: dbt debug.
-  * Bấm `3`: dbt build full-refresh (PASS=61).
-  * Bấm `4`, `5`, `6`: Phần kiểm tra SQL Server của Dũng.
-  * Bấm `7`, `8`: Bắt lỗi điểm âm và nạp tăng dần.
-  * Bấm `9`: Thẩm định 40/40 checks của Lộc.
-  * Bấm `D`: Bật server web dbt docs.
-  * Bấm `A`: Tự động chạy toàn bộ luồng demo.
-* Mỗi bước đều in sẵn **[Gợi ý lời thoại thuyết trình]** tương ứng ngay trên màn hình.
-
-### A3. Cách chạy thủ công từng lệnh (Nếu không dùng menu)
-Nếu muốn tự gõ từng lệnh trong PowerShell (Terminal A), mở PowerShell dán đoạn lệnh sau:
+### A2. Khởi tạo 3 lệnh tắt trong PowerShell (Terminal A)
+Mở cửa sổ PowerShell tại thư mục `D:\MiniProjectBI` và dán đoạn lệnh sau để có thể gõ các lệnh ngắn gọn khi tự thao tác từng bước:
 
 ```powershell
 # Di chuyển vào repo
@@ -79,8 +66,8 @@ function dbtx { docker run --rm -v "${PWD}/dbt:/dbt" -w /dbt --add-host host.doc
 Clear-Host
 ```
 
-### A3. Sao lưu Database & Chạy tổng duyệt
-Chạy các lệnh sau trong PowerShell để kiểm tra trước toàn bộ hệ thống:
+### A3. Chạy tổng duyệt trước giờ thuyết trình
+Chạy lần lượt 3 lệnh sau để kiểm tra trước toàn bộ hệ thống:
 
 ```powershell
 # 1. Kiểm tra kết nối dbt
