@@ -6,6 +6,7 @@ __pycache__/
 .pytest_cache/
 .venv/
 .mage_data/
+.file_versions/
 .ssh_tunnel/
 mage_data/
 dbt/target/
