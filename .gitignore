@@ -8,6 +8,8 @@ __pycache__/
 .mage_data/
 .file_versions/
 .ssh_tunnel/
+.file_versions/
+**/.file_versions/
 mage_data/
 dbt/target/
 dbt/logs/
