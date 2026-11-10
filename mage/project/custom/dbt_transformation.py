@@ -37,9 +37,9 @@ def transform_custom(data, *args, **kwargs):
         print(deps.stderr)
         raise RuntimeError(f'dbt deps failed (exit {deps.returncode})')
 
-    # 2. dbt run --select +fact_race_result
+    # 2. dbt build --select +fact_race_result (vừa nạp bảng vừa chạy kiểm thử tự động)
     run = subprocess.run(
-        [dbt_bin, 'run', '--select', '+fact_race_result',
+        [dbt_bin, 'build', '--select', '+fact_race_result',
          '--project-dir', str(dbt_dir), '--profiles-dir', str(dbt_dir)],
         capture_output=True, text=True,
     )
