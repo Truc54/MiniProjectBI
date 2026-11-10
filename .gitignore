@@ -7,6 +7,8 @@ __pycache__/
 .venv/
 .mage_data/
 .ssh_tunnel/
+.file_versions/
+**/.file_versions/
 mage_data/
 dbt/target/
 dbt/logs/

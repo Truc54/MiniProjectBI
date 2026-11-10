@@ -1,7 +1,1 @@
-dbt:
-  command: run
-dbt_profile_target: dev
-dbt_project_name: dbt
-flags:
-  --select: "+fact_race_result"
-
+--select: "+fact_race_result"
