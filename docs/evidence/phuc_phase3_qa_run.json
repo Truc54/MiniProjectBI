@@ -1,0 +1,71 @@
+{
+  "test_run_metadata": {
+    "phase": "Phase 3 - Power BI Semantic Model & Overview Dashboard QA",
+    "lead_qa": "Phúc",
+    "execution_timestamp_utc": "2026-11-14T10:18:56.455831+00:00",
+    "status": "PASSED"
+  },
+  "reconciliation_baseline": {
+    "qa_01_total_entries": 27568,
+    "qa_02_total_races": 1164,
+    "qa_03_wins_position_order_1": 1167,
+    "qa_04_podiums": 3513,
+    "qa_05_classified_entries": 16494,
+    "qa_06_non_classified_entries": 11074,
+    "qa_07_total_points": 57126.05,
+    "classified_rate_pct": 59.83,
+    "non_classified_rate_pct": 40.17,
+    "status": "PASS"
+  },
+  "classification_audit": {
+    "finish_position_not_null_count": 16494,
+    "outcome_group_classified_count": 15839,
+    "difference": 655,
+    "retirements_awarded_classification_distance": 679,
+    "classified_status_without_position": 28,
+    "conclusion": "Discrepancy is fully documented domain behavior (90% distance classification rule), NOT a model defect.",
+    "status": "PASS"
+  },
+  "bq4_bq5_verification": {
+    "eligible_grid_sample_size_n": 16434,
+    "excluded_grid_records": 11134,
+    "avg_places_gained": 2.9379,
+    "outcome_group_distribution": {
+      "CLASSIFIED": 15839,
+      "RETIREMENT_DNF": 9771,
+      "DSQ": 162,
+      "DNS": 258,
+      "OTHER": 1538
+    },
+    "status": "PASS"
+  },
+  "season_2023_scenario": {
+    "races_count": 22,
+    "entries_count": 440,
+    "wins_by_driver": {
+      "Max Verstappen (830)": 19,
+      "Sergio Perez (815)": 2,
+      "Carlos Sainz (832)": 1
+    },
+    "classified_entries": 386,
+    "classified_rate_pct": 87.73,
+    "total_points": 2242.0,
+    "status": "PASS"
+  },
+  "pbix_integrity": {
+    "pbix_file": "F1_Analytics_Dev_Page1_Phuc.pbix",
+    "file_size_bytes": 1693261,
+    "active_page": "Overview (3ae902435eec8d3460c0)",
+    "visuals_count": 18,
+    "visual_types_present": [
+      "actionButton",
+      "card",
+      "clusteredBarChart",
+      "donutChart",
+      "lineChart",
+      "slicer",
+      "textbox"
+    ],
+    "status": "PASS"
+  }
+}

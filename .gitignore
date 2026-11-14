@@ -18,6 +18,7 @@ dbt/.user.yml
 *.db
 
 # Specific folders & files
+MiniProjectBI/
 knowledge/
 example/
 2627.Yêu cầu.pdf
