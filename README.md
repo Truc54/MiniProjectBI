@@ -1,44 +1,73 @@
-# Formula 1 MiniProjectBI
+# Formula 1 Analytics (1950–2026) · MiniProject BI
 
-**Thành viên nhóm:** Phúc, Dũng, Lộc, Trực
+**Môn học:** Hệ thống thông tin phục vụ Trí tuệ Kinh doanh (BI)  
+**Trường:** Đại học Khoa học Tự nhiên, ĐHQG-HCM  
+**Nhóm thực hiện:** Nhóm 7  
+**Giảng viên hướng dẫn:** Hồ Thị Hoàng Vy, Tiết Gia Hồng, Nguyễn Ngọc Minh Châu  
 
-## Repository folders
+### Thành viên nhóm & Phân công:
+- **Dương Viết Dũng** - 23120241: Quản trị SQL Server DW, Columnstore Indexing, Dashboard Trang 2 (BQ1, BQ2, BQ6).
+- **Lê Văn Lộc** - 23120141: Mapping chuyển đổi Staging sang DW, Phân loại 141 Status, Dashboard Trang 3 (BQ3, BQ4, BQ5).
+- **Trần Lê Trung Trực** - 23120180: Xây dựng dbt project, điều phối Mage AI pipeline, Semantic Model Power BI & Master Integrator.
+- **Nguyễn Hồng Phúc** - 23120331: Thiết kế Kimball Star Schema, Bộ dbt tests tự động, Dashboard Trang 1 (Overview) & QA Lead.
 
-- `dataset/`: source CSV files from the selected Kaggle dataset; kept unchanged.
-- `knowledge/`: course/reference materials.
-- `plans/`: Phased implementation roadmap and balanced member plans (Phúc, Dũng, Lộc, Trực). See [plans/README.md](plans/README.md) (Phase 1 in `phase1_etl_staging/`, Phase 2 in `phase2_dbt_dw/`).
-- `docs/`: Comprehensive 4-pillar technical, architectural, and operational documentation. See [docs/README.md](docs/README.md).
-- `example/`: reference project structure (PostgreSQL example).
-- `mage/`, `sqlserver/`, `dbt/`: this project's SQL Server-based BI scaffold.
+## 🏗️ Kiến trúc Hệ thống (End-to-End BI Architecture)
 
-## Data flow
-
-Kaggle CSV files -> Mage.ai ingestion -> SQL Server schema `stg` -> dbt models -> SQL Server schema `dw` (Kimball Star Schema).
-
-Mage handles source-to-staging ingestion. dbt is reserved for staging-to-warehouse transformations and dimensional models.
-
-Dataset source: https://www.kaggle.com/datasets/atharvranjan/formula-1-world-championship-1950-present
-
-## Local setup
-
-1. Copy `.env.example` to `.env` and enter credentials for a SQL Server account created for this project. Do not commit `.env`.
-2. Create or select the project database in SQL Server.
-3. Apply Dung's DDL in `sqlserver/ddl/` (`00`–`03`, or `python sqlserver/run_all_ddl.py`); see [docs/04_operations_and_guides/sql_server_setup.md](docs/04_operations_and_guides/sql_server_setup.md) and [the ETL runbook](docs/04_operations_and_guides/etl_runbook.md).
-4. The Mage Dockerfile checks/installs Microsoft ODBC Driver 18 inside the container. Host CLI use needs the driver on the host as well.
-5. Configure SQL Server network access, then start Mage with Docker Compose.
-
-The SQL Server instance is outside Compose. Set `MSSQL_HOST` in `.env` to `host.docker.internal` for a server on the Docker host, or Dung's reachable DNS/IP for his remote server. Host CLI/dbt may need a different hostname (often `localhost` for a local instance).
-
-Mage implements strict source validation, transactional full/key-based incremental loads, natural-key reruns and `ctl` auditing against Dung's DDL in `sqlserver/ddl/` (commit `84081c0`); `\N` and empty strings load as NULL. Runtime variables: `file_name`, `table_name`, `target_table`, `load_mode`, `batch_key`, `key_min`, `key_max`. See [docs/04_operations_and_guides/etl_runbook.md](docs/04_operations_and_guides/etl_runbook.md) for UI steps, errors, retry and SQL Server demo commands. Integration passed on local SQL Server 2022 + Mage 0.9.79 on 2026-10-21; [live evidence](docs/evidence/loc_live_sqlserver_mage.json) records typed source/stage comparisons, reruns, rollback and audit checks. Runs used the Mage execution engine; UI login testing was deferred by the user.
-
-Validate all seven source files without installing dependencies or connecting to SQL Server:
-
-```bash
-python3 mage/run_etl.py --all --dry-run
+```text
+Kaggle CSV (dataset/)
+        │
+        ▼
+Mage.ai Ingestion (Validation & Batch Control)
+        │                                 │
+        ▼                                 ▼
+SQL Server: Schema [stg]          SQL Server: Schema [ctl]
+        │
+        ▼
+dbt Core (Staging Views -> Kimball Star Schema Marts)
+        │
+        ▼
+SQL Server: Schema [dw] (Fact Columnstore Index & 6 Dimensions)
+        │
+        ▼
+Power BI Semantic Model & Dashboards (powerbi/)
 ```
 
-## Project Phases & Roadmap
+---
 
-- **Phase 1 (Completed):** Source profiling, source-to-stage mapping, Mage ingestion into SQL Server staging (`stg`), schema/data checks, run logging (`ctl`), and repeatable full/incremental demonstration. See [docs/03_data_quality_and_governance/phase1_checklist.md](docs/03_data_quality_and_governance/phase1_checklist.md) and [plans/phase1_etl_staging/00_ke_hoach_tong_quat_phase1.md](plans/phase1_etl_staging/00_ke_hoach_tong_quat_phase1.md).
-- **Phase 2 (Active):** dbt Core transformation (Staging views -> Kimball Star Schema Marts), incremental loading for Fact (`dw.FactRaceResult`), Clustered Columnstore Index, Unknown member seeding (`-1`), Mage DBT Model block orchestration, and automated data quality tests. See [plans/phase2_dbt_dw/00_ke_hoach_tong_quat_phase2.md](plans/phase2_dbt_dw/00_ke_hoach_tong_quat_phase2.md).
-- **Phase 3 (Upcoming):** Power BI Semantic Model, DAX Measures, Interactive Dashboards, and Generative AI narrative reporting based on verified BI measures.
+## 📂 Cấu trúc Thư mục Dự án
+
+- `powerbi/`: file Dashboard Power BI (`.pbix`) giải quyết trọn vẹn 6 câu hỏi nghiệp vụ (BQ1–BQ6).
+- `dbt/`: Mã nguồn dbt Core chuyển đổi dữ liệu và bộ bài kiểm thử tự động (Staging views, Dim, Fact).
+- `mage/`: Pipeline Mage AI tiếp nhận dữ liệu từ CSV vào SQL Server Staging (`stg`).
+- `sqlserver/`: DDL tạo schema `stg`, `ctl`, `dw` và các script khởi tạo trên SQL Server.
+- `dataset/`: 7 file CSV dữ liệu F1 gốc từ Kaggle (1950–2026).
+- `docs/`: Toàn bộ hồ sơ kiến trúc, từ điển dữ liệu, hợp đồng QA và kịch bản demo.
+- `plans/`: Lộ trình và kế hoạch phân công công việc cân bằng (25 điểm/thành viên).
+
+---
+
+## 🚀 Hướng dẫn Chạy & Khảo sát
+
+### 1. Xem Báo cáo & Dashboard Power BI (Giai đoạn 2)
+- Mở Power BI Desktop và mở file `dashboard.pbix` trong thư mục `powerbi/`:
+
+### 2. Thiết lập Môi trường ETL & Data Warehouse
+1. Sao chép `.env.example` thành `.env` và điền cấu hình kết nối SQL Server.
+2. Khởi chạy SQL Server và thực thi script DDL: `python sqlserver/run_all_ddl.py`.
+3. Khởi chạy Mage AI qua Docker Compose: `docker compose up -d mage`.
+4. Chạy dbt build để xây dựng toàn bộ mô hình Star Schema trên kho `dw`:
+   ```bash
+   dbt build
+   ```
+- Xác thực nhanh dữ liệu nguồn CSV:
+   ```bash
+   python mage/run_etl.py --all --dry-run
+   ```
+
+---
+
+## 📊 Các Giai đoạn Thực hiện Dự án (Project Phases)
+
+- **Phase 1 (Completed):** Source profiling, source-to-stage mapping, Mage ingestion vào SQL Server staging (`stg`), logging (`ctl`), kiểm thử toàn vẹn dữ liệu.
+- **Phase 2 (Completed):** dbt Core transformation (Staging views -> Kimball Star Schema Marts), nạp tăng dần Fact (`dw.FactRaceResult`), Clustered Columnstore Index, Unknown member (`SK = -1`), điều phối Mage DAG khép kín và 48 bài kiểm thử dữ liệu.
+- **Phase 3 (Completed):** Power BI Semantic Model chuẩn Star Schema (6 1-to-Many relationships, 6 Hierarchies, bảng `_Measures` tập trung), 3 trang Dashboard chuyên sâu (Overview, Performance Dynamics, Circuit Outcomes) và Báo cáo phân tích tổng kết.
