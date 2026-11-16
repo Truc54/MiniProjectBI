@@ -305,8 +305,8 @@ class Phase3PowerBIQATestSuite(unittest.TestCase):
 
             self.assertIn("card", vtypes)
             self.assertIn("slicer", vtypes)
-            self.assertIn("actionButton", vtypes)
-            self.assertIn("lineChart", vtypes)
+            self.assertTrue("pageNavigator" in vtypes or "actionButton" in vtypes, "Page 1 must contain navigation")
+            self.assertTrue("lineChart" in vtypes or "lineClusteredColumnComboChart" in vtypes or "areaChart" in vtypes, "Page 1 must contain trend chart")
             self.assertIn("clusteredBarChart", vtypes)
             self.assertIn("donutChart", vtypes)
             self.assertIn("textbox", vtypes)
@@ -317,6 +317,59 @@ class Phase3PowerBIQATestSuite(unittest.TestCase):
             "active_page": "Overview (3ae902435eec8d3460c0)",
             "visuals_count": len(p1_visuals),
             "visual_types_present": sorted(list(vtypes)),
+            "status": "PASS"
+        }
+
+    def test_07_dashboard_pbix_merged_integrity(self):
+        """Verify unified dashboard.pbix file integrity, 3-page consolidation, and drillthrough page."""
+        dashboard_pbix = POWERBI_DIR / "dashboard.pbix"
+        self.assertTrue(dashboard_pbix.exists(), "powerbi/dashboard.pbix must exist")
+
+        with zipfile.ZipFile(dashboard_pbix, "r") as z:
+            namelist = z.namelist()
+            self.assertIn("Report/definition/report.json", namelist)
+            self.assertIn("Report/definition/pages/pages.json", namelist)
+            self.assertIn("DataModel", namelist)
+            self.assertNotIn("SecurityBindings", namelist, "SecurityBindings must be purged to prevent corruption")
+
+            pages_meta = json.loads(z.read("Report/definition/pages/pages.json").decode("utf-8"))
+            page_order = pages_meta.get("pageOrder", [])
+            self.assertEqual(pages_meta["activePageName"], "3ae902435eec8d3460c0", "Active page must be Overview")
+
+            # Must contain all 3 primary dashboard pages
+            self.assertIn("3ae902435eec8d3460c0", page_order, "Page 1 (Overview) must be in pageOrder")
+            self.assertIn("83e5ad66db596ac7559e", page_order, "Page 2 (Thành tích & Biến động) must be in pageOrder")
+            self.assertIn("c671a9ea38005deac8ed", page_order, "Page 3 (Trường đua & Kết quả) must be in pageOrder")
+            self.assertIn("a7d3f0c1b9e24d5f8c61", page_order, "Page 4 (Hồ sơ trường đua drillthrough) must be in pageOrder")
+
+            # Check visual counts for each page
+            p1_visuals = [f for f in namelist if f.startswith("Report/definition/pages/3ae902435eec8d3460c0/visuals/")]
+            p2_visuals = [f for f in namelist if f.startswith("Report/definition/pages/83e5ad66db596ac7559e/visuals/")]
+            p3_visuals = [f for f in namelist if f.startswith("Report/definition/pages/c671a9ea38005deac8ed/visuals/")]
+            p4_visuals = [f for f in namelist if f.startswith("Report/definition/pages/a7d3f0c1b9e24d5f8c61/visuals/")]
+
+            self.assertEqual(len(p1_visuals), 17, "Page 1 must contain exactly 17 visuals")
+            self.assertEqual(len(p2_visuals), 21, "Page 2 must contain exactly 21 visuals")
+            self.assertEqual(len(p3_visuals), 25, "Page 3 must contain exactly 25 visuals")
+            self.assertEqual(len(p4_visuals), 19, "Page 4 must contain exactly 19 visuals")
+
+            # Check DataModel compression mode
+            for info in z.infolist():
+                if info.filename == "DataModel":
+                    self.assertEqual(info.compress_type, zipfile.ZIP_STORED, "DataModel must be uncompressed (ZIP_STORED)")
+
+        self.evidence["dashboard_merged_integrity"] = {
+            "pbix_file": str(dashboard_pbix.name),
+            "file_size_bytes": dashboard_pbix.stat().st_size,
+            "active_page": "Overview (3ae902435eec8d3460c0)",
+            "page_counts": len(page_order),
+            "pages": {
+                "Page 1 (Overview)": len(p1_visuals),
+                "Page 2 (Thành tích & Biến động)": len(p2_visuals),
+                "Page 3 (Trường đua & Kết quả)": len(p3_visuals),
+                "Page 4 (Hồ sơ trường đua)": len(p4_visuals)
+            },
+            "total_visuals": len(p1_visuals) + len(p2_visuals) + len(p3_visuals) + len(p4_visuals),
             "status": "PASS"
         }
 

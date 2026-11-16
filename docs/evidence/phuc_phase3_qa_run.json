@@ -2,7 +2,7 @@
   "test_run_metadata": {
     "phase": "Phase 3 - Power BI Semantic Model & Overview Dashboard QA",
     "lead_qa": "Phúc",
-    "execution_timestamp_utc": "2026-11-14T10:18:56.455831+00:00",
+    "execution_timestamp_utc": "2026-11-15T09:06:04.551912+00:00",
     "status": "PASSED"
   },
   "reconciliation_baseline": {
@@ -54,18 +54,33 @@
   },
   "pbix_integrity": {
     "pbix_file": "F1_Analytics_Dev_Page1_Phuc.pbix",
-    "file_size_bytes": 1693261,
+    "file_size_bytes": 1646794,
     "active_page": "Overview (3ae902435eec8d3460c0)",
-    "visuals_count": 18,
+    "visuals_count": 17,
     "visual_types_present": [
-      "actionButton",
+      "areaChart",
       "card",
       "clusteredBarChart",
       "donutChart",
-      "lineChart",
+      "lineClusteredColumnComboChart",
+      "pageNavigator",
       "slicer",
       "textbox"
     ],
+    "status": "PASS"
+  },
+  "dashboard_merged_integrity": {
+    "pbix_file": "dashboard.pbix",
+    "file_size_bytes": 1711629,
+    "active_page": "Overview (3ae902435eec8d3460c0)",
+    "page_counts": 4,
+    "pages": {
+      "Page 1 (Overview)": 17,
+      "Page 2 (Thành tích & Biến động)": 21,
+      "Page 3 (Trường đua & Kết quả)": 25,
+      "Page 4 (Hồ sơ trường đua)": 19
+    },
+    "total_visuals": 82,
     "status": "PASS"
   }
 }
