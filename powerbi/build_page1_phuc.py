@@ -7,9 +7,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC_PBIX = ROOT / "powerbi" / "F1_Analytics_Dev_Page3_Loc.pbix"
 DST_PBIX = ROOT / "powerbi" / "F1_Analytics_Dev_Page1_Phuc.pbix"
 
-PAGE1_ID = "3ae902435eec8d3460c0"  # Overview page
-PAGE2_ID = "83e5ad66db596ac7559e"  # Thành tích & Biến động
-PAGE3_ID = "c671a9ea38005deac8ed"  # Trường đua & Kết quả
+PAGE1_ID = "3ae902435eec8d3460c0"  # Overview page (Phúc)
+PAGE2_ID = "83e5ad66db596ac7559e"  # Thành tích & Biến động (Dung)
+# Lộc's pages to be completely removed from Phúc's code and report:
+PAGE3_ID = "c671a9ea38005deac8ed"  # Trường đua & Kết quả (Lộc - REMOVED)
+PAGE4_ID = "a7d3f0c1b9e24d5f8c61"  # Hồ sơ trường đua (Lộc - REMOVED)
+LOC_PAGES = {PAGE3_ID, PAGE4_ID}
 
 
 def make_textbox(name, x, y, z, w, h, paragraphs, bg_color=None, border_color=None, radius=0):
@@ -73,14 +76,15 @@ def make_slicer(name, x, y, z, w, h, entity, prop, display_name):
                 "header": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#5B6070'"}}}}},
+                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#475569'"}}}}},
                         "textSize": {"expr": {"Literal": {"Value": "9D"}}},
                         "text": {"expr": {"Literal": {"Value": f"'{display_name}'"}}}
                     }
                 }],
                 "items": [{
                     "properties": {
-                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#1B1D24'"}}}}},
+                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#0F172A'"}}}}},
+                        "background": {"solid": {"color": {"expr": {"Literal": {"Value": "'#FFFFFF'"}}}}},
                         "textSize": {"expr": {"Literal": {"Value": "10D"}}}
                     }
                 }]
@@ -96,7 +100,7 @@ def make_slicer(name, x, y, z, w, h, entity, prop, display_name):
                 "border": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E4E7EC'"}}}}},
+                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#CBD5E1'"}}}}},
                         "radius": {"expr": {"Literal": {"Value": "8D"}}}
                     }
                 }],
@@ -107,7 +111,14 @@ def make_slicer(name, x, y, z, w, h, entity, prop, display_name):
     }
 
 
-def make_action_button(name, x, y, z, w, h, target_page, text):
+def make_action_button(name, x, y, z, w, h, text, action_type="PageNavigation", target_page=None, fill_color="#E10600", outline_color="#E10600", font_color="#FFFFFF"):
+    link_props = {
+        "show": {"expr": {"Literal": {"Value": "true"}}},
+        "type": {"expr": {"Literal": {"Value": f"'{action_type}'"}}}
+    }
+    if target_page:
+        link_props["page"] = {"expr": {"Literal": {"Value": f"'{target_page}'"}}}
+
     return {
         "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
         "name": name,
@@ -118,7 +129,7 @@ def make_action_button(name, x, y, z, w, h, target_page, text):
                 "text": [{
                     "properties": {
                         "text": {"expr": {"Literal": {"Value": f"'{text}'"}}},
-                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#FFFFFF'"}}}}},
+                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": f"'{font_color}'"}}}}},
                         "fontSize": {"expr": {"Literal": {"Value": "10D"}}},
                         "fontFamily": {"expr": {"Literal": {"Value": "'Segoe UI Semibold'"}}}
                     },
@@ -127,7 +138,7 @@ def make_action_button(name, x, y, z, w, h, target_page, text):
                 "outline": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "lineColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#FFFFFF'"}}}}},
+                        "lineColor": {"solid": {"color": {"expr": {"Literal": {"Value": f"'{outline_color}'"}}}}},
                         "lineWeight": {"expr": {"Literal": {"Value": "1D"}}},
                         "radius": {"expr": {"Literal": {"Value": "8D"}}}
                     },
@@ -136,20 +147,14 @@ def make_action_button(name, x, y, z, w, h, target_page, text):
                 "fill": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "fillColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#0B4F9C'"}}}}},
+                        "fillColor": {"solid": {"color": {"expr": {"Literal": {"Value": f"'{fill_color}'"}}}}},
                         "transparency": {"expr": {"Literal": {"Value": "0D"}}}
                     },
                     "selector": {"id": "default"}
                 }]
             },
             "visualContainerObjects": {
-                "visualLink": [{
-                    "properties": {
-                        "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "type": {"expr": {"Literal": {"Value": "'PageNavigation'"}}},
-                        "page": {"expr": {"Literal": {"Value": f"'{target_page}'"}}}
-                    }
-                }],
+                "visualLink": [{"properties": link_props}],
                 "title": [{"properties": {"show": {"expr": {"Literal": {"Value": "false"}}}}}]
             }
         },
@@ -157,7 +162,7 @@ def make_action_button(name, x, y, z, w, h, target_page, text):
     }
 
 
-def make_card(name, x, y, z, w, h, projection_field, query_ref, native_query_ref, display_name, fmt="#,0"):
+def make_card(name, x, y, z, w, h, projection_field, query_ref, native_query_ref, display_name, fmt="#,0", value_color="#0F172A"):
     return {
         "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
         "name": name,
@@ -180,8 +185,8 @@ def make_card(name, x, y, z, w, h, projection_field, query_ref, native_query_ref
             "objects": {
                 "labels": [{
                     "properties": {
-                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#1B1D24'"}}}}},
-                        "fontSize": {"expr": {"Literal": {"Value": "24D"}}},
+                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": f"'{value_color}'"}}}}},
+                        "fontSize": {"expr": {"Literal": {"Value": "22D"}}},
                         "fontFamily": {"expr": {"Literal": {"Value": "'Segoe UI Semibold'"}}},
                         "labelDisplayUnits": {"expr": {"Literal": {"Value": "1D"}}}
                     }
@@ -189,8 +194,8 @@ def make_card(name, x, y, z, w, h, projection_field, query_ref, native_query_ref
                 "categoryLabels": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#5B6070'"}}}}},
-                        "fontSize": {"expr": {"Literal": {"Value": "10D"}}}
+                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#64748B'"}}}}},
+                        "fontSize": {"expr": {"Literal": {"Value": "9.5D"}}}
                     }
                 }]
             },
@@ -205,7 +210,7 @@ def make_card(name, x, y, z, w, h, projection_field, query_ref, native_query_ref
                 "border": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E4E7EC'"}}}}},
+                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E2E8F0'"}}}}},
                         "radius": {"expr": {"Literal": {"Value": "10D"}}}
                     }
                 }],
@@ -300,23 +305,24 @@ def make_macro_trend_line_chart(name, x, y, z, w, h):
                     "properties": {
                         "showAxisTitle": {"expr": {"Literal": {"Value": "false"}}},
                         "fontSize": {"expr": {"Literal": {"Value": "9D"}}},
-                        "labelColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#5B6070'"}}}}}
+                        "labelColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#64748B'"}}}}}
                     }
                 }],
                 "valueAxis": [{
                     "properties": {
                         "showAxisTitle": {"expr": {"Literal": {"Value": "true"}}},
                         "fontSize": {"expr": {"Literal": {"Value": "9D"}}},
-                        "labelColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#5B6070'"}}}}},
+                        "labelColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#64748B'"}}}}},
                         "gridlineShow": {"expr": {"Literal": {"Value": "true"}}},
-                        "gridlineColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#EEF0F3'"}}}}}
+                        "gridlineColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#F1F5F9'"}}}}}
                     }
                 }],
                 "legend": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "position": {"expr": {"Literal": {"Value": "'TopLeft'"}}},
-                        "fontSize": {"expr": {"Literal": {"Value": "10D"}}}
+                        "position": {"expr": {"Literal": {"Value": "'TopRight'"}}},
+                        "fontSize": {"expr": {"Literal": {"Value": "9.5D"}}},
+                        "labelColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#334155'"}}}}}
                     }
                 }],
                 "lineStyles": [
@@ -334,7 +340,7 @@ def make_macro_trend_line_chart(name, x, y, z, w, h):
                 "border": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E4E7EC'"}}}}},
+                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E2E8F0'"}}}}},
                         "radius": {"expr": {"Literal": {"Value": "10D"}}}
                     }
                 }],
@@ -342,8 +348,8 @@ def make_macro_trend_line_chart(name, x, y, z, w, h):
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
                         "text": {"expr": {"Literal": {"Value": "'Xu hướng quy mô giải đấu & số lượt tham gia qua các mùa giải (1950–2026)'"}}},
-                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#1B1D24'"}}}}},
-                        "fontSize": {"expr": {"Literal": {"Value": "12D"}}},
+                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#0F172A'"}}}}},
+                        "fontSize": {"expr": {"Literal": {"Value": "11.5D"}}},
                         "bold": {"expr": {"Literal": {"Value": "true"}}},
                         "fontFamily": {"expr": {"Literal": {"Value": "'Segoe UI Semibold'"}}}
                     }
@@ -411,7 +417,7 @@ def make_top_drivers_chart(name, x, y, z, w, h):
                     "properties": {
                         "showAxisTitle": {"expr": {"Literal": {"Value": "false"}}},
                         "fontSize": {"expr": {"Literal": {"Value": "9D"}}},
-                        "labelColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#5B6070'"}}}}}
+                        "labelColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#334155'"}}}}}
                     }
                 }],
                 "valueAxis": [{"properties": {"show": {"expr": {"Literal": {"Value": "false"}}}}}],
@@ -424,7 +430,7 @@ def make_top_drivers_chart(name, x, y, z, w, h):
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
                         "fontSize": {"expr": {"Literal": {"Value": "9D"}}},
-                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#1B1D24'"}}}}}
+                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#0F172A'"}}}}}
                     }
                 }]
             },
@@ -439,7 +445,7 @@ def make_top_drivers_chart(name, x, y, z, w, h):
                 "border": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E4E7EC'"}}}}},
+                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E2E8F0'"}}}}},
                         "radius": {"expr": {"Literal": {"Value": "10D"}}}
                     }
                 }],
@@ -447,8 +453,8 @@ def make_top_drivers_chart(name, x, y, z, w, h):
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
                         "text": {"expr": {"Literal": {"Value": "'Top 10 Tay đua có nhiều chiến thắng nhất lịch sử F1'"}}},
-                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#1B1D24'"}}}}},
-                        "fontSize": {"expr": {"Literal": {"Value": "12D"}}},
+                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#0F172A'"}}}}},
+                        "fontSize": {"expr": {"Literal": {"Value": "11.5D"}}},
                         "bold": {"expr": {"Literal": {"Value": "true"}}},
                         "fontFamily": {"expr": {"Literal": {"Value": "'Segoe UI Semibold'"}}}
                     }
@@ -504,37 +510,37 @@ def make_donut_chart(name, x, y, z, w, h):
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
                         "position": {"expr": {"Literal": {"Value": "'Right'"}}},
-                        "fontSize": {"expr": {"Literal": {"Value": "10D"}}},
-                        "labelColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#5B6070'"}}}}}
+                        "fontSize": {"expr": {"Literal": {"Value": "9.5D"}}},
+                        "labelColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#475569'"}}}}}
                     }
                 }],
                 "labels": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
                         "labelStyle": {"expr": {"Literal": {"Value": "'Both'"}}},
-                        "fontSize": {"expr": {"Literal": {"Value": "10D"}}},
-                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#1B1D24'"}}}}}
+                        "fontSize": {"expr": {"Literal": {"Value": "9.5D"}}},
+                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#0F172A'"}}}}}
                     }
                 }],
                 "dataPoint": [
                     {
-                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#2A78D6'"}}}}}},
+                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#059669'"}}}}}},
                         "selector": {"data": [{"scopeId": {"Comparison": {"ComparisonKind": 0, "Left": {"Column": {"Expression": {"SourceRef": {"Entity": "dw DimStatus"}}, "Property": "outcome_group"}}, "Right": {"Literal": {"Value": "'CLASSIFIED'"}}}}}]}
                     },
                     {
-                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#EB6834'"}}}}}},
+                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E10600'"}}}}}},
                         "selector": {"data": [{"scopeId": {"Comparison": {"ComparisonKind": 0, "Left": {"Column": {"Expression": {"SourceRef": {"Entity": "dw DimStatus"}}, "Property": "outcome_group"}}, "Right": {"Literal": {"Value": "'RETIREMENT_DNF'"}}}}}]}
                     },
                     {
-                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#1BAF7A'"}}}}}},
+                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#F59E0B'"}}}}}},
                         "selector": {"data": [{"scopeId": {"Comparison": {"ComparisonKind": 0, "Left": {"Column": {"Expression": {"SourceRef": {"Entity": "dw DimStatus"}}, "Property": "outcome_group"}}, "Right": {"Literal": {"Value": "'DNS'"}}}}}]}
                     },
                     {
-                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#EDA100'"}}}}}},
+                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#7C3AED'"}}}}}},
                         "selector": {"data": [{"scopeId": {"Comparison": {"ComparisonKind": 0, "Left": {"Column": {"Expression": {"SourceRef": {"Entity": "dw DimStatus"}}, "Property": "outcome_group"}}, "Right": {"Literal": {"Value": "'DSQ'"}}}}}]}
                     },
                     {
-                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#8A8984'"}}}}}},
+                        "properties": {"fill": {"solid": {"color": {"expr": {"Literal": {"Value": "'#94A3B8'"}}}}}},
                         "selector": {"data": [{"scopeId": {"Comparison": {"ComparisonKind": 0, "Left": {"Column": {"Expression": {"SourceRef": {"Entity": "dw DimStatus"}}, "Property": "outcome_group"}}, "Right": {"Literal": {"Value": "'OTHER'"}}}}}]}
                     }
                 ]
@@ -550,7 +556,7 @@ def make_donut_chart(name, x, y, z, w, h):
                 "border": [{
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
-                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E4E7EC'"}}}}},
+                        "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#E2E8F0'"}}}}},
                         "radius": {"expr": {"Literal": {"Value": "10D"}}}
                     }
                 }],
@@ -558,8 +564,8 @@ def make_donut_chart(name, x, y, z, w, h):
                     "properties": {
                         "show": {"expr": {"Literal": {"Value": "true"}}},
                         "text": {"expr": {"Literal": {"Value": "'Cơ cấu phân bổ kết quả thi đấu (5 nhóm Outcome)'"}}},
-                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#1B1D24'"}}}}},
-                        "fontSize": {"expr": {"Literal": {"Value": "12D"}}},
+                        "fontColor": {"solid": {"color": {"expr": {"Literal": {"Value": "'#0F172A'"}}}}},
+                        "fontSize": {"expr": {"Literal": {"Value": "11.5D"}}},
                         "bold": {"expr": {"Literal": {"Value": "true"}}},
                         "fontFamily": {"expr": {"Literal": {"Value": "'Segoe UI Semibold'"}}}
                     }
@@ -576,86 +582,119 @@ def build_page1():
     with zipfile.ZipFile(SRC_PBIX, "r") as z_in:
         files = {name: z_in.read(name) for name in z_in.namelist()}
 
-    # Update pages.json to make Overview active
+    # 1. PURGE LOC'S PAGES COMPLETELY:
+    # Remove files belonging to Loc's Page 3 (Trường đua & Kết quả) and Page 4 (Hồ sơ trường đua)
+    print(f"Purging Loc's pages ({PAGE3_ID}, {PAGE4_ID}) from report definition...")
+    files = {
+        name: fbytes for name, fbytes in files.items()
+        if not any(f"pages/{p_id}/" in name for p_id in LOC_PAGES)
+    }
+
+    # Update pages.json: exclude Loc's pages from pageOrder, active page = PAGE1_ID (Overview)
     pages_meta = json.loads(files["Report/definition/pages/pages.json"].decode("utf-8"))
+    pages_meta["pageOrder"] = [p for p in pages_meta.get("pageOrder", []) if p not in LOC_PAGES]
     pages_meta["activePageName"] = PAGE1_ID
     files["Report/definition/pages/pages.json"] = json.dumps(pages_meta, ensure_ascii=False, indent=2).encode("utf-8")
 
-    # Generate Page 1 visuals
+    # 2. SET OVERVIEW CANVAS LIGHT BACKGROUND (same light base #F4F7FC as other tabs):
+    page1_meta = json.loads(files[f"Report/definition/pages/{PAGE1_ID}/page.json"].decode("utf-8"))
+    page1_meta["displayName"] = "Overview"
+    page1_meta["objects"] = {
+        "background": [{
+            "properties": {
+                "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#F4F7FC'"}}}}},
+                "transparency": {"expr": {"Literal": {"Value": "0D"}}}
+            }
+        }],
+        "outspace": [{
+            "properties": {
+                "color": {"solid": {"color": {"expr": {"Literal": {"Value": "'#F4F7FC'"}}}}}
+            }
+        }]
+    }
+    files[f"Report/definition/pages/{PAGE1_ID}/page.json"] = json.dumps(page1_meta, ensure_ascii=False, indent=2).encode("utf-8")
+
+    # 3. GENERATE OVERVIEW VISUALS (MODERN LIGHT EXECUTIVE BENTO LAYOUT):
+    # Completely different from Loc's blue banner and horizontal stripes:
+    # - Header: Clean White Floating Card (x=24, y=14, w=1872, h=80) with F1 Red Left Pill
+    # - Left Column (x=24, w=516): 6 KPI Cards in a 2x3 Grid + Historical Regulation Guide below
+    # - Right Column (x=556, w=1340): Widescreen Macro Trend Line Chart top + Bottom Top 10 Drivers & Outcome Donut
     visuals = {}
 
-    # 1. Header Banner Background
-    v_hdr_bg = make_textbox("p1_v01_hdr_bg", 0, 0, 0, 1920, 96, [
+    # 1. Header Floating Container (White card, sleek border, radius 10D)
+    v_hdr_bg = make_textbox("p1_v01_hdr_bg", 24, 14, 0, 1872, 80, [
         {"textRuns": [{"value": " ", "textStyle": {"fontSize": "4pt", "color": "#FFFFFF"}}]}
-    ], bg_color="#1F6FD1")
+    ], bg_color="#FFFFFF", border_color="#E2E8F0", radius=10)
     visuals["p1_v01_hdr_bg"] = v_hdr_bg
 
-    # 2. Header Red Accent Line
-    v_hdr_line = make_textbox("p1_v02_hdr_line", 0, 96, 1, 1920, 4, [
+    # 2. Header F1 Red Left Pill Accent (x=24, y=14, w=6, h=80)
+    v_hdr_accent = make_textbox("p1_v02_hdr_accent", 24, 14, 1, 6, 80, [
         {"textRuns": [{"value": " ", "textStyle": {"fontSize": "1pt", "color": "#E10600"}}]}
-    ], bg_color="#E10600")
-    visuals["p1_v02_hdr_line"] = v_hdr_line
+    ], bg_color="#E10600", radius=3)
+    visuals["p1_v02_hdr_accent"] = v_hdr_accent
 
-    # 3. Header Title & Subtitle
-    v_hdr_title = make_textbox("p1_v03_hdr_title", 24, 14, 2, 850, 68, [
+    # 3. Header Title (Clean single title, perfectly centered vertically in header)
+    v_hdr_title = make_textbox("p1_v03_hdr_title", 48, 28, 2, 840, 52, [
         {
             "textRuns": [
-                {"value": "FORMULA 1 ANALYTICS · OVERVIEW (1950–2026)\n", "textStyle": {"fontSize": "20pt", "color": "#FFFFFF", "fontFamily": "Segoe UI Semibold", "fontWeight": "bold"}},
-                {"value": "Bức tranh toàn cảnh về quy mô lịch sử, hiệu suất vĩ mô và xu hướng phát triển F1 qua 77 mùa giải", "textStyle": {"fontSize": "10pt", "color": "#E2E8F0", "fontFamily": "Segoe UI"}}
+                {"value": "FORMULA 1 WORLD CHAMPIONSHIP : LỊCH SỬ & QUY MÔ (1950–2026)", "textStyle": {"fontSize": "16pt", "color": "#0F172A", "fontFamily": "Segoe UI Semibold", "fontWeight": "bold"}}
             ]
         }
     ])
     visuals["p1_v03_hdr_title"] = v_hdr_title
 
-    # 4. Slicers in Header
-    v_sl_season = make_slicer("p1_v04_sl_season", 890, 14, 50, 185, 68, "dw DimRace", "season_year", "Mùa giải")
+    # 4. Slicers in Header (x=900 and x=1095)
+    v_sl_season = make_slicer("p1_v04_sl_season", 900, 20, 50, 180, 68, "dw DimRace", "season_year", "Mùa giải")
     visuals["p1_v04_sl_season"] = v_sl_season
 
-    v_sl_constructor = make_slicer("p1_v05_sl_constructor", 1090, 14, 51, 215, 68, "dw DimConstructor", "constructor_name", "Đội đua")
+    v_sl_constructor = make_slicer("p1_v05_sl_constructor", 1095, 20, 51, 220, 68, "dw DimConstructor", "constructor_name", "Đội đua")
     visuals["p1_v05_sl_constructor"] = v_sl_constructor
 
-    # 5. Navigation Buttons in Header
-    v_btn_p2 = make_action_button("p1_v06_btn_p2", 1320, 20, 52, 280, 56, PAGE2_ID, "Trang 2: Thành tích & Biến động ➔")
-    visuals["p1_v06_btn_p2"] = v_btn_p2
+    # 5. Header Action Buttons (Reset Slicers & Navigate to Page 2 only)
+    v_btn_reset = make_action_button("p1_v06_btn_reset", 1330, 26, 52, 160, 54, "↺ Xóa bộ lọc", action_type="ClearAllSlicers", fill_color="#F8FAFC", outline_color="#CBD5E1", font_color="#334155")
+    visuals["p1_v06_btn_reset"] = v_btn_reset
 
-    v_btn_p3 = make_action_button("p1_v07_btn_p3", 1615, 20, 53, 280, 56, PAGE3_ID, "Trang 3: Trường đua & Kết quả ➔")
-    visuals["p1_v07_btn_p3"] = v_btn_p3
+    v_btn_p2 = make_action_button("p1_v07_btn_p2", 1505, 26, 53, 375, 54, "Khám phá Trang 2: Thành tích & Biến động ➔", action_type="PageNavigation", target_page=PAGE2_ID, fill_color="#E10600", outline_color="#E10600", font_color="#FFFFFF")
+    visuals["p1_v07_btn_p2"] = v_btn_p2
 
-    # 6. Row 1: KPI Cards (y=112, h=108, w=298)
+    # 6. LEFT SECTION: 6 KPI Cards arranged in a 2-Column x 3-Row Grid (w=252 each)
+    # Row 1 (y=106, h=106): Races & Entries
     card_race_proj = {
         "Aggregation": {
             "Expression": {"Column": {"Expression": {"SourceRef": {"Entity": "dw FactRaceResult"}}, "Property": "race_sk"}},
             "Function": 2
         }
     }
-    v_c_races = make_card("p1_v08_c_races", 24, 112, 100, 298, 108, card_race_proj, "CountNonNull(dw FactRaceResult.race_sk)", "race_sk", "Tổng số chặng Grand Prix", "#,0")
+    v_c_races = make_card("p1_v08_c_races", 24, 106, 100, 252, 106, card_race_proj, "CountNonNull(dw FactRaceResult.race_sk)", "race_sk", "Tổng chặng Grand Prix", "#,0", value_color="#0284C7")
     visuals["p1_v08_c_races"] = v_c_races
 
     card_ent_proj = {
         "Measure": {"Expression": {"SourceRef": {"Entity": "_Measures"}}, "Property": "Total Entries"}
     }
-    v_c_entries = make_card("p1_v09_c_entries", 338, 112, 110, 298, 108, card_ent_proj, "_Measures.Total Entries", "Total Entries", "Tổng số lượt tham gia", "#,0")
+    v_c_entries = make_card("p1_v09_c_entries", 288, 106, 110, 252, 106, card_ent_proj, "_Measures.Total Entries", "Total Entries", "Tổng lượt tham gia", "#,0", value_color="#0F172A")
     visuals["p1_v09_c_entries"] = v_c_entries
 
+    # Row 2 (y=224, h=106): Classified Rate & Total Points
     card_class_proj = {
         "Measure": {"Expression": {"SourceRef": {"Entity": "_Measures"}}, "Property": "Classified Rate"}
     }
-    v_c_class = make_card("p1_v10_c_class", 652, 112, 120, 298, 108, card_class_proj, "_Measures.Classified Rate", "Classified Rate", "Tỷ lệ hoàn thành (Classified)", "0.0%")
+    v_c_class = make_card("p1_v10_c_class", 24, 224, 120, 252, 106, card_class_proj, "_Measures.Classified Rate", "Classified Rate", "Tỷ lệ hoàn thành (Classified)", "0.0%", value_color="#059669")
     visuals["p1_v10_c_class"] = v_c_class
 
     card_pts_proj = {
         "Measure": {"Expression": {"SourceRef": {"Entity": "_Measures"}}, "Property": "Total Points"}
     }
-    v_c_points = make_card("p1_v11_c_points", 966, 112, 130, 298, 108, card_pts_proj, "_Measures.Total Points", "Total Points", "Tổng điểm số lịch sử", "#,0.00")
+    v_c_points = make_card("p1_v11_c_points", 288, 224, 130, 252, 106, card_pts_proj, "_Measures.Total Points", "Total Points", "Tổng điểm số lịch sử", "#,0.00", value_color="#D97706")
     visuals["p1_v11_c_points"] = v_c_points
 
+    # Row 3 (y=342, h=106): Total Drivers & Constructors
     card_drv_proj = {
         "Aggregation": {
             "Expression": {"Column": {"Expression": {"SourceRef": {"Entity": "dw FactRaceResult"}}, "Property": "driver_sk"}},
             "Function": 2
         }
     }
-    v_c_drivers = make_card("p1_v12_c_drivers", 1280, 112, 140, 298, 108, card_drv_proj, "CountNonNull(dw FactRaceResult.driver_sk)", "driver_sk", "Tổng số tay đua tham gia", "#,0")
+    v_c_drivers = make_card("p1_v12_c_drivers", 24, 342, 140, 252, 106, card_drv_proj, "CountNonNull(dw FactRaceResult.driver_sk)", "driver_sk", "Tổng số tay đua", "#,0", value_color="#7C3AED")
     visuals["p1_v12_c_drivers"] = v_c_drivers
 
     card_con_proj = {
@@ -664,57 +703,46 @@ def build_page1():
             "Function": 2
         }
     }
-    v_c_constructors = make_card("p1_v13_c_constructors", 1594, 112, 150, 298, 108, card_con_proj, "CountNonNull(dw FactRaceResult.constructor_sk)", "constructor_sk", "Tổng số đội đua tham gia", "#,0")
+    v_c_constructors = make_card("p1_v13_c_constructors", 288, 342, 150, 252, 106, card_con_proj, "CountNonNull(dw FactRaceResult.constructor_sk)", "constructor_sk", "Tổng số đội đua", "#,0", value_color="#E11D48")
     visuals["p1_v13_c_constructors"] = v_c_constructors
 
-    # 7. Main Grid Visuals (y=236 to 940)
-    # Left: Macro Trend (w=1116, h=440)
-    v_line_trend = make_macro_trend_line_chart("p1_v14_macro_trend", 24, 236, 200, 1116, 440)
-    visuals["p1_v14_macro_trend"] = v_line_trend
-
-    # Left Bottom: Top 10 Drivers by Wins (w=1116, h=340)
-    v_top_drivers = make_top_drivers_chart("p1_v15_top_drivers", 24, 692, 210, 1116, 340)
-    visuals["p1_v15_top_drivers"] = v_top_drivers
-
-    # Right: Outcome Group Donut Chart (w=740, h=440)
-    v_donut_outcome = make_donut_chart("p1_v16_outcome_donut", 1156, 236, 220, 740, 440)
-    visuals["p1_v16_outcome_donut"] = v_donut_outcome
-
-    # Right Bottom: Historical Scoring Context Footnote (w=740, h=340)
+    # 7. LEFT BOTTOM: Historical Scoring Context Footnote (x=24, y=460, w=516, h=574)
     caveat_paragraphs = [
         {
             "textRuns": [
-                {"value": "LƯU Ý NGỮ CẢNH: HỆ THỐNG TÍNH ĐIỂM F1 QUA CÁC KỶ NGUYÊN\n\n", "textStyle": {"fontSize": "11pt", "fontWeight": "bold", "color": "#1B1D24", "fontFamily": "Segoe UI Semibold"}},
-                {"value": "Hệ thống thang điểm của F1 đã thay đổi sâu sắc qua 77 năm lịch sử:\n", "textStyle": {"fontSize": "9.5pt", "color": "#334155"}},
-                {"value": "• 1950–1960: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#1F6FD1"}},
-                {"value": "Thắng được 8đ, chỉ tính điểm Top 5 (8-6-4-3-2), cộng 1đ cho Fastest Lap.\n", "textStyle": {"fontSize": "9.5pt", "color": "#334155"}},
-                {"value": "• 1961–1990: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#1F6FD1"}},
-                {"value": "Thắng được 9đ, tính điểm Top 6 (9-6-4-3-2-1), bỏ điểm Fastest Lap.\n", "textStyle": {"fontSize": "9.5pt", "color": "#334155"}},
-                {"value": "• 1991–2002: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#1F6FD1"}},
-                {"value": "Thắng được 10đ, tính điểm Top 6 (10-6-4-3-2-1).\n", "textStyle": {"fontSize": "9.5pt", "color": "#334155"}},
-                {"value": "• 2003–2009: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#1F6FD1"}},
-                {"value": "Thắng được 10đ, mở rộng điểm cho Top 8 (10-8-6-5-4-3-2-1).\n", "textStyle": {"fontSize": "9.5pt", "color": "#334155"}},
-                {"value": "• 2010–2018: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#1F6FD1"}},
-                {"value": "Thắng được 25đ, mở rộng cho Top 10 (25-18-15-12-10-8-6-4-2-1).\n", "textStyle": {"fontSize": "9.5pt", "color": "#334155"}},
-                {"value": "• 2019–2026: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#1F6FD1"}},
-                {"value": "Bổ sung 1đ cho Fastest Lap (áp dụng cho xe hoàn thành trong Top 10).\n\n", "textStyle": {"fontSize": "9.5pt", "color": "#334155"}},
-                {"value": "⚠️ Khuyến cáo phân tích: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#C5221F"}},
-                {"value": "Tuyệt đối không so sánh trực tiếp tổng điểm số thô giữa các mùa giải thuộc các kỷ nguyên khác nhau mà không có chuẩn hóa hoặc tỷ lệ phần trăm tương đối.", "textStyle": {"fontSize": "9.5pt", "fontStyle": "italic", "color": "#475569"}}
+                {"value": "HƯỚNG DẪN NGỮ CẢNH: HỆ THỐNG TÍNH ĐIỂM F1\n\n", "textStyle": {"fontSize": "11pt", "fontWeight": "bold", "color": "#0F172A", "fontFamily": "Segoe UI Semibold"}},
+                {"value": "Hệ thống thang điểm F1 đã thay đổi sâu sắc qua 77 năm lịch sử:\n\n", "textStyle": {"fontSize": "9.5pt", "color": "#334155"}},
+                {"value": "• 1950–1960: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#0284C7"}},
+                {"value": "Thắng 8đ, tính điểm Top 5 (8-6-4-3-2), +1đ Fastest Lap.\n\n", "textStyle": {"fontSize": "9.5pt", "color": "#475569"}},
+                {"value": "• 1961–1990: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#0284C7"}},
+                {"value": "Thắng 9đ, tính điểm Top 6 (9-6-4-3-2-1), bỏ Fastest Lap.\n\n", "textStyle": {"fontSize": "9.5pt", "color": "#475569"}},
+                {"value": "• 1991–2002: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#0284C7"}},
+                {"value": "Thắng 10đ, tính điểm Top 6 (10-6-4-3-2-1).\n\n", "textStyle": {"fontSize": "9.5pt", "color": "#475569"}},
+                {"value": "• 2003–2009: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#0284C7"}},
+                {"value": "Thắng 10đ, mở rộng điểm cho Top 8 (10-8-6-5-4-3-2-1).\n\n", "textStyle": {"fontSize": "9.5pt", "color": "#475569"}},
+                {"value": "• 2010–2018: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#0284C7"}},
+                {"value": "Thắng 25đ, mở rộng cho Top 10 (25-18-15-12-10-8-6-4-2-1).\n\n", "textStyle": {"fontSize": "9.5pt", "color": "#475569"}},
+                {"value": "• 2019–2026: ", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#0284C7"}},
+                {"value": "Bổ sung 1đ cho Fastest Lap (áp dụng cho xe Top 10).\n\n", "textStyle": {"fontSize": "9.5pt", "color": "#475569"}},
+                {"value": "⚠️ Khuyến cáo phân tích:\n", "textStyle": {"fontSize": "9.5pt", "fontWeight": "bold", "color": "#DC2626"}},
+                {"value": "Tuyệt đối không so sánh trực tiếp tổng điểm số thô giữa các mùa giải thuộc các kỷ nguyên khác nhau mà không có chuẩn hóa hoặc tỷ lệ phần trăm tương đối.", "textStyle": {"fontSize": "9.5pt", "fontStyle": "italic", "color": "#64748B"}}
             ]
         }
     ]
-    v_caveat = make_textbox("p1_v17_caveat", 1156, 692, 230, 740, 340, caveat_paragraphs, bg_color="#F8FAFC", border_color="#CBD5E1", radius=10)
+    v_caveat = make_textbox("p1_v17_caveat", 24, 460, 230, 516, 574, caveat_paragraphs, bg_color="#FFFFFF", border_color="#E2E8F0", radius=10)
     visuals["p1_v17_caveat"] = v_caveat
 
-    # 8. Footer Status Bar
-    v_footer = make_textbox("p1_v18_footer", 0, 1044, 10, 1920, 36, [
-        {
-            "textRuns": [
-                {"value": "Formula 1 Analytics (1950–2026) · Phase 3 Semantic Model & Overview Dashboard · QA Lead: Phúc · Kho dữ liệu Kimball Star Schema", "textStyle": {"fontSize": "9pt", "color": "#94A3B8", "fontFamily": "Segoe UI"}}
-            ]
-        }
-    ], bg_color="#0F172A")
-    visuals["p1_v18_footer"] = v_footer
+    # 8. RIGHT TOP: Macro Trend Widescreen Line Chart (x=556, y=106, w=1340, h=450)
+    v_line_trend = make_macro_trend_line_chart("p1_v14_macro_trend", 556, 106, 200, 1340, 450)
+    visuals["p1_v14_macro_trend"] = v_line_trend
+
+    # 9. RIGHT BOTTOM LEFT: Top 10 Drivers by Wins (x=556, y=568, w=780, h=466)
+    v_top_drivers = make_top_drivers_chart("p1_v15_top_drivers", 556, 568, 210, 780, 466)
+    visuals["p1_v15_top_drivers"] = v_top_drivers
+
+    # 10. RIGHT BOTTOM RIGHT: Outcome Group Donut Chart (x=1352, y=568, w=544, h=466)
+    v_donut_outcome = make_donut_chart("p1_v16_outcome_donut", 1352, 568, 220, 544, 466)
+    visuals["p1_v16_outcome_donut"] = v_donut_outcome
 
     # Write visuals into zip structure
     for vname, vdata in visuals.items():
