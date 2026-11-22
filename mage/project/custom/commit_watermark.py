@@ -18,11 +18,16 @@ def commit_batch_watermark(*args, **kwargs):
     execution_date = kwargs.get('execution_date') or datetime.now(timezone.utc)
 
     table_name = kwargs.get('table_name') or kwargs.get('target_table') or context.get('table_name') or 'all_tables'
-    batch_key = (
-        kwargs.get('batch_key')
-        or context.get('batch_key')
-        or (f"batch_{execution_date.strftime('%Y%m%d_%H%M%S')}" if hasattr(execution_date, 'strftime') else str(execution_date))
-    )
+    batch_key = kwargs.get('batch_key') or context.get('batch_key')
+    if not batch_key:
+        # Use the same default label as export_payload ('full' or 'keys_<min>_<max>') so the
+        # watermark updates the stage batch row instead of creating an orphan row.
+        try:
+            from f1_etl.contract import resolve_request
+            batch_key = resolve_request(dict(kwargs, table_name=table_name))['batch_key']
+        except Exception:
+            batch_key = (f"batch_{execution_date.strftime('%Y%m%d_%H%M%S')}"
+                         if hasattr(execution_date, 'strftime') else str(execution_date))
 
     result = {
         'status': 'committed',
@@ -52,8 +57,13 @@ def commit_batch_watermark(*args, **kwargs):
             })
             result['db_committed'] = True
     except Exception as exc:
-        result['db_committed'] = False
-        result['db_error'] = str(exc)
+        # Fail the Mage run visibly instead of reporting "completed" without a watermark;
+        # safe_error never exposes driver text (URLs, credentials).
+        from f1_etl.source import safe_error
+        raise RuntimeError(f'Watermark commit failed: {safe_error(exc)}') from None
+    finally:
+        if 'engine' in locals():
+            engine.dispose()
 
     return result
 

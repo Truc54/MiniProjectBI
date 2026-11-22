@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -164,8 +165,11 @@ def main(argv=None):
     parser.add_argument('--evidence', type=Path, help='Write a JSON result (including failures)')
     parser.add_argument('--run-dbt', action='store_true', help='Execute dbt run --select +fact_race_result after Stage load')
     parser.add_argument('--run-dbt-test', action='store_true', help='Execute dbt test after dbt run')
+    parser.add_argument('--dbt-build', action='store_true',
+                        help='Execute dbt build --select +fact_race_result after Stage load (models + tests)')
     args = parser.parse_args(argv)
-    if args.dry_run and (args.demo or args.check_stage or args.run_dbt or args.run_dbt_test):
+    if args.dry_run and (args.demo or args.check_stage or args.run_dbt or args.run_dbt_test
+                         or args.dbt_build):
         parser.error('--dry-run applies to --all or --table without dbt execution')
     if args.all and args.mode == 'incremental':
         parser.error('Incremental bounds are per table; use --table')
@@ -206,12 +210,21 @@ def main(argv=None):
             dbt_run_result = run_dbt_cli(command='run', select='+fact_race_result')
             report['dbt_run'] = dbt_run_result
             if engine is not None and not args.dry_run:
-                commit_batch_watermark(engine, args.batch_key or 'batch_dbt_orchestrated')
+                commit_watermark_state(engine, args.batch_key or 'batch_dbt_orchestrated',
+                                       args.table or 'results')
                 report['watermark'] = 'committed'
 
         if args.run_dbt_test:
             dbt_test_result = run_dbt_cli(command='test', select='+fact_race_result')
             report['dbt_test'] = dbt_test_result
+
+        if args.dbt_build:
+            # Same command as the Mage dbt_transformation block: models + data tests.
+            build = run_dbt_cli(command='build', select='+fact_race_result')
+            report['dbt_build'] = dict(command=build['command'], exit_code=build['exit_code'],
+                                       summary=[re.sub(r'\x1b\[[0-9;]*m', '', line).strip()
+                                                for line in build['stdout'].splitlines()
+                                                if 'Done. PASS=' in line])
 
         report['status'] = 'success'
     except Exception as exc:

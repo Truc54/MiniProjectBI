@@ -1,0 +1,57 @@
+triggers:
+- description: 'Demo: full reload results.csv + dbt build at :00 and :30 (UTC)'
+  envs: []
+  last_enabled_at: 2026-11-22 04:44:49.862186+00:00
+  name: f1_full_reload_every_30min
+  pipeline_uuid: f1_source_to_stage
+  schedule_interval: 0,30 * * * *
+  schedule_type: time
+  settings:
+    skip_if_previous_running: true
+    timeout: 1500
+  sla: null
+  start_time: 2026-11-22 00:00:00
+  status: active
+  token: null
+  variables:
+    load_mode: full
+    table_name: results
+- description: 'Demo: incremental batch_2026_R15_AZE (resultId 27552-27573) + dbt
+    build at :15 and :45 (UTC)'
+  envs: []
+  last_enabled_at: 2026-11-22 04:44:49.870064+00:00
+  name: f1_incremental_every_30min
+  pipeline_uuid: f1_source_to_stage
+  schedule_interval: 15,45 * * * *
+  schedule_type: time
+  settings:
+    skip_if_previous_running: true
+    timeout: 1500
+  sla: null
+  start_time: 2026-11-22 00:00:00
+  status: active
+  token: null
+  variables:
+    batch_key: batch_2026_R15_AZE
+    key_max: 27573
+    key_min: 27552
+    load_mode: incremental
+    table_name: results
+- description: 'Production: daily full reload results.csv + dbt build (@daily, 00:00
+    UTC)'
+  envs: []
+  last_enabled_at: 2026-11-22 04:44:49.882809+00:00
+  name: f1_daily_production
+  pipeline_uuid: f1_source_to_stage
+  schedule_interval: '@daily'
+  schedule_type: time
+  settings:
+    skip_if_previous_running: true
+    timeout: 1500
+  sla: null
+  start_time: 2026-11-22 00:00:00
+  status: active
+  token: null
+  variables:
+    load_mode: full
+    table_name: results

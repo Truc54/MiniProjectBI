@@ -84,7 +84,8 @@ blocks:
   uuid: commit_watermark
 cache_block_output_in_memory: false
 callbacks: []
-concurrency_config: {}
+concurrency_config:
+  pipeline_run_limit_all_triggers: 1
 conditionals: []
 created_at: null
 data_integration: null

@@ -1,0 +1,224 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-22T04:46:26.018231+00:00",
+  "backend": "sqlserver",
+  "runs": [
+    {
+      "status": "success",
+      "run_id": "677a2248-a7fe-4098-9f4e-9a79a6d45871",
+      "table": "stg.circuits",
+      "batch_key": "full",
+      "rows_read": 78,
+      "rows_written": 78,
+      "rows_rejected": 0
+    },
+    {
+      "status": "success",
+      "run_id": "04b68510-3f4d-444c-a54d-689bc92472af",
+      "table": "stg.constructors",
+      "batch_key": "full",
+      "rows_read": 214,
+      "rows_written": 214,
+      "rows_rejected": 0
+    },
+    {
+      "status": "success",
+      "run_id": "4e3aea52-6cd6-458f-82f7-93f4bb6f6e4a",
+      "table": "stg.drivers",
+      "batch_key": "full",
+      "rows_read": 879,
+      "rows_written": 879,
+      "rows_rejected": 0
+    },
+    {
+      "status": "success",
+      "run_id": "ef43c05c-ec9c-4ccf-987f-764f7379f059",
+      "table": "stg.status",
+      "batch_key": "full",
+      "rows_read": 141,
+      "rows_written": 141,
+      "rows_rejected": 0
+    },
+    {
+      "status": "success",
+      "run_id": "a95ad5fe-ffe9-4341-939d-a96c1d3fe129",
+      "table": "stg.seasons",
+      "batch_key": "full",
+      "rows_read": 77,
+      "rows_written": 77,
+      "rows_rejected": 0
+    },
+    {
+      "status": "success",
+      "run_id": "03157673-2f34-4db2-aa96-f85dbc5d73fa",
+      "table": "stg.races",
+      "batch_key": "full",
+      "rows_read": 1164,
+      "rows_written": 1164,
+      "rows_rejected": 0
+    },
+    {
+      "status": "success",
+      "run_id": "8aa4282a-858c-4680-acec-d4eef75ceec5",
+      "table": "stg.results",
+      "batch_key": "full",
+      "rows_read": 27568,
+      "rows_written": 27568,
+      "rows_rejected": 0
+    }
+  ],
+  "source": [
+    {
+      "table": "circuits",
+      "source_rows": 78,
+      "batch_rows": 78,
+      "key_min": 1,
+      "key_max": 81,
+      "key_sha256": "84546013754bd7529c1b5bbbb3e44611e2bed0bf6dcf419e493d2c2316501e16",
+      "null_cells": 0,
+      "empty_cells": 0
+    },
+    {
+      "table": "constructors",
+      "source_rows": 214,
+      "batch_rows": 214,
+      "key_min": 1,
+      "key_max": 217,
+      "key_sha256": "25793ea7331aff270cc8c84bae6f7b45c820e1bf434ab8be23aef9d6d079d227",
+      "null_cells": 0,
+      "empty_cells": 0
+    },
+    {
+      "table": "drivers",
+      "source_rows": 879,
+      "batch_rows": 879,
+      "key_min": 1,
+      "key_max": 880,
+      "key_sha256": "0481b2dd3e8eae80da75bc7b03d2149be8797272ac80eb29f86f52cd90693499",
+      "null_cells": 1629,
+      "empty_cells": 0
+    },
+    {
+      "table": "status",
+      "source_rows": 141,
+      "batch_rows": 141,
+      "key_min": 1,
+      "key_max": 143,
+      "key_sha256": "a89391df2356b5d811a829eaf62f34ad282e78e415031e6ae19939746103b130",
+      "null_cells": 0,
+      "empty_cells": 0
+    },
+    {
+      "table": "seasons",
+      "source_rows": 77,
+      "batch_rows": 77,
+      "key_min": 1950,
+      "key_max": 2026,
+      "key_sha256": "bacaaf1fbb5f65d26cf3ae50b180563aca2e67eb3a49507bac4b8a1040916212",
+      "null_cells": 0,
+      "empty_cells": 0
+    },
+    {
+      "table": "races",
+      "source_rows": 1164,
+      "batch_rows": 1164,
+      "key_min": 1,
+      "key_max": 1183,
+      "key_sha256": "f4f1084f98a51b86f80b0217d8dbf961a302a0c74e3b77dbfa94bcdb765c2556",
+      "null_cells": 11449,
+      "empty_cells": 0
+    },
+    {
+      "table": "results",
+      "source_rows": 27568,
+      "batch_rows": 27568,
+      "key_min": 1,
+      "key_max": 27573,
+      "key_sha256": "694f73a2d3976593fcb123f1dd4880a3526e97ff64c7ca342c3345bf524c5296",
+      "null_cells": 124176,
+      "empty_cells": 0
+    }
+  ],
+  "relationships": [
+    {
+      "relationship": "races.circuitId->circuits.circuitId",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "races.year->seasons.year",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "results.raceId->races.raceId",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "results.driverId->drivers.driverId",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "results.constructorId->constructors.constructorId",
+      "orphan_count": 0,
+      "sample": []
+    },
+    {
+      "relationship": "results.statusId->status.statusId",
+      "orphan_count": 0,
+      "sample": []
+    }
+  ],
+  "stage": {
+    "counts": {
+      "circuits": 78,
+      "constructors": 214,
+      "drivers": 879,
+      "status": 141,
+      "seasons": 77,
+      "races": 1164,
+      "results": 27568
+    },
+    "relationships": [
+      {
+        "relationship": "races.circuitId->circuits.circuitId",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "races.year->seasons.year",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "results.raceId->races.raceId",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "results.driverId->drivers.driverId",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "results.constructorId->constructors.constructorId",
+        "orphan_count": 0,
+        "sample": []
+      },
+      {
+        "relationship": "results.statusId->status.statusId",
+        "orphan_count": 0,
+        "sample": []
+      }
+    ]
+  },
+  "dbt_build": {
+    "command": "/usr/local/bin/dbt build --project-dir /home/src/project/dbt --profiles-dir /home/src/project/dbt --select +fact_race_result",
+    "exit_code": 0,
+    "summary": [
+      "\u001b[0m04:46:36  Done. PASS=61 WARN=0 ERROR=0 SKIP=0 TOTAL=61"
+    ]
+  }
+}

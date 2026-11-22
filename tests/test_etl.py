@@ -195,7 +195,12 @@ class SourceTests(unittest.TestCase):
             value = fn(value, table_name='status') if value else fn(table_name='status')
             value = json.loads(json.dumps(value))
         self.assertTrue(value['validated'])
-        self.assertTrue((PROJECT / 'data_exporters' / f'{blocks[-1]["uuid"]}.py').is_file())
+        # Phase 2 appended dbt + watermark custom blocks after the exporter.
+        for block in blocks:
+            folder = 'custom' if block['type'] == 'custom' else f'{block["type"]}s'
+            self.assertTrue((PROJECT / folder / f'{block["uuid"]}.py').is_file(), block['uuid'])
+        self.assertEqual([b['type'] for b in blocks],
+                         ['data_loader', 'transformer', 'data_exporter', 'custom', 'custom'])
 
 
 class TransactionTests(unittest.TestCase):
