@@ -1,0 +1,141 @@
+{
+  "test_run_metadata": {
+    "phase": "Phase 4 - Generative AI, ETL Scheduling, Monitoring & Lead QA",
+    "lead_qa": "Phúc",
+    "execution_timestamp_utc": "2026-11-22T03:01:14.325265+00:00",
+    "status": "PASSED",
+    "qa_suite_version": "v4.0.0-final"
+  },
+  "security_suite": {
+    "attacks_tested": 12,
+    "attacks_blocked": 12,
+    "block_rate_pct": 100.0,
+    "legitimate_queries_tested": 4,
+    "legitimate_queries_passed": 4,
+    "pass_rate_pct": 100.0,
+    "status": "PASS"
+  },
+  "db_least_privilege": {
+    "user": "f1_ai_reader",
+    "role": "db_ai_reader",
+    "schema_authorization": "dw (SELECT), ctl (SELECT)",
+    "forbidden_access": "stg.* (DENIED), DDL/DML mutation (DENIED)",
+    "compliance": "STRICT_LEAST_PRIVILEGE",
+    "status": "PASS"
+  },
+  "ground_truth_reconciliation": {
+    "total_entries": 27568,
+    "distinct_races": 1164,
+    "total_wins": 1167,
+    "total_podiums": 3513,
+    "classified_entries": 16494,
+    "non_classified_entries": 11074,
+    "total_points": 57126.05,
+    "points_historical_caveat": "Governed by 6 distinct scoring eras (1950-2026); direct cross-era point sums require historical caveat.",
+    "status": "PASS"
+  },
+  "season_2023_grounding": {
+    "season_year": 2023,
+    "races_count": 22,
+    "entries_count": 440,
+    "total_points": 2242.0,
+    "classified_entries": 386,
+    "classified_rate_pct": 87.73,
+    "win_distribution": {
+      "Max Verstappen (driver_id=830)": 19,
+      "Sergio Perez (driver_id=815)": 2,
+      "Carlos Sainz (driver_id=832)": 1
+    },
+    "non_causal_compliance": "Points Delta vs Prior Round serves strictly as descriptive historical variance, avoiding subjective causal over-attribution.",
+    "status": "PASS"
+  },
+  "bq4_bq5_boundaries": {
+    "bq4_sample_size_n": 16434,
+    "bq4_excluded_count": 11134,
+    "bq5_outcome_groups": {
+      "CLASSIFIED": 15839,
+      "RETIREMENT_DNF": 9771,
+      "DSQ": 162,
+      "DNS": 258,
+      "OTHER": 1538
+    },
+    "taxonomy_integrity": "5 distinct groups; DNS and DSQ strictly segregated from mechanical/accident retirements.",
+    "status": "PASS"
+  },
+  "etl_monitoring_observability": {
+    "5_kpi_cards": {
+      "total_runs": 7,
+      "success_runs": 6,
+      "failed_runs": 1,
+      "success_rate_pct": 85.71,
+      "avg_duration_sec": 6.11,
+      "total_rows_written": 29904,
+      "total_rows_rejected": 10
+    },
+    "fault_injection_case": {
+      "failed_target_table": "results_invalid_batch",
+      "rows_rejected": 10,
+      "error_message": "VIOLATION_CHECK_FAILED: Duplicate key and invalid foreign key detected in staging pipeline.",
+      "atomic_rollback_verified": true,
+      "fact_row_count_invariance": 27568
+    },
+    "status": "PASS"
+  },
+  "core_8_qa_scenarios": {
+    "total_scenarios": 8,
+    "passed_scenarios": 8,
+    "pass_rate_pct": 100.0,
+    "scenarios": {
+      "QA-01": {
+        "target": "Mage.ai Schedule Trigger (Lộc)",
+        "criterion": "Schedule Trigger ACTIVE, automated runs recorded in ctl.etl_run_log.",
+        "status": "PASS",
+        "evidence_ref": "docs/evidence/loc_live_sqlserver_mage.json"
+      },
+      "QA-02": {
+        "target": "ETL Fault Injection & Atomic Rollback (Lộc)",
+        "criterion": "ctl.etl_run_log captures run_status='failed', rows_rejected > 0, error_message; dw.FactRaceResult invariant at 27,568 rows.",
+        "status": "PASS",
+        "evidence_ref": "test_18_etl_observability_and_fault_injection"
+      },
+      "QA-03": {
+        "target": "Power BI Page 4 vs SQL ctl (Dũng)",
+        "criterion": "5 KPI Cards on Page 4 match 100% direct SQL query on ctl.etl_run_log.",
+        "status": "PASS",
+        "evidence_ref": "sqlserver/ctl/01_etl_monitoring_view_and_reader.sql"
+      },
+      "QA-04": {
+        "target": "AI F1 Summary Grounding (Trực)",
+        "criterion": "Season 2023 summary strictly grounded (22 races, 2,242.0 pts, Verstappen 19 wins, non-causal BQ6, historical scoring caveat).",
+        "status": "PASS",
+        "evidence_ref": "test_16_ai_grounding_season_2023"
+      },
+      "QA-05": {
+        "target": "AI Multimodal Power BI Chart Grounding (Trực)",
+        "criterion": "Uploaded Power BI chart vision prompt extracts identical trend and correlates directly with dw.* values.",
+        "status": "PASS",
+        "evidence_ref": "docs/04_operations_and_guides/phase4_demo_script.md"
+      },
+      "QA-06": {
+        "target": "AI ETL Diagnostic Explanation (Trực)",
+        "criterion": "AI reads ctl.etl_run_log, pinpoints failed target_table and error_message, provides actionable remediation.",
+        "status": "PASS",
+        "evidence_ref": "test_18_etl_observability_and_fault_injection"
+      },
+      "QA-07": {
+        "target": "Natural Language Chatbot Q&A (Trực)",
+        "criterion": "Vietnamese NLP query for F1 and ETL generates valid T-SQL SELECT and returns verifiable data table.",
+        "status": "PASS",
+        "evidence_ref": "test_13_security_allow_valid_read_only_queries"
+      },
+      "QA-08": {
+        "target": "2-Layer Text-to-SQL Security (Trực & Dũng)",
+        "criterion": "100% of malicious SQL mutations blocked by Python validator; f1_ai_reader DB role denied write and stg access.",
+        "status": "PASS",
+        "evidence_ref": "test_01_to_test_12_and_test_14"
+      }
+    },
+    "lead_qa_verdict": "APPROVED_FOR_RELEASE_AND_DEMO",
+    "status": "PASS"
+  }
+}

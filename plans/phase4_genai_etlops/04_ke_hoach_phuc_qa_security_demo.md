@@ -5,7 +5,7 @@
 **Điểm tải công việc:** **25 điểm**  
 **Bắt đầu:** **NGAY LẬP TỨC** (Không cần chờ code xong — viết ngay bộ test bảo mật SQL, bộ Ground Truth SQL đối soát trên `dw`/`ctl` và Kịch bản Video Demo từ chiều 21/11!)  
 **Hạn hoàn thành:** Tối 21/11 xong khung `tests/test_phase4_qa.py`; Chiều 22/11 xong Kịch bản Demo; Trưa 23/11 (12:00) xong QA 8/8 PASS  
-**Trạng thái:** **[ ] SẴN SÀNG LÀM NGAY**
+**Trạng thái:** **[x] ĐÃ HOÀN THÀNH (25/25 Điểm - 19/19 Tests PASS, 8/8 Kịch bản QA Đạt, Sẵn sàng Video Demo)**
 
 ---
 
@@ -51,3 +51,11 @@
    - Chuyển chế độ **Chẩn đoán ETL** → AI phát hiện và giải thích ngay bảng lỗi ở bước 2.
    - Hỏi trực tiếp trên **Chatbot tiếng Việt** (1 câu F1 + 1 câu ETL) kèm mở **Xem câu SQL & bảng dữ liệu gốc**, sau đó gõ câu yêu cầu **xóa bảng** để chứng minh cơ chế chặn bảo mật 2 lớp.
 5. **6:30 – 7:00 (Tổng kết):** Chốt kết quả QA 8/8 PASS và kết thúc.
+
+---
+
+## 4. Bằng chứng Bàn giao Hoàn thành (25/25 Điểm)
+- [x] **1. Bộ Test Tự động `tests/test_phase4_qa.py` (9 điểm):** 19/19 tests PASS 100% trong 0.29s (12 mẫu tấn công SQL bị chặn, Least-privilege contract f1_ai_reader, Ground Truth DW 27.568 dòng, Season 2023 2.242 pts & Verstappen 19 wins, BQ4 n=16.434, BQ5 5 nhóm, 5 KPI ETL monitoring).
+- [x] **2. Thực thi 8 Kịch bản QA & Xuất Biên bản (9 điểm):** Báo cáo nghiệm thu kỹ thuật [`docs/evidence/phuc_phase4_qa_validation.md`](../../docs/evidence/phuc_phase4_qa_validation.md) & file dữ liệu máy đọc [`docs/evidence/phuc_phase4_qa_run.json`](../../docs/evidence/phuc_phase4_qa_run.json) - 8/8 kịch bản QA PASS 100%.
+- [x] **3. Kịch bản Video Demo End-to-End 5–7 Phút (5 điểm):** Hoàn thành [`docs/04_operations_and_guides/phase4_demo_script.md`](../../docs/04_operations_and_guides/phase4_demo_script.md) - timeline 6 phút 30 giây phân vai 4 thành viên (Phúc, Lộc, Dũng, Trực) kèm 3 câu hỏi chatbot và kịch bản chi tiết.
+- [x] **4. Rà soát Vệ sinh Source Code & Sẵn sàng Nộp (2 điểm):** Kho mã nguồn sạch sẽ, không commit .env/API key thật, tuân thủ an toàn thông tin tuyệt đối.
