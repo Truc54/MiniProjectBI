@@ -141,11 +141,20 @@ def create_db_engine(timeout_sec: int = 10) -> Engine:
 
     @event.listens_for(engine, "connect")
     def _configure_readonly_session(dbapi_connection: Any, _connection_record: Any) -> None:
+        if hasattr(dbapi_connection, "timeout"):
+            try:
+                dbapi_connection.timeout = timeout_sec
+            except Exception:
+                pass
         cursor = dbapi_connection.cursor()
         try:
             # Never hang on writer locks during concurrent Mage/dbt ETL runs.
             cursor.execute("SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED")
-            cursor.execute("SET LOCK_TIMEOUT 4000")
+            cursor.execute("SET LOCK_TIMEOUT 3000")
+            try:
+                dbapi_connection.commit()
+            except Exception:
+                pass
         finally:
             cursor.close()
 
@@ -182,7 +191,7 @@ def get_filter_options(engine: Engine | None = None) -> dict[str, Any]:
     """Load dropdown filter values from `dw` dimensions (excluding SK = -1)."""
     own_engine = engine is None
     try:
-        engine = engine or create_db_engine()
+        engine = engine or create_db_engine(timeout_sec=5)
         with engine.connect() as conn:
             season_row = conn.execute(
                 text(

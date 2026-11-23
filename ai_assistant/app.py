@@ -445,12 +445,12 @@ st.markdown(
 )
 
 
-@st.cache_data(ttl=120, show_spinner=False)
+@st.cache_data(ttl=120, show_spinner="Đang kết nối SQL Server...")
 def _cached_health() -> dict[str, Any]:
     return check_db_health()
 
 
-@st.cache_data(ttl=300, show_spinner=False)
+@st.cache_data(ttl=300, show_spinner="Đang tải bộ lọc dữ liệu...")
 def _cached_filter_options() -> dict[str, Any]:
     return get_filter_options()
 
@@ -860,17 +860,24 @@ def _render_tab_summary(api_key: str | None, model_name: str, db_connected: bool
     )
 
     filter_opts = _cached_filter_options()
+    if not filter_opts.get("constructors"):
+        _cached_filter_options.clear()
 
     if mode == "Phân tích F1":
         min_s, max_s = int(filter_opts["min_season"]), int(filter_opts["max_season"])
         years_desc = list(range(max_s, min_s - 1, -1))
         default_year = min(2023, max_s)
-        default_year_idx = years_desc.index(default_year) if default_year in years_desc else 0
 
         c1, c2, c3, c4, c5 = st.columns([0.85, 0.85, 1.35, 1.05, 1.05], vertical_alignment="bottom")
-        year_from = c1.selectbox("Từ năm", years_desc, index=default_year_idx)
-        year_to = c2.selectbox("Đến năm", years_desc, index=default_year_idx)
-        season_start, season_end = min(year_from, year_to), max(year_from, year_to)
+        if "f1_year_from" not in st.session_state or st.session_state["f1_year_from"] not in years_desc:
+            st.session_state["f1_year_from"] = default_year
+        year_from = c1.selectbox("Từ năm", years_desc, key="f1_year_from")
+
+        years_to = [y for y in years_desc if y >= year_from]
+        if "f1_year_to" not in st.session_state or st.session_state["f1_year_to"] not in years_to:
+            st.session_state["f1_year_to"] = year_from
+        year_to = c2.selectbox("Đến năm", years_to, key="f1_year_to")
+        season_start, season_end = int(year_from), int(year_to)
         selected_constructor = c3.selectbox("Đội đua", ["Tất cả"] + filter_opts["constructors"])
 
         uploaded_chart = None
