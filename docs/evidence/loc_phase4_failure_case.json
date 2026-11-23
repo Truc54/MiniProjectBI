@@ -1,0 +1,7 @@
+{
+  "status": "failed",
+  "timestamp_utc": "2026-11-22T04:47:20.229534+00:00",
+  "backend": "sqlserver",
+  "runs": [],
+  "error": "run_id=9654da1d-6458-454c-9cfa-b1fce43896bc: status.csv: duplicate natural key 1; invalid rows=1"
+}

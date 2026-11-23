@@ -306,3 +306,80 @@ docker stop miniprojectbi-sqlserver-test
 Build thật phát hiện Mage 0.9.79 yêu cầu SQLAlchemy <2, nên requirements được
 chốt 1.4 và engine ETL dùng `future=True`. Base image được pin digest trong
 Dockerfile; thay dependency/runtime phải chạy lại suite này.
+
+## Phase 4 — Lập lịch Mage (Schedule Trigger) & lịch sử vận hành
+
+### Trigger đã cấu hình (trigger-as-code)
+
+File [`mage/project/pipelines/f1_source_to_stage/triggers.yaml`](../../mage/project/pipelines/f1_source_to_stage/triggers.yaml)
+được Mage tự đồng bộ vào bảng trigger mỗi vòng scheduler (không cần bấm UI, giữ
+nguyên khi rebuild container). Giờ cron là **UTC** (giờ VN = UTC+7).
+
+| Trigger | Lịch | Biến runtime | Mục đích |
+|---|---|---|---|
+| `f1_full_reload_every_30min` | `0,30 * * * *` | `table_name=results`, `load_mode=full` | Demo chu kỳ ngắn: full snapshot + `dbt build` |
+| `f1_incremental_every_30min` | `15,45 * * * *` | `results`, `incremental`, `batch_key=batch_2026_R15_AZE`, `key_min=27552`, `key_max=27573` | Demo: batch chặng mới nhất, rerun idempotent |
+| `f1_daily_production` | `@daily` (00:00 UTC) | `results`, `full` | Cấu hình chuẩn vận hành |
+
+Mỗi run chạy trọn chuỗi `load_f1_csv → validate_f1_table → load_sqlserver →
+dbt_transformation (dbt build +fact_race_result) → commit_watermark` và ghi 1 dòng
+`ctl.etl_run_log`. Hai trigger 30 phút lệch nhau 15 phút; thêm
+`skip_if_previous_running: true` (từng trigger) và
+`concurrency_config.pipeline_run_limit_all_triggers: 1` trong `metadata.yaml` để
+không bao giờ có 2 lần `dbt build` chạy chồng nhau.
+
+### Bật / tắt lịch
+
+1. Điều kiện: `.env` (MSSQL_*) và `dbt/profiles.yml` (copy từ
+   `dbt/profiles.yml.example`) có trên máy — cả hai bị gitignore.
+2. `docker compose up -d mage` rồi mở `http://localhost:6789` → pipeline
+   `f1_source_to_stage` → **Triggers**: 3 trigger trên hiển thị `Active`.
+3. Tắt demo sau khi quay video: đổi `status: active` → `inactive` cho 2 trigger
+   30 phút trong `triggers.yaml` (hoặc bấm *Disable* trên UI), giữ `f1_daily_production`.
+
+### Sinh lịch sử 3 kịch bản (chạy trong container Mage, cùng code với pipeline)
+
+```bash
+C=miniprojectbi-mage-1   # tên container Mage
+# (a) Full load 7 bảng core + dbt build
+docker exec -w /home/src $C python run_etl.py --all --dbt-build \
+  --evidence /home/src/evidence/loc_phase4_full_load.json
+# (b) Incremental batch mới (Spanish GP 2026, resultId 27530-27551) rồi rerun y hệt (idempotent)
+for n in 1 2; do docker exec -w /home/src $C python run_etl.py --table results --mode incremental \
+  --batch-key batch_2026_R14_ESP --key-min 27530 --key-max 27551 --dbt-build \
+  --evidence /home/src/evidence/loc_phase4_incremental_run$n.json; done
+# (c) Lỗi kiểm định có kiểm soát: bản sao status.csv bị nhân đôi khóa statusId=1 (dataset gốc không đổi)
+docker exec $C sh -c 'mkdir -p /tmp/f1_bad_source && cp /home/src/dataset/status.csv /tmp/f1_bad_source/ \
+  && sed -n 2p /home/src/dataset/status.csv >> /tmp/f1_bad_source/status.csv'
+docker exec -w /home/src $C python run_etl.py --table status --batch-key qa02_duplicate_key_simulation \
+  --data-dir /tmp/f1_bad_source --evidence /home/src/evidence/loc_phase4_failure_case.json  # exit 1 là đúng
+docker exec $C rm -rf /tmp/f1_bad_source
+```
+
+Case (c) bị chặn ở bước validate trước khi ghi Stage: `ctl.etl_run_log` ghi
+`run_status='failed'`, `rows_rejected=1`,
+`error_message='status.csv: duplicate natural key 1; invalid rows=1'`;
+`stg.status` (141 dòng, checksum không đổi), `dw.FactRaceResult` = 27.568.
+
+### Thu bằng chứng & tự kiểm QA-01 / QA-02
+
+```bash
+docker exec -i miniprojectbi-mage-1 python - --out /home/src/evidence/loc_phase4_schedule_runs.json \
+  < mage/collect_phase4_schedule_evidence.py     # exit 0 khi QA-01 và QA-02 đều PASS
+```
+
+Script chỉ đọc (Mage API GET + SELECT) và ghi
+`docs/evidence/loc_phase4_schedule_runs.json`: trigger, các run tự động (từng
+block), dòng `ctl.etl_run_log` tương ứng mỗi run, tổng hợp log, batch state, số
+dòng `stg`/`dw` và kết quả QA-01/QA-02. Kiểm thử offline:
+`python -m unittest tests.test_phase4_loc_schedule -v`.
+
+Truy vấn dùng cho ảnh chụp bằng chứng:
+
+```sql
+SELECT started_at_utc, target_table, load_mode, batch_key, run_status,
+       rows_read, rows_written, rows_rejected, error_message
+FROM ctl.etl_run_log
+WHERE started_at_utc >= '2026-11-22'
+ORDER BY started_at_utc DESC;
+```

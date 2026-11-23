@@ -1,0 +1,532 @@
+{
+  "generated_at_utc": "2026-11-22 06:01:21",
+  "pipeline": "f1_source_to_stage",
+  "phase4_window_start_utc": "2026-11-22 00:00:00",
+  "mage_triggers": [
+    {
+      "id": 7,
+      "name": "f1_daily_production",
+      "status": "active",
+      "schedule_type": "time",
+      "schedule_interval": "@daily",
+      "variables": {
+        "table_name": "results",
+        "load_mode": "full"
+      },
+      "settings": {
+        "skip_if_previous_running": true,
+        "timeout": 1500
+      },
+      "next_run_utc": "2026-11-23 00:00:00+00:00"
+    },
+    {
+      "id": 6,
+      "name": "f1_incremental_every_30min",
+      "status": "active",
+      "schedule_type": "time",
+      "schedule_interval": "15,45 * * * *",
+      "variables": {
+        "table_name": "results",
+        "load_mode": "incremental",
+        "batch_key": "batch_2026_R15_AZE",
+        "key_min": 27552,
+        "key_max": 27573
+      },
+      "settings": {
+        "skip_if_previous_running": true,
+        "timeout": 1500
+      },
+      "next_run_utc": "2026-11-22 06:15:00+00:00"
+    },
+    {
+      "id": 5,
+      "name": "f1_full_reload_every_30min",
+      "status": "active",
+      "schedule_type": "time",
+      "schedule_interval": "0,30 * * * *",
+      "variables": {
+        "table_name": "results",
+        "load_mode": "full"
+      },
+      "settings": {
+        "skip_if_previous_running": true,
+        "timeout": 1500
+      },
+      "next_run_utc": "2026-11-22 06:30:00+00:00"
+    }
+  ],
+  "mage_scheduled_runs": [
+    {
+      "pipeline_run_id": 6,
+      "trigger": "f1_incremental_every_30min",
+      "status": "completed",
+      "execution_date_utc": "2026-11-22 04:45:00",
+      "started_utc": "2026-11-22 04:45:10",
+      "completed_utc": "2026-11-22 04:46:09",
+      "blocks": {
+        "commit_watermark": "completed",
+        "dbt_transformation": "completed",
+        "load_sqlserver": "completed",
+        "validate_f1_table": "completed",
+        "load_f1_csv": "completed"
+      },
+      "ctl_runs": [
+        {
+          "run_id": "5C8865D2-20BB-416E-ABE7-8C458CE6AA52",
+          "load_mode": "incremental",
+          "run_status": "success",
+          "rows_written": 22
+        }
+      ]
+    },
+    {
+      "pipeline_run_id": 7,
+      "trigger": "f1_full_reload_every_30min",
+      "status": "completed",
+      "execution_date_utc": "2026-11-22 05:00:00",
+      "started_utc": "2026-11-22 05:00:09",
+      "completed_utc": "2026-11-22 05:01:09",
+      "blocks": {
+        "commit_watermark": "completed",
+        "dbt_transformation": "completed",
+        "load_sqlserver": "completed",
+        "validate_f1_table": "completed",
+        "load_f1_csv": "completed"
+      },
+      "ctl_runs": [
+        {
+          "run_id": "A031C43F-A751-4B96-A6BD-BA3E84B7E384",
+          "load_mode": "full",
+          "run_status": "success",
+          "rows_written": 27568
+        }
+      ]
+    },
+    {
+      "pipeline_run_id": 8,
+      "trigger": "f1_incremental_every_30min",
+      "status": "completed",
+      "execution_date_utc": "2026-11-22 05:15:00",
+      "started_utc": "2026-11-22 05:15:10",
+      "completed_utc": "2026-11-22 05:15:59",
+      "blocks": {
+        "commit_watermark": "completed",
+        "dbt_transformation": "completed",
+        "load_sqlserver": "completed",
+        "validate_f1_table": "completed",
+        "load_f1_csv": "completed"
+      },
+      "ctl_runs": [
+        {
+          "run_id": "7DC0E463-98DF-44BE-B8F1-6A8214E172D4",
+          "load_mode": "incremental",
+          "run_status": "success",
+          "rows_written": 22
+        }
+      ]
+    },
+    {
+      "pipeline_run_id": 9,
+      "trigger": "f1_full_reload_every_30min",
+      "status": "completed",
+      "execution_date_utc": "2026-11-22 05:30:00",
+      "started_utc": "2026-11-22 05:30:09",
+      "completed_utc": "2026-11-22 05:31:09",
+      "blocks": {
+        "commit_watermark": "completed",
+        "dbt_transformation": "completed",
+        "load_sqlserver": "completed",
+        "validate_f1_table": "completed",
+        "load_f1_csv": "completed"
+      },
+      "ctl_runs": [
+        {
+          "run_id": "0592D2E9-7B63-4002-93AF-4E2357B54F64",
+          "load_mode": "full",
+          "run_status": "success",
+          "rows_written": 27568
+        }
+      ]
+    },
+    {
+      "pipeline_run_id": 10,
+      "trigger": "f1_incremental_every_30min",
+      "status": "completed",
+      "execution_date_utc": "2026-11-22 05:45:00",
+      "started_utc": "2026-11-22 05:45:01",
+      "completed_utc": "2026-11-22 05:46:01",
+      "blocks": {
+        "commit_watermark": "completed",
+        "dbt_transformation": "completed",
+        "load_sqlserver": "completed",
+        "validate_f1_table": "completed",
+        "load_f1_csv": "completed"
+      },
+      "ctl_runs": [
+        {
+          "run_id": "F8A6D9FE-E450-41C8-BE5C-11989DD3F533",
+          "load_mode": "incremental",
+          "run_status": "success",
+          "rows_written": 22
+        }
+      ]
+    },
+    {
+      "pipeline_run_id": 11,
+      "trigger": "f1_full_reload_every_30min",
+      "status": "completed",
+      "execution_date_utc": "2026-11-22 06:00:00",
+      "started_utc": "2026-11-22 06:00:01",
+      "completed_utc": "2026-11-22 06:01:01",
+      "blocks": {
+        "commit_watermark": "completed",
+        "dbt_transformation": "completed",
+        "load_sqlserver": "completed",
+        "validate_f1_table": "completed",
+        "load_f1_csv": "completed"
+      },
+      "ctl_runs": [
+        {
+          "run_id": "1B91D3FF-5160-4750-A31C-5F8359986797",
+          "load_mode": "full",
+          "run_status": "success",
+          "rows_written": 27568
+        }
+      ]
+    }
+  ],
+  "ctl_etl_run_log_phase4": [
+    {
+      "run_id": "5C8865D2-20BB-416E-ABE7-8C458CE6AA52",
+      "target_table": "results",
+      "load_mode": "incremental",
+      "batch_key": "batch_2026_R15_AZE",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:45:29",
+      "completed_at_utc": "2026-11-22 04:45:29",
+      "rows_read": 22,
+      "rows_written": 22,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "677A2248-A7FE-4098-9F4E-9A79A6D45871",
+      "target_table": "circuits",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:46:26",
+      "completed_at_utc": "2026-11-22 04:46:26",
+      "rows_read": 78,
+      "rows_written": 78,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "04B68510-3F4D-444C-A54D-689BC92472AF",
+      "target_table": "constructors",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:46:26",
+      "completed_at_utc": "2026-11-22 04:46:26",
+      "rows_read": 214,
+      "rows_written": 214,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "4E3AEA52-6CD6-458F-82F7-93F4BB6F6E4A",
+      "target_table": "drivers",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:46:26",
+      "completed_at_utc": "2026-11-22 04:46:26",
+      "rows_read": 879,
+      "rows_written": 879,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "EF43C05C-EC9C-4CCF-987F-764F7379F059",
+      "target_table": "status",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:46:26",
+      "completed_at_utc": "2026-11-22 04:46:27",
+      "rows_read": 141,
+      "rows_written": 141,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "A95AD5FE-FFE9-4341-939D-A96C1D3FE129",
+      "target_table": "seasons",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:46:27",
+      "completed_at_utc": "2026-11-22 04:46:27",
+      "rows_read": 77,
+      "rows_written": 77,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "03157673-2F34-4DB2-AA96-F85DBC5D73FA",
+      "target_table": "races",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:46:27",
+      "completed_at_utc": "2026-11-22 04:46:27",
+      "rows_read": 1164,
+      "rows_written": 1164,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "8AA4282A-858C-4680-ACEC-D4EEF75CEEC5",
+      "target_table": "results",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:46:27",
+      "completed_at_utc": "2026-11-22 04:46:29",
+      "rows_read": 27568,
+      "rows_written": 27568,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "B86931A6-DC21-462F-9004-19240E47C695",
+      "target_table": "results",
+      "load_mode": "incremental",
+      "batch_key": "batch_2026_R14_ESP",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:46:53",
+      "completed_at_utc": "2026-11-22 04:46:53",
+      "rows_read": 22,
+      "rows_written": 22,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "B4764499-AB57-408D-9B19-B6D6B3EB0C5F",
+      "target_table": "results",
+      "load_mode": "incremental",
+      "batch_key": "batch_2026_R14_ESP",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 04:46:58",
+      "completed_at_utc": "2026-11-22 04:46:58",
+      "rows_read": 22,
+      "rows_written": 22,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "9654DA1D-6458-454C-9CFA-B1FCE43896BC",
+      "target_table": "status",
+      "load_mode": "full",
+      "batch_key": "qa02_duplicate_key_simulation",
+      "run_status": "failed",
+      "started_at_utc": "2026-11-22 04:47:20",
+      "completed_at_utc": "2026-11-22 04:47:20",
+      "rows_read": 142,
+      "rows_written": 0,
+      "rows_rejected": 1,
+      "error_message": "status.csv: duplicate natural key 1; invalid rows=1"
+    },
+    {
+      "run_id": "A031C43F-A751-4B96-A6BD-BA3E84B7E384",
+      "target_table": "results",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 05:00:29",
+      "completed_at_utc": "2026-11-22 05:00:31",
+      "rows_read": 27568,
+      "rows_written": 27568,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "7DC0E463-98DF-44BE-B8F1-6A8214E172D4",
+      "target_table": "results",
+      "load_mode": "incremental",
+      "batch_key": "batch_2026_R15_AZE",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 05:15:29",
+      "completed_at_utc": "2026-11-22 05:15:29",
+      "rows_read": 22,
+      "rows_written": 22,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "0592D2E9-7B63-4002-93AF-4E2357B54F64",
+      "target_table": "results",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 05:30:29",
+      "completed_at_utc": "2026-11-22 05:30:31",
+      "rows_read": 27568,
+      "rows_written": 27568,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "F8A6D9FE-E450-41C8-BE5C-11989DD3F533",
+      "target_table": "results",
+      "load_mode": "incremental",
+      "batch_key": "batch_2026_R15_AZE",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 05:45:22",
+      "completed_at_utc": "2026-11-22 05:45:22",
+      "rows_read": 22,
+      "rows_written": 22,
+      "rows_rejected": 0,
+      "error_message": null
+    },
+    {
+      "run_id": "1B91D3FF-5160-4750-A31C-5F8359986797",
+      "target_table": "results",
+      "load_mode": "full",
+      "batch_key": "full",
+      "run_status": "success",
+      "started_at_utc": "2026-11-22 06:00:21",
+      "completed_at_utc": "2026-11-22 06:00:23",
+      "rows_read": 27568,
+      "rows_written": 27568,
+      "rows_rejected": 0,
+      "error_message": null
+    }
+  ],
+  "ctl_etl_run_log_summary_all_time": [
+    {
+      "load_mode": "full",
+      "run_status": "failed",
+      "runs": 1,
+      "rows_written": 0,
+      "rows_rejected": 1
+    },
+    {
+      "load_mode": "full",
+      "run_status": "success",
+      "runs": 17,
+      "rows_written": 142946,
+      "rows_rejected": 0
+    },
+    {
+      "load_mode": "incremental",
+      "run_status": "success",
+      "runs": 7,
+      "rows_written": 154,
+      "rows_rejected": 0
+    }
+  ],
+  "ctl_etl_batch_state": [
+    {
+      "source_table": "circuits",
+      "batch_key": "full",
+      "source_row_count": 78,
+      "batch_status": "success",
+      "loaded_at_utc": "2026-11-22 04:46:26"
+    },
+    {
+      "source_table": "constructors",
+      "batch_key": "full",
+      "source_row_count": 214,
+      "batch_status": "success",
+      "loaded_at_utc": "2026-11-22 04:46:26"
+    },
+    {
+      "source_table": "drivers",
+      "batch_key": "full",
+      "source_row_count": 879,
+      "batch_status": "success",
+      "loaded_at_utc": "2026-11-22 04:46:26"
+    },
+    {
+      "source_table": "races",
+      "batch_key": "full",
+      "source_row_count": 1164,
+      "batch_status": "success",
+      "loaded_at_utc": "2026-11-22 04:46:27"
+    },
+    {
+      "source_table": "results",
+      "batch_key": "full",
+      "source_row_count": 27568,
+      "batch_status": "success",
+      "loaded_at_utc": "2026-11-22 06:00:51"
+    },
+    {
+      "source_table": "seasons",
+      "batch_key": "full",
+      "source_row_count": 77,
+      "batch_status": "success",
+      "loaded_at_utc": "2026-11-22 04:46:27"
+    },
+    {
+      "source_table": "status",
+      "batch_key": "full",
+      "source_row_count": 141,
+      "batch_status": "success",
+      "loaded_at_utc": "2026-11-22 04:46:27"
+    },
+    {
+      "source_table": "status",
+      "batch_key": "qa02_duplicate_key_simulation",
+      "source_row_count": 0,
+      "batch_status": "failed",
+      "loaded_at_utc": null
+    }
+  ],
+  "stg_row_counts": {
+    "circuits": 78,
+    "constructors": 214,
+    "drivers": 879,
+    "status": 141,
+    "seasons": 77,
+    "races": 1164,
+    "results": 27568
+  },
+  "dw_FactRaceResult_rows": 27568,
+  "qa": {
+    "QA-01": {
+      "active_schedule_triggers": [
+        "f1_daily_production",
+        "f1_incremental_every_30min",
+        "f1_full_reload_every_30min"
+      ],
+      "completed_scheduled_runs": 6,
+      "longest_consecutive_success_streak": 6,
+      "auto_success_load_modes": [
+        "full",
+        "incremental"
+      ],
+      "ctl_success_full": 10,
+      "ctl_success_incremental": 5,
+      "pass": true
+    },
+    "QA-02": {
+      "failed_rows": [
+        {
+          "run_id": "9654DA1D-6458-454C-9CFA-B1FCE43896BC",
+          "target_table": "status",
+          "batch_key": "qa02_duplicate_key_simulation",
+          "rows_rejected": 1,
+          "error_message": "status.csv: duplicate natural key 1; invalid rows=1"
+        }
+      ],
+      "dw_FactRaceResult_rows": 27568,
+      "stage_counts_match_source": true,
+      "pass": true
+    }
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,35 @@
+{
+  "status": "success",
+  "timestamp_utc": "2026-11-22T04:46:57.846492+00:00",
+  "backend": "sqlserver",
+  "runs": [
+    {
+      "status": "success",
+      "run_id": "b4764499-ab57-408d-9b19-b6d6b3eb0c5f",
+      "table": "stg.results",
+      "batch_key": "batch_2026_R14_ESP",
+      "rows_read": 22,
+      "rows_written": 22,
+      "rows_rejected": 0
+    }
+  ],
+  "source": [
+    {
+      "table": "results",
+      "source_rows": 27568,
+      "batch_rows": 22,
+      "key_min": 27530,
+      "key_max": 27551,
+      "key_sha256": "d650e5664f1a2ea8c38345dfc2bbd71042e30add8ae658f9bcd4a4055f511884",
+      "null_cells": 34,
+      "empty_cells": 0
+    }
+  ],
+  "dbt_build": {
+    "command": "/usr/local/bin/dbt build --project-dir /home/src/project/dbt --profiles-dir /home/src/project/dbt --select +fact_race_result",
+    "exit_code": 0,
+    "summary": [
+      "04:47:01  Done. PASS=61 WARN=0 ERROR=0 SKIP=0 TOTAL=61"
+    ]
+  }
+}
